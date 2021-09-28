@@ -1,6 +1,8 @@
+let LOG_AUTOMATION = true;
+
 let hunt = setInterval(() => {
     if(game.resPool.resourceMap.manpower.value === game.resPool.resourceMap.manpower.maxValue) {
-        console.log("Going hunting");
+        if (LOG_AUTOMATION) console.log("Going hunting");
         $("#fastHuntContainer>a")[0].click();
     }
 }, 5000);
@@ -8,13 +10,13 @@ let hunt = setInterval(() => {
 let starClick = setInterval(() => {
     let observeBtnQ = $("#observeBtn")
     if (observeBtnQ.length > 0) {
-        console.log("Observing the sky!");
+        if (LOG_AUTOMATION) console.log("Observing the sky!");
         observeBtnQ[0].click();
     }
 }, 2000);
 
-let useUpExtra = setInterval(() => {
-    let resource_to_result = [
+let useUpInResources = setInterval(() => {
+    let resource_to_resource_mapping = [
         {
             source: 'catnip',
             result: 'wood',
@@ -36,12 +38,32 @@ let useUpExtra = setInterval(() => {
 
     //     // ["coal",     "steel"]
 
-    for (let res of resource_to_result) {
-        let src_obj = game.resPool.get(res.source)
+    for (let res_to_res of resource_to_resource_mapping) {
+        let src_obj = game.resPool.get(res_to_res.source)
         if (src_obj.value / src_obj.maxValue > 0.95) {
-            let craft_num = Math.trunc((src_obj.maxValue * 0.05) / res.cost)
-            console.log(`Converting ${src_obj.maxValue * 0.05} ${res.source} to ${craft_num} ${res.result}`);
-            game.craft(res.result, craft_num)
+            let craft_num = Math.max(1, Math.trunc((src_obj.maxValue * 0.05) / res_to_res.cost))
+            if (LOG_AUTOMATION) console.log(`Converting ${craft_num * res_to_res.cost} ${res_to_res.source} to ${craft_num} ${res_to_res.result}`);
+            game.craft(res_to_res.result, craft_num)
+        }
+    }
+}, 10*1000);
+
+let useUpInBuildings = setInterval(() => {
+    let resource_to_building_mapping = [
+        {
+            source: 'gold',
+            result: 'Tradepost',
+            tab: 'Bonfire'   
+        }
+    ]
+
+    for (let res_to_bld of resource_to_building_mapping) {
+        let src_obj = game.resPool.get(res_to_bld.source)
+        if (src_obj.value / src_obj.maxValue > 0.95) {
+            $(`a.${res_to_bld.tab}`)[0].click() // Switching tabs
+            // TODO: Improve this log to include resources used
+            if (LOG_AUTOMATION) console.log(`Building ${res_to_bld.result} from excess ${res_to_bld.source}`);
+            $(`.btnContent:contains('${res_to_bld.result}')`)[0].click()
         }
     }
 }, 10*1000);
