@@ -33,10 +33,12 @@ let useUpInResources = setInterval(() => {
             source: 'iron',
             result: 'plate',
             cost: 125            
+        }, {
+            source: 'coal',
+            result: 'steel',
+            cost: 100            
         }
     ]
-
-    //     // ["coal",     "steel"]
 
     for (let res_to_res of resource_to_resource_mapping) {
         let src_obj = game.resPool.get(res_to_res.source)
