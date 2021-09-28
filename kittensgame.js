@@ -23,16 +23,18 @@ let useUpExtra = setInterval(() => {
             source: 'wood',
             result: 'beam',
             cost: 175            
+        }, {
+            source: 'minerals',
+            result: 'slab',
+            cost: 250            
+        }, {
+            source: 'iron',
+            result: 'plate',
+            cost: 125            
         }
     ]
 
-    // let resource_to_result = [
-    //     ["catnip",     "wood" ],
-    //     // ["wood",     "beam" ],
-    //     // ["minerals", "slab" ],
-    //     // ["coal",     "steel"],
-    //     // ["iron",     "plate"]
-    // ];
+    //     // ["coal",     "steel"]
 
     for (let res of resource_to_result) {
         let src_obj = game.resPool.get(res.source)
