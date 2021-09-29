@@ -8,8 +8,8 @@ let hunt = setInterval(() => {
 
         if (gamePage.workshop.getCraft('parchment').unlocked) {
             let ticks_needed_to_fill_MP = mp.maxValue / mp.perTickCached
-            let fur_used_while_filling_mp = game.resPool.resourceMap.furs.perTickCached * ticks_needed_to_fill_MP // this is -ve
-            let fur_available_for_parchments = game.resPool.resourceMap.furs.value + fur_used_while_filling_mp
+            let fur_used_while_filling_MP = game.resPool.resourceMap.furs.perTickCached * ticks_needed_to_fill_MP // this is -ve
+            let fur_available_for_parchments = game.resPool.resourceMap.furs.value + fur_used_while_filling_MP
             let parchs_to_craft = Math.trunc(fur_available_for_parchments / 175)
 
             if (LOG_AUTOMATION) console.log(`Converting ${parchs_to_craft * 175} furs to ${parchs_to_craft} parchments`);
