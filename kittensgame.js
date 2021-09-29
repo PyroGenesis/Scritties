@@ -50,22 +50,29 @@ let useUpInResources = setInterval(() => {
     }
 }, 10*1000);
 
-let useUpInBuildings = setInterval(() => {
-    let resource_to_building_mapping = [
-        {
-            source: 'gold',
-            result: 'Tradepost',
-            tab: 'Bonfire'   
-        }
-    ]
+// let useUpInBuildings = setInterval(() => {
+//     let resource_to_building_mapping = [
+//         {
+//             source: 'gold',
+//             result: 'Tradepost',
+//             tab: 'Bonfire'   
+//         }
+//     ]
 
-    for (let res_to_bld of resource_to_building_mapping) {
-        let src_obj = game.resPool.get(res_to_bld.source)
-        if (src_obj.value / src_obj.maxValue > 0.95) {
-            $(`a.${res_to_bld.tab}`)[0].click() // Switching tabs
-            // TODO: Improve this log to include resources used
-            if (LOG_AUTOMATION) console.log(`Building ${res_to_bld.result} from excess ${res_to_bld.source}`);
-            $(`.btnContent:contains('${res_to_bld.result}')`)[0].click()
-        }
+//     for (let res_to_bld of resource_to_building_mapping) {
+//         let src_obj = game.resPool.get(res_to_bld.source)
+//         if (src_obj.value / src_obj.maxValue > 0.95) {
+//             $(`a.${res_to_bld.tab}`)[0].click() // Switching tabs
+//             // TODO: Improve this log to include resources used
+//             if (LOG_AUTOMATION) console.log(`Building ${res_to_bld.result} from excess ${res_to_bld.source}`);
+//             $(`.btnContent:contains('${res_to_bld.result}')`)[0].click()
+//         }
+//     }
+// }, 10*1000);
+
+let useUpGold = setInterval(() => {
+    if(game.resPool.resourceMap.gold.value === game.resPool.resourceMap.gold.maxValue) {
+        if (LOG_AUTOMATION) console.log("Promoting kittens");
+        game.village.promoteKittens();
     }
 }, 10*1000);
