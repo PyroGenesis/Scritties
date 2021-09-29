@@ -82,9 +82,46 @@ let useUpInResources = setInterval(() => {
 //     }
 // }, 10*1000);
 
-let useUpGold = setInterval(() => {
-    if(game.resPool.resourceMap.gold.value === game.resPool.resourceMap.gold.maxValue) {
-        if (LOG_AUTOMATION) console.log("Promoting kittens");
-        game.village.promoteKittens();
+// let useUpGold = setInterval(() => {
+//     if(game.resPool.resourceMap.gold.value === game.resPool.resourceMap.gold.maxValue) {
+//         if (LOG_AUTOMATION) console.log("Promoting kittens");
+//         game.village.promoteKittens();
+//     }
+// }, 10*1000);
+
+// jQuery.expr[':'].icontains = function(a, i, m) {
+//     return jQuery(a).text().toUpperCase()
+//             .indexOf(m[3].toUpperCase()) >= 0;
+// };
+
+let bld_goals = [
+    {
+        name: 'amphitheatre',
+        label: 'Amphitheatre',
+        limit: -1
+    },
+    {
+        name: 'academy',
+        label: 'Academy',
+        limit: -1
+    },
+    {
+        name: 'library',
+        label: 'Library',
+        limit: -1
+    },
+
+]
+
+let fulfillGoals = setInterval(() => {
+    for (let goal of bld_goals) {
+        if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
+            let btnMatches = $(`div.btn:not(.disabled)>.btnContent:contains('${goal.label}')`);
+            if (btnMatches.length > 0) {
+                if (LOG_AUTOMATION) console.log(`Building a ${goal.label}`);
+                btnMatches[0].click();
+            }
+
+        }
     }
-}, 10*1000);
+}, 30*1000);
