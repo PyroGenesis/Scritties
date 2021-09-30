@@ -64,13 +64,13 @@ let resource_to_resource_mapping = [
         otherResources: [
             { resource: 'iron', cost: 100 }
         ]
-    }, {
-        source: 'culture',
-        result: 'manuscript',
-        cost: 400,
-        otherResources: [
-            { resource: 'parchment', cost: 25 }
-        ]
+    // }, {
+    //     source: 'culture',
+    //     result: 'manuscript',
+    //     cost: 400,
+    //     otherResources: [
+    //         { resource: 'parchment', cost: 25 }
+    //     ]
     }
 ]
 
@@ -105,6 +105,20 @@ let useUpInResources = setInterval(() => {
         }
     }
 }, 10*1000);
+
+let LOG_CULTURE_AUTOMATION = true;
+let useUpCulture = setInterval(() => {
+    let culture = game.resPool.resourceMap.culture;
+    if(culture.value === culture.maxValue) {
+        for (let i = 0; i < game.diplomacyTab.racePanels.length; i++) {
+            let racePanel = game.diplomacyTab.racePanels[i];
+            if (racePanel.embassyButton.model.enabled) {
+                if (LOG_CULTURE_AUTOMATION) console.log("Building embassy for " + racePanel.race.title);
+                racePanel.embassyButton.buttonContent.click();
+            }
+        }
+    }
+}, 5*1000);
 
 // let useUpInBuildings = setInterval(() => {
 //     let resource_to_building_mapping = [
