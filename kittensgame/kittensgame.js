@@ -2,7 +2,7 @@ let LOG_AUTOMATION = true;
 
 let hunt = setInterval(() => {
     let mp = game.resPool.resourceMap.manpower;
-    if(mp.value === mp.maxValue) {
+    if (mp.value === mp.maxValue) {
         if (LOG_AUTOMATION) console.log("Going hunting");
         game.village.huntAll();
 
@@ -36,34 +36,34 @@ let starClick = setInterval(() => {
 }, 2000);
 
 
-    let resource_to_resource_mapping = [
-        {
-            source: 'catnip',
-            result: 'wood',
+let resource_to_resource_mapping = [
+    {
+        source: 'catnip',
+        result: 'wood',
         cost: 50,
         otherResources: []
-        }, {
-            source: 'wood',
-            result: 'beam',
+    }, {
+        source: 'wood',
+        result: 'beam',
         cost: 175,
         otherResources: []
-        }, {
-            source: 'minerals',
-            result: 'slab',
+    }, {
+        source: 'minerals',
+        result: 'slab',
         cost: 250,
         otherResources: []
-        }, {
-            source: 'iron',
-            result: 'plate',
+    }, {
+        source: 'iron',
+        result: 'plate',
         cost: 125,
-        otherResources: []   
-        }, {
-            source: 'coal',
-            result: 'steel',
+        otherResources: []
+    }, {
+        source: 'coal',
+        result: 'steel',
         cost: 100,
         otherResources: [
             { resource: 'iron', cost: 100 }
-        ]   
+        ]
     }, {
         source: 'culture',
         result: 'manuscript',
@@ -71,8 +71,8 @@ let starClick = setInterval(() => {
         otherResources: [
             { resource: 'parchment', cost: 25 }
         ]
-        }
-    ]
+    }
+]
 
 let useUpInResources = setInterval(() => {
     for (let res_to_res of resource_to_resource_mapping) {
