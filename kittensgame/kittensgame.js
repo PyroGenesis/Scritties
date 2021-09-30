@@ -2,7 +2,7 @@ let LOG_AUTOMATION = true;
 
 let hunt = setInterval(() => {
     let mp = game.resPool.resourceMap.manpower;
-    if (mp.value === mp.maxValue) {
+    if (mp.value >= mp.maxValue) {
         if (LOG_AUTOMATION) console.log("Going hunting");
         game.village.huntAll();
 
@@ -21,7 +21,7 @@ let hunt = setInterval(() => {
 
 let praiseTheSun = setInterval(() => {
     let faith = game.resPool.resourceMap.faith;
-    if(faith.value === faith.maxValue) {
+    if(faith.value >= faith.maxValue) {
         if (LOG_AUTOMATION) console.log("Praise the sun!");
         game.religion.praise();
     }
@@ -109,7 +109,7 @@ let useUpInResources = setInterval(() => {
 let LOG_CULTURE_AUTOMATION = true;
 let useUpCulture = setInterval(() => {
     let culture = game.resPool.resourceMap.culture;
-    if(culture.value === culture.maxValue) {
+    if(culture.value >= culture.maxValue) {
         for (let i = 0; i < game.diplomacyTab.racePanels.length; i++) {
             let racePanel = game.diplomacyTab.racePanels[i];
             if (racePanel.embassyButton.model.enabled) {
@@ -141,7 +141,7 @@ let useUpCulture = setInterval(() => {
 // }, 10*1000);
 
 // let useUpGold = setInterval(() => {
-//     if(game.resPool.resourceMap.gold.value === game.resPool.resourceMap.gold.maxValue) {
+//     if(game.resPool.resourceMap.gold.value >= game.resPool.resourceMap.gold.maxValue) {
 //         if (LOG_AUTOMATION) console.log("Promoting kittens");
 //         game.village.promoteKittens();
 //     }
