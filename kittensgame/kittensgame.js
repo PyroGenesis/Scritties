@@ -152,34 +152,80 @@ let useUpCulture = setInterval(() => {
 //             .indexOf(m[3].toUpperCase()) >= 0;
 // };
 
-let bld_goals = [
-    {
-        name: 'amphitheatre',
-        label: 'Amphitheatre',
-        limit: -1
-    },
-    {
-        name: 'academy',
-        label: 'Academy',
-        limit: -1
-    },
-    {
-        name: 'library',
-        label: 'Library',
-        limit: -1
-    },
+// TODO: get this list from better scripts
+let pasture = { name: 'pasture', label: 'Pasture' }
+let aqueduct = { name: 'aqueduct', label: 'Aqueduct' }
+let library = { name: 'library', label: 'Library' }
+let academy = { name: 'academy', label: 'Academy' }
+let observatory = { name: 'observatory', label: 'Observatory' }
+let barn = { name: 'barn', label: 'Barn' }
+let warehouse = { name: 'warehouse', label: 'Warehouse' }
+let mine = { name: 'mine', label: 'Mine' }
+let lumberMill = { name: 'lumberMill', label: 'Lumber Mill' }
+let smelter = { name: 'smelter', label: 'Smelter'}
+let amphitheatre = { name: 'amphitheatre', label: 'Amphitheatre' }
+let temple = { name: 'temple', label: 'Temple' }
+let workshop = { name: 'workshop', label: 'Workshop' }
+let tradepost = { name: 'tradepost', label: 'Tradepost' }
+let unicornPasture = { name: 'unicornPasture', label: 'Unic. Pasture' }
+let ziggurat = { name: 'ziggurat', label: 'Ziggurat' }
 
+// { ...amphitheatre, limit: -1 },
+// { ...academy, limit: -1 },
+// { ...library, limit: -1 }
+
+let bld_goals = [
+    [
+        { ...tradepost, limit: -1 },
+        { ...mine, limit: -1 },
+        { ...lumberMill, limit: -1 },
+        { ...workshop, limit: -1 },
+        { ...observatory, limit: -1 },
+        { ...academy, limit: -1 },
+        { ...library, limit: -1 },
+    ],
+    [
+        { ...temple, limit: -1 },
+        { ...smelter, limit: -1 },
+        { ...amphitheatre, limit: -1 },
+        { ...aqueduct, limit: -1 },
+    ],
+    [
+        { ...barn, limit: -1 },
+        { ...warehouse, limit: -1 }
+    ],
+    [
+        { ...unicornPasture, limit: -1 },
+    ]
 ]
 
-let fulfillGoals = setInterval(() => {
-    for (let goal of bld_goals) {
-        if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
-            let btnMatches = $(`div.btn:not(.disabled)>.btnContent:contains('${goal.label}')`);
-            if (btnMatches.length > 0) {
-                if (LOG_AUTOMATION) console.log(`Building a ${goal.label}`);
-                btnMatches[0].click();
-            }
+let LOG_BLD_AUTOMATION = false;
 
+let fulfillGoals = setInterval(() => {
+    for (let goal_group of bld_goals) {
+        let impossible = true;
+        for (let goal of goal_group) {
+            if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
+                let potential_btn = $(`.btnContent:contains('${goal.label}')`)
+                if (potential_btn.length === 0) continue;
+
+                let btn = potential_btn[0]
+                let btnImpossible = btn.firstElementChild.classList.contains('limited')
+                let btnDisabled = btn.parentElement.classList.contains('disabled')
+
+                if (!btnImpossible) impossible = false;
+                if (btnImpossible || btnDisabled) continue;
+
+                if (LOG_BLD_AUTOMATION) console.log(`Building a ${goal.label}`);
+                btn.click();
+            }
+        }
+        if (!impossible) {
+            if (LOG_BLD_AUTOMATION) console.log(
+                'Skipping build for remaining: ' +
+                goal_group.map((goal) => goal.name).join(', ')
+            );
+            break;
         }
     }
-}, 30*1000);
+}, 30 * 1000);
