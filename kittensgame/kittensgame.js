@@ -19,6 +19,14 @@ let hunt = setInterval(() => {
     }
 }, 5000);
 
+let praiseTheSun = setInterval(() => {
+    let faith = game.resPool.resourceMap.faith;
+    if(faith.value === faith.maxValue) {
+        if (LOG_AUTOMATION) console.log("Praise the sun!");
+        game.religion.praise();
+    }
+}, 5000);
+
 let starClick = setInterval(() => {
     let observeBtnQ = $("#observeBtn")
     if (observeBtnQ.length > 0) {
