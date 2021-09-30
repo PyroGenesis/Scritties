@@ -200,9 +200,11 @@ let bld_goals = [
 ]
 
 let LOG_BLD_AUTOMATION = false;
+let lastBldGrpReached = ""
 
 let fulfillGoals = setInterval(() => {
     for (let goal_group of bld_goals) {
+        lastBldGrpReached = ""
         let impossible = true;
         for (let goal of goal_group) {
             if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
@@ -213,7 +215,10 @@ let fulfillGoals = setInterval(() => {
                 let btnImpossible = btn.firstElementChild.classList.contains('limited')
                 let btnDisabled = btn.parentElement.classList.contains('disabled')
 
-                if (!btnImpossible) impossible = false;
+                if (!btnImpossible) {
+                    impossible = false;
+                    lastBldGrpReached += goal.label + ", ";
+                }
                 if (btnImpossible || btnDisabled) continue;
 
                 if (LOG_BLD_AUTOMATION) console.log(`Building a ${goal.label}`);
@@ -221,10 +226,7 @@ let fulfillGoals = setInterval(() => {
             }
         }
         if (!impossible) {
-            if (LOG_BLD_AUTOMATION) console.log(
-                'Skipping build for remaining: ' +
-                goal_group.map((goal) => goal.name).join(', ')
-            );
+            // lastBldGrpReached = goal_group.map((goal) => goal.label).join(', ');
             break;
         }
     }
