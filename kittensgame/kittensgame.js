@@ -241,6 +241,7 @@ let constructionAutoUpgrades = [
     {
         result: 'gear',
         ratio: 0.2,
+        limit: -1,
         needs: [
             { resource: 'steel', cost: 15 }
         ]
@@ -248,6 +249,7 @@ let constructionAutoUpgrades = [
     {
         result: 'scaffold',
         ratio: 0.5,
+        limit: -1,
         needs: [
             { resource: 'beam', cost: 50 }
         ]
@@ -255,6 +257,7 @@ let constructionAutoUpgrades = [
     {
         result: 'manuscript',
         ratio: 0.5,
+        limit: -1,
         needs: [
             { resource: 'parchment', cost: 25 }
         ]
@@ -262,13 +265,25 @@ let constructionAutoUpgrades = [
     {
         result: 'compedium',
         ratio: 0.5,
+        limit: -1,
         needs: [
             { resource: 'manuscript', cost: 50 }
         ]
     },
     {
+        result: 'ship',
+        ratio: 1,
+        limit: 245,
+        needs: [
+            { resource: 'starchart', cost: 25 },
+            { resource: 'plate', cost: 150 },
+            { resource: 'scaffold', cost: 100 }
+        ]
+    },
+    {
         result: 'megalith',
         ratio: 0.2,
+        limit: -1,
         needs: [
             { resource: 'beam', cost: 25 },
             { resource: 'slab', cost: 50 },
@@ -287,6 +302,10 @@ let upgradeResources = setInterval(() => {
 
         // No cheating!
         if (!resObj.unlocked || !needObjs.every(need => need.unlocked)) continue;
+        if (upgrade.limit > -1 && resObj.value > upgrade.limit) {
+            WATCH_UPGRADE.push(`${upgrade.result} limit reached (${upgrade.limit})`)
+            continue;
+        }
 
         let makeResult = true;
         for (let i = 0; i < upgrade.needs.length && makeResult; i++) {
