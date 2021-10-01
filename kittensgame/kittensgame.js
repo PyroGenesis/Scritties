@@ -231,3 +231,74 @@ let fulfillGoals = setInterval(() => {
         }
     }
 }, 30 * 1000);
+
+
+let constructionAutoUpgrades = [
+    {
+        result: 'gear',
+        ratio: 0.2,
+        needs: [
+            { resource: 'steel', cost: 15 }
+        ]
+    },
+    {
+        result: 'scaffold',
+        ratio: 0.5,
+        needs: [
+            { resource: 'beam', cost: 50 }
+        ]
+    },
+    {
+        result: 'manuscript',
+        ratio: 0.5,
+        needs: [
+            { resource: 'parchment', cost: 25 }
+        ]
+    },
+    {
+        result: 'compedium',
+        ratio: 0.5,
+        needs: [
+            { resource: 'manuscript', cost: 50 }
+        ]
+    },
+    {
+        result: 'megalith',
+        ratio: 0.2,
+        needs: [
+            { resource: 'beam', cost: 25 },
+            { resource: 'slab', cost: 50 },
+            { resource: 'plate', cost: 5 }
+        ]
+    }
+]
+
+let LOG_UPGRADE_AUTOMATION = true;
+let WATCH_UPGRADE = [];
+let upgradeResources = setInterval(() => {
+    WATCH_UPGRADE = [];
+    for (let upgrade of constructionAutoUpgrades) {
+        let needObjs = upgrade.needs.map(source => game.resPool.get(source.resource));
+        let resObj = game.resPool.get(upgrade.result)
+
+        // No cheating!
+        if (!resObj.unlocked || !needObjs.every(need => need.unlocked)) continue;
+
+        let makeResult = true;
+        for (let i = 0; i < upgrade.needs.length && makeResult; i++) {
+            let totalNeedValue = needObjs[i].value + resObj.value * upgrade.needs[i].cost
+            let optimalResultCount = totalNeedValue * upgrade.ratio / upgrade.needs[i].cost
+            makeResult = resObj.value < Math.trunc(optimalResultCount);
+
+            if (!makeResult) WATCH_UPGRADE.push(`${upgrade.result} failed (${upgrade.needs[i].resource})`);
+        }
+
+        if (makeResult) {
+            if (LOG_UPGRADE_AUTOMATION) {
+                let log_text = `Converting ${upgrade.needs.map(need => `${need.cost} ${need.resource}`).join(', ')} to ${upgrade.result}`
+                console.log(log_text);
+            }
+            game.craft(upgrade.result, 1);
+        }
+    }
+}, 10*1000);
