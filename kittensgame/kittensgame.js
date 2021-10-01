@@ -1,4 +1,4 @@
-let LOG_AUTOMATION = true;
+let LOG_AUTOMATION = false;
 
 let hunt = setInterval(() => {
     let mp = game.resPool.resourceMap.manpower;
@@ -199,7 +199,7 @@ let bld_goals = [
     ]
 ]
 
-let LOG_BLD_AUTOMATION = false;
+let LOG_BLD_AUTOMATION = true;
 let lastBldGrpReached = ""
 
 let fulfillGoals = setInterval(() => {
