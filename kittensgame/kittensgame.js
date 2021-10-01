@@ -160,6 +160,7 @@ let academy = { name: 'academy', label: 'Academy' }
 let observatory = { name: 'observatory', label: 'Observatory' }
 let barn = { name: 'barn', label: 'Barn' }
 let warehouse = { name: 'warehouse', label: 'Warehouse' }
+let harbor = { name: 'harbor', label: 'Harbour' }
 let mine = { name: 'mine', label: 'Mine' }
 let lumberMill = { name: 'lumberMill', label: 'Lumber Mill' }
 let smelter = { name: 'smelter', label: 'Smelter'}
@@ -180,11 +181,11 @@ let bld_goals = [
         { ...mine, limit: -1 },
         { ...lumberMill, limit: -1 },
         { ...workshop, limit: -1 },
-        { ...observatory, limit: -1 },
         { ...academy, limit: -1 },
         { ...library, limit: -1 },
     ],
     [
+        { ...observatory, limit: -1 },
         { ...temple, limit: -1 },
         { ...smelter, limit: -1 },
         { ...amphitheatre, limit: -1 },
@@ -192,7 +193,8 @@ let bld_goals = [
     ],
     [
         { ...barn, limit: -1 },
-        { ...warehouse, limit: -1 }
+        { ...warehouse, limit: -1 },
+        { ...harbor, limit: -1 },
     ],
     [
         { ...unicornPasture, limit: -1 },
