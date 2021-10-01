@@ -110,6 +110,7 @@ let LOG_CULTURE_AUTOMATION = true;
 let useUpCulture = setInterval(() => {
     let culture = game.resPool.resourceMap.culture;
     if(culture.value >= culture.maxValue) {
+        $(`a.Trade`)[0].click()
         for (let i = 0; i < game.diplomacyTab.racePanels.length; i++) {
             let racePanel = game.diplomacyTab.racePanels[i];
             if (racePanel.embassyButton.model.enabled) {
@@ -204,7 +205,8 @@ let bld_goals = [
 let LOG_BLD_AUTOMATION = true;
 let lastBldGrpReached = ""
 
-let fulfillGoals = setInterval(() => {
+let fulfillGoals = setInterval(() => {    
+    $(`a.Bonfire`)[0].click()
     for (let goal_group of bld_goals) {
         lastBldGrpReached = ""
         let impossible = true;
