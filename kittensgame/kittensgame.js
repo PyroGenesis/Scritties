@@ -110,10 +110,10 @@ let LOG_CULTURE_AUTOMATION = true;
 let useUpCulture = setInterval(() => {
     let culture = game.resPool.resourceMap.culture;
     if(culture.value >= culture.maxValue) {
-        $(`a.Trade`)[0].click()
         for (let i = 0; i < game.diplomacyTab.racePanels.length; i++) {
             let racePanel = game.diplomacyTab.racePanels[i];
             if (racePanel.embassyButton.model.enabled) {
+                $(`a.Trade`)[0].click()
                 if (LOG_CULTURE_AUTOMATION) console.log("Building embassy for " + racePanel.race.title);
                 racePanel.embassyButton.buttonContent.click();
             }
@@ -312,6 +312,7 @@ let upgradeResources = setInterval(() => {
             let totalNeedValue = needObjs[i].value + resObj.value * upgrade.needs[i].cost
             let optimalResultCount = totalNeedValue * upgrade.ratio / upgrade.needs[i].cost
             makeResult = resObj.value < Math.trunc(optimalResultCount);
+            makeResult = makeResult && needObjs[i].value >= upgrade.needs[i].cost
 
             if (!makeResult) WATCH_UPGRADE.push(`${upgrade.result} failed (${upgrade.needs[i].resource})`);
         }
