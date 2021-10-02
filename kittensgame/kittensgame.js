@@ -177,11 +177,13 @@ let ziggurat = { name: 'ziggurat', label: 'Ziggurat' }
 // { ...library, limit: -1 }
 
 let bld_goals = [
+    [        
+        { ...workshop, limit: -1 }
+    ],
     [
         { ...tradepost, limit: -1 },
         { ...mine, limit: -1 },
         { ...lumberMill, limit: -1 },
-        { ...workshop, limit: -1 },
         { ...academy, limit: -1 },
         { ...library, limit: -1 },
     ],
