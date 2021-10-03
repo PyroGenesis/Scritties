@@ -36,6 +36,23 @@ let starClick = setInterval(() => {
     }
 }, 2000);
 
+let LOG_CULTURE_AUTOMATION = true;
+let useUpCulture = setInterval(() => {
+    let culture = game.resPool.resourceMap.culture;
+    if(culture.value >= culture.maxValue) {
+        if (game.diplomacyTab.racePanels.length === 0) {
+            $(`a.Trade`)[0].click();
+        }
+        for (let i = 0; i < game.diplomacyTab.racePanels.length; i++) {
+            let racePanel = game.diplomacyTab.racePanels[i];
+            racePanel.update();
+            if (racePanel.embassyButton.model.enabled) {
+                if (LOG_CULTURE_AUTOMATION) console.log("Building embassy for " + racePanel.race.title);
+                racePanel.embassyButton.buttonContent.click();
+            }
+        }
+    }
+}, 5*1000);
 
 let resource_to_resource_mapping = [
     {
@@ -106,21 +123,6 @@ let useUpInResources = setInterval(() => {
         }
     }
 }, 10*1000);
-
-let LOG_CULTURE_AUTOMATION = true;
-let useUpCulture = setInterval(() => {
-    let culture = game.resPool.resourceMap.culture;
-    if(culture.value >= culture.maxValue) {
-        for (let i = 0; i < game.diplomacyTab.racePanels.length; i++) {
-            let racePanel = game.diplomacyTab.racePanels[i];
-            if (racePanel.embassyButton.model.enabled) {
-                $(`a.Trade`)[0].click()
-                if (LOG_CULTURE_AUTOMATION) console.log("Building embassy for " + racePanel.race.title);
-                racePanel.embassyButton.buttonContent.click();
-            }
-        }
-    }
-}, 5*1000);
 
 // let useUpInBuildings = setInterval(() => {
 //     let resource_to_building_mapping = [
