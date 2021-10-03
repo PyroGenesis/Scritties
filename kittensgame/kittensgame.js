@@ -219,24 +219,25 @@ let LOG_BLD_AUTOMATION = true;
 let lastBldGrpReached = ""
 
 let fulfillGoals = () => {    
-    $(`a.Bonfire`)[0].click()
+    game.bldTab.update();
     for (let goal_group of bld_goals) {
+        // console.log('gg', goal_group.map(g => g.label).join(', '));
         lastBldGrpReached = ""
         let impossible = true;
         for (let goal of goal_group) {
             if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
-                let potential_btn = $(`.btnContent:contains('${goal.label}')`)
-                if (potential_btn.length === 0) continue;
+                let bld = game.bldTab.children.find((node) => node.opts.building === goal.name);
+                if (!bld) continue;
 
-                let btn = potential_btn[0]
-                let btnImpossible = btn.firstElementChild.classList.contains('limited')
-                let btnDisabled = btn.parentElement.classList.contains('disabled')
+                impossible = bld.model.resourceIsLimited;
+                let available = bld.model.enabled;
+                let btn = bld.buttonContent;
 
-                if (!btnImpossible) {
+                if (!impossible) {
                     impossible = false;
                     lastBldGrpReached += goal.label + ", ";
                 }
-                if (btnImpossible || btnDisabled) continue;
+                if (impossible || !available) continue;
 
                 if (LOG_BLD_AUTOMATION) console.log(`Building a ${goal.label}`);
                 btn.click();
