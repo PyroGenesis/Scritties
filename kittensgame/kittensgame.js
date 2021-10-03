@@ -284,6 +284,14 @@ let constructionAutoUpgrades = [
         ]
     },
     {
+        result: 'blueprint',
+        ratio: 0.5,
+        limit: -1,
+        needs: [
+            { resource: 'compedium', cost: 25 }
+        ]
+    },
+    {
         result: 'ship',
         ratio: 1,
         limit: 245,
