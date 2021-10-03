@@ -1,9 +1,10 @@
 let LOG_AUTOMATION = false;
 
+let LOG_HUNT  = true;
 let hunt = setInterval(() => {
     let mp = game.resPool.resourceMap.manpower;
     if (mp.value >= mp.maxValue) {
-        if (LOG_AUTOMATION) console.log("Going hunting");
+        if (LOG_HUNT) console.log("Going hunting");
         game.village.huntAll();
 
         if (gamePage.workshop.getCraft('parchment').unlocked) {
@@ -12,7 +13,7 @@ let hunt = setInterval(() => {
             let fur_available_for_parchments = game.resPool.resourceMap.furs.value + fur_used_while_filling_MP
             let parchs_to_craft = Math.trunc(fur_available_for_parchments / 175)
 
-            if (LOG_AUTOMATION) console.log(`Converting ${parchs_to_craft * 175} furs to ${parchs_to_craft} parchments`);
+            if (LOG_HUNT) console.log(`Converting ${parchs_to_craft * 175} furs to ${parchs_to_craft} parchments`);
             game.craft('parchment', parchs_to_craft);
         }
 
