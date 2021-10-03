@@ -175,14 +175,22 @@ let workshop = { name: 'workshop', label: 'Workshop' }
 let tradepost = { name: 'tradepost', label: 'Tradepost' }
 let unicornPasture = { name: 'unicornPasture', label: 'Unic. Pasture' }
 let ziggurat = { name: 'ziggurat', label: 'Ziggurat' }
+let hut = { name: 'hut', label: 'Hut' }
+let logHouse = { name: 'logHouse', label: 'Log House' }
+let mansion = { name: 'mansion', label: 'Mansion' }
 
 // { ...amphitheatre, limit: -1 },
 // { ...academy, limit: -1 },
 // { ...library, limit: -1 }
 
 let bld_goals = [
+    // [        
+    //     { ...smelter, limit: -1 },
+    // ],
     [        
-        { ...workshop, limit: -1 }
+        { ...workshop, limit: -1 },
+        { ...hut, limit: -1 },
+        { ...logHouse, limit: -1 }
     ],
     [
         { ...tradepost, limit: -1 },
@@ -194,7 +202,6 @@ let bld_goals = [
     [
         { ...observatory, limit: -1 },
         { ...temple, limit: -1 },
-        { ...smelter, limit: -1 },
         { ...amphitheatre, limit: -1 },
         { ...aqueduct, limit: -1 },
     ],
