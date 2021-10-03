@@ -92,7 +92,7 @@ let resource_to_resource_mapping = [
     }
 ]
 
-let useUpInResources = setInterval(() => {
+let useUpInResources = () => {
     for (let res_to_res of resource_to_resource_mapping) {
         let src_obj = game.resPool.get(res_to_res.source)
         if (!src_obj.unlocked || !game.resPool.get(res_to_res.result).unlocked) continue;
@@ -123,7 +123,7 @@ let useUpInResources = setInterval(() => {
             game.craft(res_to_res.result, craft_num);
         }
     }
-}, 10*1000);
+}
 
 // let useUpInBuildings = setInterval(() => {
 //     let resource_to_building_mapping = [
@@ -218,7 +218,7 @@ let bld_goals = [
 let LOG_BLD_AUTOMATION = true;
 let lastBldGrpReached = ""
 
-let fulfillGoals = setInterval(() => {    
+let fulfillGoals = () => {    
     $(`a.Bonfire`)[0].click()
     for (let goal_group of bld_goals) {
         lastBldGrpReached = ""
@@ -247,6 +247,11 @@ let fulfillGoals = setInterval(() => {
             break;
         }
     }
+}
+
+let bldAndRes = setInterval(() => {
+    fulfillGoals();
+    useUpInResources();
 }, 30 * 1000);
 
 
