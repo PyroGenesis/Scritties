@@ -97,8 +97,9 @@ let useUpInResources = setInterval(() => {
         let src_obj = game.resPool.get(res_to_res.source)
         if (!src_obj.unlocked || !game.resPool.get(res_to_res.result).unlocked) continue;
 
-        if (src_obj.value / src_obj.maxValue > 0.98) {
-            let craft_num = Math.max(1, Math.trunc((src_obj.maxValue * 0.02) / res_to_res.cost))
+        // if (src_obj.value / src_obj.maxValue > 0.98) {
+        if (src_obj.value >= src_obj.maxValue) {
+            let craft_num = Math.max(1, Math.trunc((src_obj.maxValue * 0.05) / res_to_res.cost))
             let craft_num_by_other_resources = Infinity;
             for (let other_resource of res_to_res.otherResources) {
                 craft_num_by_other_resources = Math.min(
@@ -113,7 +114,7 @@ let useUpInResources = setInterval(() => {
                 let log_text = `Converting ${craft_num * res_to_res.cost} ${res_to_res.source}`
                 if (res_to_res.otherResources.length > 0) {
                     log_text += ' (+ ';
-                    log_text += res_to_res.otherResources.map((other_resource) => `${other_resource.cost} ${other_resource.resource}`).join(', ');
+                    log_text += res_to_res.otherResources.map((other_resource) => `${craft_num * other_resource.cost} ${other_resource.resource}`).join(', ');
                     log_text += ')'
                 }
                 log_text += ` to ${craft_num} ${res_to_res.result}`
