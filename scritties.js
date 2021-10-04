@@ -229,12 +229,11 @@ let fulfillGoals = () => {
                 let bld = game.bldTab.children.find((node) => node.opts.building === goal.name);
                 if (!bld) continue;
 
-                impossible = bld.model.resourceIsLimited;
+                if (impossible) impossible = bld.model.resourceIsLimited;
                 let available = bld.model.enabled;
                 let btn = bld.buttonContent;
 
                 if (!impossible) {
-                    impossible = false;
                     lastBldGrpReached += goal.label + ", ";
                 }
                 if (impossible || !available) continue;
