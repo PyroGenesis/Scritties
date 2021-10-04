@@ -145,12 +145,17 @@ let useUpInResources = () => {
 //     }
 // }, 10*1000);
 
-// let useUpGold = setInterval(() => {
-//     if(game.resPool.resourceMap.gold.value >= game.resPool.resourceMap.gold.maxValue) {
-//         if (LOG_AUTOMATION) console.log("Promoting kittens");
-//         game.village.promoteKittens();
-//     }
-// }, 10*1000);
+let LOG_GOLD = true;
+let useUpGold = setInterval(() => {
+    if(game.resPool.resourceMap.gold.value >= game.resPool.resourceMap.gold.maxValue) {
+        if (LOG_GOLD) console.log("Promoting kitten leader");
+        game.villageTab.censusPanel.census.promoteLeaderHref.click();
+        if(game.resPool.resourceMap.gold.value >= game.resPool.resourceMap.gold.maxValue) {
+            if (LOG_GOLD) console.log("Promoting all kittens instead");
+            game.village.promoteKittens();
+        }
+    }
+}, 30*1000);
 
 // jQuery.expr[':'].icontains = function(a, i, m) {
 //     return jQuery(a).text().toUpperCase()
