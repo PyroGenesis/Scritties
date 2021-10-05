@@ -303,8 +303,8 @@ let constructionAutoUpgrades = [
     },
     {
         result: 'ship',
-        ratio: 1,
-        limit: 245,
+        ratio: 0.5,
+        limit: -1,
         needs: [
             { resource: 'starchart', cost: 25 },
             { resource: 'plate', cost: 150 },
