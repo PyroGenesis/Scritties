@@ -1,6 +1,6 @@
 let LOG_AUTOMATION = false;
 
-let LOG_HUNT  = true;
+let LOG_HUNT  = false;
 let hunt = setInterval(() => {
     let mp = game.resPool.resourceMap.manpower;
     if (mp.value >= mp.maxValue) {
@@ -323,7 +323,7 @@ let constructionAutoUpgrades = [
     }
 ]
 
-let LOG_UPGRADE_AUTOMATION = true;
+let LOG_UPGRADE_AUTOMATION = false;
 let WATCH_UPGRADE = [];
 let upgradeResources = setInterval(() => {
     WATCH_UPGRADE = [];
