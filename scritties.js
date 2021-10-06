@@ -82,13 +82,13 @@ let resource_to_resource_mapping = [
         otherResources: [
             { resource: 'iron', cost: 100 }
         ]
-    // }, {
-    //     source: 'culture',
-    //     result: 'manuscript',
-    //     cost: 400,
-    //     otherResources: [
-    //         { resource: 'parchment', cost: 25 }
-    //     ]
+    }, {
+        source: 'titanium',
+        result: 'alloy',
+        cost: 10,
+        otherResources: [
+            { resource: 'steel', cost: 75 }
+        ]
     }
 ]
 
