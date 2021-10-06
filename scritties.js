@@ -151,8 +151,8 @@ let useUpGold = setInterval(() => {
         if (LOG_GOLD) console.log("Promoting kitten leader");
         game.villageTab.censusPanel.census.promoteLeaderHref.click();
         if(game.resPool.resourceMap.gold.value >= game.resPool.resourceMap.gold.maxValue) {
-            if (LOG_GOLD) console.log("Promoting all kittens instead");
-            game.village.promoteKittens();
+            if (LOG_GOLD) console.log("Trading with zebras instead");
+            game.diplomacy.tradeAll(game.diplomacy.get("zebras"));
         }
     }
 }, 30*1000);
