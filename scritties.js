@@ -248,7 +248,14 @@ let bld_goals = [
     ]
 ]
 
-let LOG_BLD_AUTOMATION = true;
+let x = setInterval(() => {
+    if (game.village.maxKittens >= 50) {
+        console.log("No more kittens!")
+        bld_goals.splice(1, 1)
+        clearInterval(x);
+    }
+}, 10 * 1000)
+
 let lastBldGrpReached = ""
 
 let fulfillGoals = () => {    
