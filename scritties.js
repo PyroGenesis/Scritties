@@ -283,7 +283,7 @@ let fulfillGoals = () => {
 let bldAndRes = setInterval(() => {
     fulfillGoals();
     useUpInResources();
-}, 30 * 1000);
+}, 10 * 1000);
 
 
 let constructionAutoUpgrades = [
