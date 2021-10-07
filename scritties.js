@@ -222,6 +222,7 @@ let bld_goals = [
         { ...workshop, limit: -1 },
         { ...lumberMill, limit: -1 },
         { ...mine, limit: -1 },
+        { ...smelter, limit: -1 },
     ],
     [        
         { ...hut, limit: -1 },
@@ -237,7 +238,6 @@ let bld_goals = [
         { ...observatory, limit: -1 },
         { ...temple, limit: -1 },
         { ...aqueduct, limit: -1 },
-        // { ...smelter, limit: -1 },
     ],
     [
         { ...barn, limit: -1 },
@@ -249,13 +249,13 @@ let bld_goals = [
     ]
 ]
 
-let x = setInterval(() => {
-    if (game.village.maxKittens >= 50) {
+let kittenLimiter = setInterval(() => {
+    if (game.village.maxKittens >= 73) {
         console.log("No more kittens!")
         bld_goals.splice(1, 1)
-        clearInterval(x);
+        clearInterval(kittenLimiter);
     }
-}, 10 * 1000)
+}, 10 * 1000);
 
 let lastBldGrpReached = ""
 
@@ -293,7 +293,7 @@ let fulfillGoals = () => {
 let bldAndRes = setInterval(() => {
     fulfillGoals();
     useUpInResources();
-}, 10 * 1000);
+}, 1 * 1000);
 
 
 let constructionAutoUpgrades = [
