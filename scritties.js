@@ -302,7 +302,7 @@ let constructionAutoUpgrades = [
         ratio: 0.2,
         limit: -1,
         needs: [
-            { resource: 'steel', cost: 15 }
+            { resource: 'steel', cost: 15, limited: true }
         ]
     },
     {
@@ -310,8 +310,8 @@ let constructionAutoUpgrades = [
         ratio: 0.2,
         limit: -1,
         needs: [
-            { resource: 'slab', cost: 2500 },
-            { resource: 'steel', cost: 25 }
+            { resource: 'slab', cost: 2500, limited: true },
+            { resource: 'steel', cost: 25, limited: true }
         ]
     },
     {
@@ -319,7 +319,7 @@ let constructionAutoUpgrades = [
         ratio: 0.5,
         limit: -1,
         needs: [
-            { resource: 'beam', cost: 50 }
+            { resource: 'beam', cost: 50, limited: true }
         ]
     },
     {
@@ -327,7 +327,8 @@ let constructionAutoUpgrades = [
         ratio: 0.5,
         limit: -1,
         needs: [
-            { resource: 'parchment', cost: 25 }
+            { resource: 'parchment', cost: game.science.getPolicy('tradition').researched ? 20 : 25 , limited: true },
+            { resource: 'culture', cost: game.science.getPolicy('tradition').researched ? 300 : 400 , limited: false }
         ]
     },
     {
@@ -335,7 +336,8 @@ let constructionAutoUpgrades = [
         ratio: 0.5,
         limit: -1,
         needs: [
-            { resource: 'manuscript', cost: 50 }
+            { resource: 'manuscript', cost: 50, limited: true },
+            { resource: 'science', cost: 10000, limited: false }
         ]
     },
     {
@@ -343,7 +345,8 @@ let constructionAutoUpgrades = [
         ratio: 0.5,
         limit: -1,
         needs: [
-            { resource: 'compedium', cost: 25 }
+            { resource: 'compedium', cost: 25, limited: true },
+            { resource: 'science', cost: 25000, limited: false }
         ]
     },
     {
@@ -351,9 +354,9 @@ let constructionAutoUpgrades = [
         ratio: 0.5,
         limit: -1,
         needs: [
-            { resource: 'starchart', cost: 25 },
-            { resource: 'plate', cost: 150 },
-            { resource: 'scaffold', cost: 100 }
+            { resource: 'starchart', cost: 25, limited: true },
+            { resource: 'plate', cost: 150, limited: true },
+            { resource: 'scaffold', cost: 100, limited: true }
         ]
     },
     {
@@ -361,9 +364,9 @@ let constructionAutoUpgrades = [
         ratio: 0.2,
         limit: -1,
         needs: [
-            { resource: 'beam', cost: 25 },
-            { resource: 'slab', cost: 50 },
-            { resource: 'plate', cost: 5 }
+            { resource: 'beam', cost: 25, limited: true },
+            { resource: 'slab', cost: 50, limited: true },
+            { resource: 'plate', cost: 5, limited: true }
         ]
     }
 ]
@@ -377,17 +380,29 @@ let upgradeResources = setInterval(() => {
 
         // No cheating!
         if (!resObj.unlocked || !needObjs.every(need => need.unlocked)) continue;
+
+        // Check if limit exceeded
         if (upgrade.limit > -1 && resObj.value > upgrade.limit) {
             WATCH_UPGRADE.push(`${upgrade.result} limit reached (${upgrade.limit})`)
             continue;
         }
 
+        // Check all resources are present for atleast 1 conversion
+        let notEnoughRes = needObjs.find((need, i) => need.value < upgrade.needs[i].cost);
+        if (notEnoughRes) {
+            WATCH_UPGRADE.push(`${upgrade.result} failed (${notEnoughRes.name})`);
+            continue;
+        }
+
         let makeResult = true;
         for (let i = 0; i < upgrade.needs.length && makeResult; i++) {
+            // If resource is not limited, no need for ratio checking
+            if (!upgrade.needs[i].limited) continue;
+
             let totalNeedValue = needObjs[i].value + resObj.value * upgrade.needs[i].cost
             let optimalResultCount = totalNeedValue * upgrade.ratio / upgrade.needs[i].cost
             makeResult = resObj.value < Math.trunc(optimalResultCount);
-            makeResult = makeResult && needObjs[i].value >= upgrade.needs[i].cost
+            // makeResult = makeResult && needObjs[i].value >= upgrade.needs[i].cost
 
             if (!makeResult) WATCH_UPGRADE.push(`${upgrade.result} failed (${upgrade.needs[i].resource})`);
         }
