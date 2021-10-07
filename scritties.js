@@ -3,6 +3,8 @@ let LOG_AUTOMATION = false;
 let LOG_HUNT  = false;
 let hunt = setInterval(() => {
     let mp = game.resPool.resourceMap.manpower;
+    if (!mp.unlocked) return;   // No cheating
+
     if (mp.value >= mp.maxValue) {
         if (LOG_HUNT) console.log("Going hunting");
         game.village.huntAll();
@@ -22,6 +24,8 @@ let hunt = setInterval(() => {
 
 let praiseTheSun = setInterval(() => {
     let faith = game.resPool.resourceMap.faith;
+    if (!faith.unlocked) return;   // No cheating
+
     if(faith.value >= faith.maxValue) {
         if (LOG_AUTOMATION) console.log("Praise the sun!");
         game.religion.praise();
@@ -39,6 +43,8 @@ let starClick = setInterval(() => {
 let LOG_CULTURE_AUTOMATION = true;
 let useUpCulture = setInterval(() => {
     let culture = game.resPool.resourceMap.culture;
+    if(!culture.unlocked || !game.diplomacy.hasUnlockedRaces()) return;   // No cheating
+
     if(culture.value >= culture.maxValue) {
         if (game.diplomacyTab.racePanels.length === 0) {
             $(`a.Trade`)[0].click();
@@ -147,6 +153,7 @@ let useUpInResources = () => {
 
 let LOG_GOLD = true;
 let useUpGold = setInterval(() => {
+    // TODO: add no cheating
     if(game.resPool.resourceMap.gold.value >= game.resPool.resourceMap.gold.maxValue) {
         if (LOG_GOLD) console.log("Promoting kitten leader");
         game.villageTab.censusPanel.census.promoteLeaderHref.click();
@@ -192,31 +199,31 @@ let mansion = { name: 'mansion', label: 'Mansion' }
 let bld_goals = [
     [        
         { ...workshop, limit: -1 },
-        { ...hut, limit: -1 },
-        { ...logHouse, limit: -1 }
+        // { ...hut, limit: -1 },
+        // { ...logHouse, limit: -1 }
     ],
-    [
-        { ...tradepost, limit: -1 },
-        { ...mine, limit: -1 },
-        { ...lumberMill, limit: -1 },
-        { ...academy, limit: -1 },
-        { ...library, limit: -1 },
-        { ...amphitheatre, limit: -1 },
-    ],
-    [
-        { ...observatory, limit: -1 },
-        { ...temple, limit: -1 },
-        { ...aqueduct, limit: -1 },
-        { ...smelter, limit: -1 },
-    ],
-    [
-        { ...barn, limit: -1 },
-        { ...warehouse, limit: -1 },
-        { ...harbor, limit: -1 },
-    ],
-    [
-        { ...unicornPasture, limit: -1 },
-    ]
+    // [
+    //     { ...tradepost, limit: -1 },
+    //     { ...mine, limit: -1 },
+    //     { ...lumberMill, limit: -1 },
+    //     { ...academy, limit: -1 },
+    //     { ...library, limit: -1 },
+    //     { ...amphitheatre, limit: -1 },
+    // ],
+    // [
+    //     { ...observatory, limit: -1 },
+    //     // { ...temple, limit: -1 },
+    //     { ...aqueduct, limit: -1 },
+    //     { ...smelter, limit: -1 },
+    // ],
+    // [
+    //     { ...barn, limit: -1 },
+    //     { ...warehouse, limit: -1 },
+    //     { ...harbor, limit: -1 },
+    // ],
+    // [
+    //     { ...unicornPasture, limit: -1 },
+    // ]
 ]
 
 let LOG_BLD_AUTOMATION = true;
@@ -231,13 +238,13 @@ let fulfillGoals = () => {
         for (let goal of goal_group) {
             if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
                 let bld = game.bldTab.children.find((node) => node.opts.building === goal.name);
-                if (!bld) continue;
+                if (!bld) continue; // No cheating
 
                 if (impossible) impossible = bld.model.resourceIsLimited;
                 let available = bld.model.enabled;
                 let btn = bld.buttonContent;
 
-                if (!impossible) {
+                if (!available && !bld.model.resourceIsLimited) {
                     lastBldGrpReached += goal.label + ", ";
                 }
                 if (impossible || !available) continue;
@@ -266,6 +273,15 @@ let constructionAutoUpgrades = [
         limit: -1,
         needs: [
             { resource: 'steel', cost: 15 }
+        ]
+    },
+    {
+        result: 'concrate',
+        ratio: 0.2,
+        limit: -1,
+        needs: [
+            { resource: 'slab', cost: 2500 },
+            { resource: 'steel', cost: 25 }
         ]
     },
     {
@@ -359,7 +375,7 @@ let upgradeResources = setInterval(() => {
 
 
 // time between two cloud saves (do NOT use a very small value)
-let secondsBetweenSaves = 10 * 60;    // 10 minutes
+let secondsBetweenSaves = 20 * 60;    // 10 minutes
 
 // Syncs the save data with the server
 // Similar to game.server.syncData(), except it also accepts a fn to execute after syncing
