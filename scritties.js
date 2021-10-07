@@ -1,12 +1,29 @@
-let LOG_AUTOMATION = false;
+let SCRITTIES_LOG = {
+    observe: true,  // Observing astronomical events
+    catpower: {
+        hunting: true,
+        parchment: true
+    },
+    faith: true,    // Praise the sun!
+    culture: true,  // Embassy
+    gold: {
+        promoteLeader: true,
+        tradeZebras: true,
+    },
+    crafting: {
+        capPrevention: true,
+        upgrade: true
+    },
+    build: true,
+    cloudSave: true
+}
 
-let LOG_HUNT  = false;
 let hunt = setInterval(() => {
     let mp = game.resPool.resourceMap.manpower;
     if (!mp.unlocked) return;   // No cheating
 
     if (mp.value >= mp.maxValue) {
-        if (LOG_HUNT) console.log("Going hunting");
+        if (SCRITTIES_LOG.catpower.hunting) console.log("Going hunting");
         game.village.huntAll();
 
         if (gamePage.workshop.getCraft('parchment').unlocked) {
@@ -15,7 +32,7 @@ let hunt = setInterval(() => {
             let fur_available_for_parchments = game.resPool.resourceMap.furs.value + fur_used_while_filling_MP
             let parchs_to_craft = Math.trunc(fur_available_for_parchments / 175)
 
-            if (LOG_HUNT) console.log(`Converting ${parchs_to_craft * 175} furs to ${parchs_to_craft} parchments`);
+            if (SCRITTIES_LOG.catpower.parchment) console.log(`Converting ${parchs_to_craft * 175} furs to ${parchs_to_craft} parchments`);
             game.craft('parchment', parchs_to_craft);
         }
 
@@ -27,7 +44,7 @@ let praiseTheSun = setInterval(() => {
     if (!faith.unlocked) return;   // No cheating
 
     if(faith.value >= faith.maxValue) {
-        if (LOG_AUTOMATION) console.log("Praise the sun!");
+        if (SCRITTIES_LOG.faith) console.log("Praise the sun!");
         game.religion.praise();
     }
 }, 5000);
@@ -35,12 +52,11 @@ let praiseTheSun = setInterval(() => {
 let starClick = setInterval(() => {
     let observeBtnQ = $("#observeBtn")
     if (observeBtnQ.length > 0) {
-        if (LOG_AUTOMATION) console.log("Observing the sky!");
+        if (SCRITTIES_LOG.observe) console.log("Observing the sky!");
         observeBtnQ[0].click();
     }
 }, 2000);
 
-let LOG_CULTURE_AUTOMATION = true;
 let useUpCulture = setInterval(() => {
     let culture = game.resPool.resourceMap.culture;
     if(!culture.unlocked || !game.diplomacy.hasUnlockedRaces()) return;   // No cheating
@@ -53,7 +69,7 @@ let useUpCulture = setInterval(() => {
             let racePanel = game.diplomacyTab.racePanels[i];
             racePanel.update();
             if (racePanel.embassyButton.model.enabled) {
-                if (LOG_CULTURE_AUTOMATION) console.log("Building embassy for " + racePanel.race.title);
+                if (SCRITTIES_LOG.culture) console.log("Building embassy for " + racePanel.race.title);
                 racePanel.embassyButton.buttonContent.click();
             }
         }
@@ -116,7 +132,7 @@ let useUpInResources = () => {
             craft_num = Math.min(craft_num, craft_num_by_other_resources);
             if (craft_num === 0) continue;
 
-            if (LOG_AUTOMATION) {
+            if (SCRITTIES_LOG.crafting.capPrevention) {
                 let log_text = `Converting ${craft_num * res_to_res.cost} ${res_to_res.source}`
                 if (res_to_res.otherResources.length > 0) {
                     log_text += ' (+ ';
@@ -151,16 +167,20 @@ let useUpInResources = () => {
 //     }
 // }, 10*1000);
 
-let LOG_GOLD = true;
 let useUpGold = setInterval(() => {
-    // TODO: add no cheating
-    if(game.resPool.resourceMap.gold.value >= game.resPool.resourceMap.gold.maxValue) {
-        if (LOG_GOLD) console.log("Promoting kitten leader");
+    let gold = game.resPool.resourceMap.gold;
+    if (!gold.unlocked) return;     // No cheating
+
+    if(gold.value >= gold.maxValue && this.game.science.get('civil').researched) {
+        if (SCRITTIES_LOG.gold.promoteLeader) console.log("Promoting kitten leader");
         game.villageTab.censusPanel.census.promoteLeaderHref.click();
-        if(game.resPool.resourceMap.gold.value >= game.resPool.resourceMap.gold.maxValue) {
-            if (LOG_GOLD) console.log("Trading with zebras instead");
-            game.diplomacy.tradeAll(game.diplomacy.get("zebras"));
-        }
+        gold = game.resPool.resourceMap.gold;
+    }
+
+    if(gold.value >= gold.maxValue && game.diplomacy.get('zebras').unlocked) {
+        if (SCRITTIES_LOG.gold.tradeZebras) console.log("Trading with zebras instead");
+        game.diplomacy.tradeAll(game.diplomacy.get("zebras"));
+        gold = game.resPool.resourceMap.gold;
     }
 }, 30*1000);
 
@@ -249,7 +269,7 @@ let fulfillGoals = () => {
                 }
                 if (impossible || !available) continue;
 
-                if (LOG_BLD_AUTOMATION) console.log(`Building a ${goal.label}`);
+                if (SCRITTIES_LOG.build) console.log(`Building a ${goal.label}`);
                 btn.click();
             }
         }
@@ -338,7 +358,6 @@ let constructionAutoUpgrades = [
     }
 ]
 
-let LOG_UPGRADE_AUTOMATION = false;
 let WATCH_UPGRADE = [];
 let upgradeResources = setInterval(() => {
     WATCH_UPGRADE = [];
@@ -364,7 +383,7 @@ let upgradeResources = setInterval(() => {
         }
 
         if (makeResult) {
-            if (LOG_UPGRADE_AUTOMATION) {
+            if (SCRITTIES_LOG.crafting.upgrade) {
                 let log_text = `Converting ${upgrade.needs.map(need => `${need.cost} ${need.resource}`).join(', ')} to ${upgrade.result}`
                 console.log(log_text);
             }
