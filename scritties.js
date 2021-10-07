@@ -71,6 +71,7 @@ let useUpCulture = setInterval(() => {
             if (racePanel.embassyButton.model.enabled) {
                 if (SCRITTIES_LOG.culture) console.log("Building embassy for " + racePanel.race.title);
                 racePanel.embassyButton.buttonContent.click();
+                return;
             }
         }
     }
