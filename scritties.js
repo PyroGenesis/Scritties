@@ -235,8 +235,8 @@ let bld_goals = [
         { ...amphitheatre, limit: -1 },
     ],
     [
-        { ...observatory, limit: -1 },
-        { ...temple, limit: -1 },
+        // { ...observatory, limit: -1 },
+        // { ...temple, limit: -1 },
         { ...aqueduct, limit: -1 },
     ],
     [
@@ -250,7 +250,7 @@ let bld_goals = [
 ]
 
 let kittenLimiter = setInterval(() => {
-    if (game.village.maxKittens >= 73) {
+    if (game.village.maxKittens >= 120) {
         console.log("No more kittens!")
         bld_goals.splice(1, 1)
         clearInterval(kittenLimiter);
@@ -351,8 +351,8 @@ let constructionAutoUpgrades = [
     },
     {
         result: 'ship',
-        ratio: 0.5,
-        limit: -1,
+        ratio: 1,
+        limit: 250,
         needs: [
             { resource: 'starchart', cost: 25, limited: true },
             { resource: 'plate', cost: 150, limited: true },
@@ -415,7 +415,7 @@ let upgradeResources = setInterval(() => {
             game.craft(upgrade.result, 1);
         }
     }
-}, 10*1000);
+}, 2*1000);
 
 
 // time between two cloud saves (do NOT use a very small value)
