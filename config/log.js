@@ -1,7 +1,7 @@
 export let SCRITTIES_LOG = {
     observe: true,  // Observing astronomical events
     catpower: {
-        hunting: false,
+        hunt: false,
         parchment: false
     },
     faith: true,    // Praise the sun!
