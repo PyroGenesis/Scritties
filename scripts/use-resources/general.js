@@ -1,4 +1,4 @@
-import { SCRITTIES_LOG } from "../../log";
+import { SCRITTIES_LOG } from "../../config/log";
 import { resourceToResourceMapping } from "../../ref/res-to-res";
 
 export let useUpResources = () => {

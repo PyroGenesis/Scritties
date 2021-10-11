@@ -1,4 +1,4 @@
-import { SCRITTIES_LOG } from "../../log";
+import { SCRITTIES_LOG } from "../../config/log";
 import { bldGoals } from "../../ref/build-hierarchy";
 
 export let kittenLimiter = () => {

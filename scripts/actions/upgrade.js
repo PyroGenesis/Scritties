@@ -1,4 +1,4 @@
-import { SCRITTIES_LOG } from "../../log";
+import { SCRITTIES_LOG } from "../../config/log";
 import { constructionAutoUpgrades } from "../../ref/upgrade-mapping";
 
 export let upgrade = () => {

@@ -1,4 +1,4 @@
-import { SCRITTIES_LOG } from "../../log";
+import { SCRITTIES_LOG } from "../../config/log";
 
 export let praise = () => {
     let faithRes = game.resPool.resourceMap.faith;

@@ -1,4 +1,4 @@
-import { SCRITTIES_LOG } from "../../log";
+import { SCRITTIES_LOG } from "../../config/log";
 
 export let gold = () => {
     let goldRes = game.resPool.resourceMap.gold;

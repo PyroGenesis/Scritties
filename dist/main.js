@@ -1,5 +1,5 @@
 (() => {
-  // log.js
+  // config/log.js
   var SCRITTIES_LOG = {
     observe: true,
     catpower: {

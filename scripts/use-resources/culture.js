@@ -1,4 +1,4 @@
-import { SCRITTIES_LOG } from "../../log";
+import { SCRITTIES_LOG } from "../../config/log";
 
 export let culture = () => {
     let cultureRes = game.resPool.resourceMap.culture;
