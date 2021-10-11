@@ -1,10 +1,10 @@
 import { SCRITTIES_LOG } from "../../log";
 
 export let culture = () => {
-    let culture = game.resPool.resourceMap.culture;
-    if(!culture.unlocked || !game.diplomacy.hasUnlockedRaces()) return;   // No cheating
+    let cultureRes = game.resPool.resourceMap.culture;
+    if(!cultureRes.unlocked || !game.diplomacy.hasUnlockedRaces()) return;   // No cheating
 
-    if(culture.value >= culture.maxValue) {
+    if(cultureRes.value >= cultureRes.maxValue) {
         if (game.diplomacyTab.racePanels.length === 0) {
             $(`a.Trade`)[0].click();
         }
