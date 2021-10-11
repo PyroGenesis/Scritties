@@ -14,7 +14,7 @@ export let SCRITTIES_SETTINGS = {
         capPrevention: true,
         upgrade: true
     },
-    field: false,
+    farm: false,
     build: true,
     cloudSave: true
 };
