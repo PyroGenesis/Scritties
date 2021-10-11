@@ -89,7 +89,7 @@ out
 
 # Nuxt.js build / generate output
 .nuxt
-dist
+dist/*
 
 # Gatsby files
 .cache/
@@ -127,3 +127,7 @@ dist
 .webpack/
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+
+## Custom rules ##
+
+!dist/main.js
