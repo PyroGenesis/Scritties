@@ -1,0 +1,23 @@
+{
+  "name": "scritties",
+  "version": "0.2.0",
+  "description": "Scripts to automate tasks in Kittens Game",
+  "private": "true",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": ".\\node_modules\\.bin\\esbuild .\\scritties.js --bundle --outfile=dist/main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PyroGenesis/Scritties.git"
+  },
+  "author": "Burhanuddin Mustafa Lakdawala",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PyroGenesis/Scritties/issues"
+  },
+  "homepage": "https://github.com/PyroGenesis/Scritties#readme",
+  "dependencies": {
+    "esbuild": "^0.13.4"
+  }
+}

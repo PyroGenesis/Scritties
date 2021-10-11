@@ -1,0 +1,22 @@
+
+export let pasture = { name: 'pasture', label: 'Pasture' }
+export let aqueduct = { name: 'aqueduct', label: 'Aqueduct' }
+export let library = { name: 'library', label: 'Library' }
+export let academy = { name: 'academy', label: 'Academy' }
+export let observatory = { name: 'observatory', label: 'Observatory' }
+export let barn = { name: 'barn', label: 'Barn' }
+export let warehouse = { name: 'warehouse', label: 'Warehouse' }
+export let harbor = { name: 'harbor', label: 'Harbour' }
+export let mine = { name: 'mine', label: 'Mine' }
+export let quarry = { name: 'quarry', label: 'Quarry' }
+export let lumberMill = { name: 'lumberMill', label: 'Lumber Mill' }
+export let smelter = { name: 'smelter', label: 'Smelter'}
+export let amphitheatre = { name: 'amphitheatre', label: 'Amphitheatre' }
+export let temple = { name: 'temple', label: 'Temple' }
+export let workshop = { name: 'workshop', label: 'Workshop' }
+export let tradepost = { name: 'tradepost', label: 'Tradepost' }
+export let unicornPasture = { name: 'unicornPasture', label: 'Unic. Pasture' }
+export let ziggurat = { name: 'ziggurat', label: 'Ziggurat' }
+export let hut = { name: 'hut', label: 'Hut' }
+export let logHouse = { name: 'logHouse', label: 'Log House' }
+export let mansion = { name: 'mansion', label: 'Mansion' }
