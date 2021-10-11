@@ -1,9 +1,9 @@
-(() => {
+
   // config/log.js
   var SCRITTIES_LOG = {
     observe: true,
     catpower: {
-      hunting: false,
+      hunt: false,
       parchment: false
     },
     faith: true,
@@ -16,22 +16,48 @@
       capPrevention: false,
       upgrade: false
     },
-    field: false,
+    farm: false,
     build: true,
     cloudSave: true,
     BUILD_LastGroupReached: "",
     UPGRADE_status: []
   };
 
+  // config/settings.js
+  var SCRITTIES_SETTINGS = {
+    observe: true,
+    catpower: {
+      hunt: true,
+      parchment: true
+    },
+    faith: true,
+    culture: true,
+    gold: {
+      promoteLeader: true,
+      tradeZebras: true
+    },
+    crafting: {
+      capPrevention: true,
+      upgrade: true
+    },
+    farm: false,
+    build: true,
+    cloudSave: true
+  };
+
   // scripts/actions/hunt.js
   var hunt = () => {
+    if (!SCRITTIES_SETTINGS.catpower.hunt)
+      return;
     let manpowerRes = game.resPool.resourceMap.manpower;
     if (!manpowerRes.unlocked)
       return;
     if (manpowerRes.value >= manpowerRes.maxValue) {
-      if (SCRITTIES_LOG.catpower.hunting)
+      if (SCRITTIES_LOG.catpower.hunt)
         console.log("Going hunting");
       game.village.huntAll();
+      if (!SCRITTIES_SETTINGS.catpower.parchment)
+        return;
       if (gamePage.workshop.getCraft("parchment").unlocked) {
         let ticks_needed_to_fill_MP = manpowerRes.maxValue / manpowerRes.perTickCached;
         let fur_used_while_filling_MP = game.resPool.resourceMap.furs.perTickCached * ticks_needed_to_fill_MP;
@@ -232,6 +258,13 @@
       ]
     }
   ];
+  if (game.resPool.get("ship").value >= 250) {
+    let shipUpgradeIdx = constructionAutoUpgrades.findIndex((upgrade2) => upgrade2.result === "ship");
+    if (shipUpgradeIdx > -1) {
+      constructionAutoUpgrades[shipUpgradeIdx].ratio = 0.5;
+      constructionAutoUpgrades[shipUpgradeIdx].limit = -1;
+    }
+  }
 
   // scripts/actions/upgrade.js
   var upgrade = () => {
@@ -397,4 +430,3 @@
   }, 1 * 1e3);
   var kittenLimiterInterval = setInterval(kittenLimiter, 10 * 1e3);
   var upgradeInterval = setInterval(upgrade, 2 * 1e3);
-})();
