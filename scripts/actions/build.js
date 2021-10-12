@@ -1,8 +1,9 @@
 import { SCRITTIES_LOG } from "../../config/log";
+import { SCRITTIES_SETTINGS } from "../../config/settings";
 import { bldGoals } from "../../ref/build-hierarchy";
 
 export let kittenLimiter = () => {
-    if (game.village.maxKittens >= 120) {
+    if (game.village.maxKittens >= SCRITTIES_SETTINGS.kittenLimit) {
         console.log("No more kittens!")
         bldGoals.splice(1, 1)
         clearInterval(kittenLimiter);
