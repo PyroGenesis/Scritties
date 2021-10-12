@@ -1,4 +1,4 @@
-
+(() => {
   // config/log.js
   var SCRITTIES_LOG = {
     observe: true,
@@ -42,7 +42,8 @@
     },
     farm: false,
     build: true,
-    cloudSave: true
+    cloudSave: true,
+    kittenLimit: 170
   };
 
   // scripts/actions/hunt.js
@@ -144,7 +145,7 @@
 
   // scripts/actions/build.js
   var kittenLimiter = () => {
-    if (game.village.maxKittens >= 120) {
+    if (game.village.maxKittens >= SCRITTIES_SETTINGS.kittenLimit) {
       console.log("No more kittens!");
       bldGoals.splice(1, 1);
       clearInterval(kittenLimiter);
@@ -430,3 +431,4 @@
   }, 1 * 1e3);
   var kittenLimiterInterval = setInterval(kittenLimiter, 10 * 1e3);
   var upgradeInterval = setInterval(upgrade, 2 * 1e3);
+})();
