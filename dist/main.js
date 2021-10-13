@@ -405,20 +405,28 @@
     let goldRes = game.resPool.resourceMap.gold;
     if (!goldRes.unlocked)
       return;
-    if (goldRes.value >= goldRes.maxValue && game.science.get("civil").researched) {
-      if (SCRITTIES_LOG.gold.promoteLeader)
-        console.log("Promoting kitten leader");
-      game.villageTab.censusPanel.census.promoteLeaderHref.click();
-      goldRes = game.resPool.resourceMap.gold;
+    if (goldRes.value < goldRes.maxValue)
+      return;
+    if (game.science.get("civil").researched) {
+      let leader = game.village.sim.kittens.find((kitten) => kitten.isLeader);
+      if (game.village.sim.expToPromote(leader.rank, leader.rank + 1, leader.exp)[0]) {
+        if (SCRITTIES_LOG.gold.promoteLeader)
+          console.log("Promoting kitten leader");
+        game.village.sim.promote(leader, leader.rank + 1);
+        return;
+      }
     }
-    if (goldRes.value >= goldRes.maxValue && game.diplomacy.get("zebras").unlocked) {
+    if (game.diplomacy.get("zebras").unlocked) {
       let zebras = game.diplomacy.get("zebras");
       let trades = 1;
       trades = Math.max(trades, Math.ceil(goldRes.perTickCached * msBetweenExecutions / 200 / (15 - game.getEffect("tradeGoldDiscount"))));
       trades = Math.min(trades, game.diplomacy.getMaxTradeAmt(zebras));
-      if (SCRITTIES_LOG.gold.tradeZebras)
-        console.log("Trading with zebras instead");
-      game.diplomacy.tradeMultiple(game.diplomacy.get("zebras"), trades);
+      if (trades > 0) {
+        if (SCRITTIES_LOG.gold.tradeZebras)
+          console.log("Trading with zebras");
+        game.diplomacy.tradeMultiple(game.diplomacy.get("zebras"), trades);
+        return;
+      }
     }
   };
 
