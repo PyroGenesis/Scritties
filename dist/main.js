@@ -250,7 +250,7 @@
     },
     {
       result: "megalith",
-      ratio: 0.2,
+      ratio: 0.1,
       limit: -1,
       needs: [
         { resource: "beam", cost: 25, limited: true },
