@@ -401,7 +401,7 @@
   };
 
   // scripts/use-resources/gold.js
-  var gold = () => {
+  var gold = (msBetweenExecutions) => {
     let goldRes = game.resPool.resourceMap.gold;
     if (!goldRes.unlocked)
       return;
@@ -412,10 +412,13 @@
       goldRes = game.resPool.resourceMap.gold;
     }
     if (goldRes.value >= goldRes.maxValue && game.diplomacy.get("zebras").unlocked) {
+      let zebras = game.diplomacy.get("zebras");
+      let trades = 1;
+      trades = Math.max(trades, Math.ceil(goldRes.perTickCached * msBetweenExecutions / 200 / (15 - game.getEffect("tradeGoldDiscount"))));
+      trades = Math.min(trades, game.diplomacy.getMaxTradeAmt(zebras));
       if (SCRITTIES_LOG.gold.tradeZebras)
         console.log("Trading with zebras instead");
-      game.diplomacy.tradeAll(game.diplomacy.get("zebras"));
-      goldRes = game.resPool.resourceMap.gold;
+      game.diplomacy.tradeMultiple(game.diplomacy.get("zebras"), trades);
     }
   };
 
@@ -424,7 +427,7 @@
   var praiseInterval = setInterval(praise, 5e3);
   var observeInterval = setInterval(observe, 2e3);
   var cultureInterval = setInterval(culture, 5e3);
-  var goldInterval = setInterval(gold, 30 * 1e3);
+  var goldInterval = setInterval(gold, 30 * 1e3, 30 * 1e3);
   var useResourcesInterval = setInterval(() => {
     builder();
     useUpResources();

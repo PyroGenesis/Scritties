@@ -13,7 +13,7 @@ let praiseInterval = setInterval(praise, 5000);
 let observeInterval = setInterval(observe, 2000);
 
 let cultureInterval = setInterval(culture, 5000);
-let goldInterval = setInterval(gold, 30*1000)
+let goldInterval = setInterval(gold, 30*1000, 30*1000);
 
 // jQuery.expr[':'].icontains = function(a, i, m) {
 //     return jQuery(a).text().toUpperCase()
