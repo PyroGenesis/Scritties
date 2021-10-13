@@ -1,5 +1,5 @@
 export let SCRITTIES_LOG = {
-    observe: true,  // Observing astronomical events
+    observe: false,  // Observing astronomical events
     catpower: {
         hunt: false,
         parchment: false

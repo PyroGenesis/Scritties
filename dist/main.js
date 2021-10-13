@@ -1,7 +1,7 @@
 (() => {
   // config/log.js
   var SCRITTIES_LOG = {
-    observe: true,
+    observe: false,
     catpower: {
       hunt: false,
       parchment: false
