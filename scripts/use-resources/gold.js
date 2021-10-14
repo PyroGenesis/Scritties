@@ -1,4 +1,5 @@
 import { SCRITTIES_LOG } from "../../config/log";
+import { temple, tradepost } from "../../ref/buildings";
 
 export let gold = (msBetweenExecutions) => {
     let goldRes = game.resPool.resourceMap.gold;
@@ -29,5 +30,22 @@ export let gold = (msBetweenExecutions) => {
             game.diplomacy.tradeMultiple(game.diplomacy.get("zebras"), trades);
             return;
         }
+    }
+
+    // Last chances (build a gold building)
+    game.bldTab.update();
+    let goldBuildings = [tradepost, temple];
+
+    for (let goldBuilding of goldBuildings) {
+        if (!game.bld.get(goldBuilding.name).unlocked) continue;
+
+        let goldBuildingOpts = game.bldTab.children.find((node) => node.opts.building === goldBuilding.name);
+        let btn = goldBuildingOpts.buttonContent;
+        let impossible = goldBuildingOpts.model.resourceIsLimited;
+        let available = goldBuildingOpts.model.enabled;
+
+        if (impossible || !available) continue;
+        if (SCRITTIES_LOG.gold.build) console.log(`Building a ${goldBuilding.label} to use gold`);
+        btn.click();
     }
 };

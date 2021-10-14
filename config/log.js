@@ -9,6 +9,7 @@ export let SCRITTIES_LOG = {
     gold: {
         promoteLeader: true,
         tradeZebras: true,
+        build: true
     },
     crafting: {
         capPrevention: false,

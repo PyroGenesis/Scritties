@@ -9,6 +9,7 @@ export let SCRITTIES_SETTINGS = {
     gold: {
         promoteLeader: true,
         tradeZebras: true,
+        build: true
     },
     crafting: {
         capPrevention: true,

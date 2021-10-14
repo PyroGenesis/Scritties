@@ -10,7 +10,8 @@
     culture: true,
     gold: {
       promoteLeader: true,
-      tradeZebras: true
+      tradeZebras: true,
+      build: true
     },
     crafting: {
       capPrevention: false,
@@ -34,7 +35,8 @@
     culture: true,
     gold: {
       promoteLeader: true,
-      tradeZebras: true
+      tradeZebras: true,
+      build: true
     },
     crafting: {
       capPrevention: true,
@@ -105,6 +107,7 @@
   var lumberMill = { name: "lumberMill", label: "Lumber Mill" };
   var smelter = { name: "smelter", label: "Smelter" };
   var amphitheatre = { name: "amphitheatre", label: "Amphitheatre" };
+  var temple = { name: "temple", label: "Temple" };
   var workshop = { name: "workshop", label: "Workshop" };
   var tradepost = { name: "tradepost", label: "Tradepost" };
   var unicornPasture = { name: "unicornPasture", label: "Unic. Pasture" };
@@ -427,6 +430,21 @@
         game.diplomacy.tradeMultiple(game.diplomacy.get("zebras"), trades);
         return;
       }
+    }
+    game.bldTab.update();
+    let goldBuildings = [tradepost, temple];
+    for (let goldBuilding of goldBuildings) {
+      if (!game.bld.get(goldBuilding.name).unlocked)
+        continue;
+      let goldBuildingOpts = game.bldTab.children.find((node) => node.opts.building === goldBuilding.name);
+      let btn = goldBuildingOpts.buttonContent;
+      let impossible = goldBuildingOpts.model.resourceIsLimited;
+      let available = goldBuildingOpts.model.enabled;
+      if (impossible || !available)
+        continue;
+      if (SCRITTIES_LOG.gold.build)
+        console.log(`Building a ${goldBuilding.label} to use gold`);
+      btn.click();
     }
   };
 
