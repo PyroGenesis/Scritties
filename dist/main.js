@@ -421,18 +421,6 @@
         return;
       }
     }
-    if (game.diplomacy.get("zebras").unlocked) {
-      let zebras = game.diplomacy.get("zebras");
-      let trades = 1;
-      trades = Math.max(trades, Math.ceil(goldRes.perTickCached * msBetweenExecutions / 200 / (15 - game.getEffect("tradeGoldDiscount"))));
-      trades = Math.min(trades, game.diplomacy.getMaxTradeAmt(zebras));
-      if (trades > 0) {
-        if (SCRITTIES_LOG.gold.tradeZebras)
-          console.log("Trading with zebras");
-        game.diplomacy.tradeMultiple(game.diplomacy.get("zebras"), trades);
-        return;
-      }
-    }
     game.bldTab.update();
     let goldBuildings = [tradepost, temple];
     for (let goldBuilding of goldBuildings) {
@@ -447,6 +435,19 @@
       if (SCRITTIES_LOG.gold.build)
         console.log(`Building a ${goldBuilding.label} to use gold`);
       btn.click();
+      return;
+    }
+    if (game.diplomacy.get("zebras").unlocked) {
+      let zebras = game.diplomacy.get("zebras");
+      let trades = 1;
+      trades = Math.max(trades, Math.ceil(goldRes.perTickCached * msBetweenExecutions / 200 / (15 - game.getEffect("tradeGoldDiscount"))));
+      trades = Math.min(trades, game.diplomacy.getMaxTradeAmt(zebras));
+      if (trades > 0) {
+        if (SCRITTIES_LOG.gold.tradeZebras)
+          console.log("Trading with zebras");
+        game.diplomacy.tradeMultiple(game.diplomacy.get("zebras"), trades);
+        return;
+      }
     }
   };
 
