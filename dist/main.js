@@ -13,6 +13,7 @@
       tradeZebras: true,
       build: true
     },
+    minerals: true,
     crafting: {
       capPrevention: false,
       upgrade: false
@@ -38,6 +39,7 @@
       tradeZebras: true,
       build: true
     },
+    minerals: true,
     crafting: {
       capPrevention: true,
       upgrade: true
@@ -448,6 +450,30 @@
     }
   };
 
+  // scripts/use-resources/minerals.js
+  var minerals = () => {
+    let mineralRes = game.resPool.resourceMap.minerals;
+    if (!mineralRes.unlocked)
+      return;
+    if (mineralRes.value < mineralRes.maxValue)
+      return;
+    game.bldTab.update();
+    let mineralBuildings = [aqueduct];
+    for (let mineralBuilding of mineralBuildings) {
+      if (!game.bld.get(mineralBuilding.name).unlocked)
+        continue;
+      let mineralBuildingOpts = game.bldTab.children.find((node) => node.opts.building === mineralBuilding.name);
+      let btn = mineralBuildingOpts.buttonContent;
+      let impossible = mineralBuildingOpts.model.resourceIsLimited;
+      let available = mineralBuildingOpts.model.enabled;
+      if (impossible || !available)
+        continue;
+      if (SCRITTIES_LOG.minerals)
+        console.log(`Building a ${mineralBuilding.label} to use minerals`);
+      btn.click();
+    }
+  };
+
   // scritties.js
   var huntInterval = setInterval(hunt, 5e3);
   var praiseInterval = setInterval(praise, 5e3);
@@ -456,6 +482,7 @@
   var goldInterval = setInterval(gold, 30 * 1e3, 30 * 1e3);
   var useResourcesInterval = setInterval(() => {
     builder();
+    minerals();
     useUpResources();
   }, 1 * 1e3);
   var kittenLimiterInterval = setInterval(kittenLimiter, 10 * 1e3);

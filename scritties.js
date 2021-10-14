@@ -7,6 +7,7 @@ import { upgrade } from "./scripts/actions/upgrade";
 import { culture } from "./scripts/use-resources/culture";
 import { useUpResources } from "./scripts/use-resources/general";
 import { gold } from "./scripts/use-resources/gold";
+import { minerals } from "./scripts/use-resources/minerals";
 
 let huntInterval = setInterval(hunt, 5000);
 let praiseInterval = setInterval(praise, 5000);
@@ -22,6 +23,7 @@ let goldInterval = setInterval(gold, 30*1000, 30*1000);
 
 let useResourcesInterval = setInterval(() => {
     builder();
+    minerals();
     useUpResources();
 }, 1 * 1000);
 let kittenLimiterInterval = setInterval(kittenLimiter, 10 * 1000);

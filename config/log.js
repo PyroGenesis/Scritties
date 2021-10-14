@@ -11,6 +11,7 @@ export let SCRITTIES_LOG = {
         tradeZebras: true,
         build: true
     },
+    minerals: true,
     crafting: {
         capPrevention: false,
         upgrade: false

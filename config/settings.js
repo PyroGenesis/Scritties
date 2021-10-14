@@ -11,6 +11,7 @@ export let SCRITTIES_SETTINGS = {
         tradeZebras: true,
         build: true
     },
+    minerals: true,
     crafting: {
         capPrevention: true,
         upgrade: true
