@@ -9,7 +9,8 @@ export let gold = (msBetweenExecutions) => {
 
     if(game.science.get('civil').researched) {
         let leader = game.village.sim.kittens.find(kitten => kitten.isLeader);
-        if (game.village.sim.expToPromote(leader.rank, leader.rank+1, leader.exp)[0]) {
+        if (game.village.sim.expToPromote(leader.rank, leader.rank+1, leader.exp)[0] &&
+            game.village.sim.goldToPromote(leader.rank, leader.rank+1, goldRes.value)[0]) {
             if (SCRITTIES_LOG.gold.promoteLeader) console.log("Promoting kitten leader");
             game.village.sim.promote(leader, leader.rank+1);
             return;
