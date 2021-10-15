@@ -156,31 +156,47 @@
       clearInterval(kittenLimiter);
     }
   };
+  var build = (buildingName, bldTabUpdated) => {
+    if (!bldTabUpdated)
+      game.bldTab.update();
+    let result = {
+      unlocked: false,
+      impossible: true,
+      available: false,
+      built: false
+    };
+    let bld = game.bldTab.children.find((node) => node.opts.building === buildingName);
+    if (!bld)
+      return result;
+    result.unlocked = true;
+    result.impossible = bld.model.resourceIsLimited;
+    result.available = bld.model.enabled;
+    let btn = bld.buttonContent;
+    if (result.impossible || !result.available)
+      return result;
+    btn.click();
+    result.built = true;
+    return result;
+  };
   var builder = () => {
     game.bldTab.update();
     for (let goal_group of bldGoals) {
       SCRITTIES_LOG.BUILD_LastGroupReached = "";
-      let impossible = true;
+      let grpImpossible = true;
       for (let goal of goal_group) {
         if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
-          let bld = game.bldTab.children.find((node) => node.opts.building === goal.name);
-          if (!bld)
+          let buildRes = build(goal.name, true);
+          if (!buildRes.unlocked)
             continue;
-          if (impossible)
-            impossible = bld.model.resourceIsLimited;
-          let available = bld.model.enabled;
-          let btn = bld.buttonContent;
-          if (!available && !bld.model.resourceIsLimited) {
+          grpImpossible = grpImpossible && buildRes.impossible;
+          if (!buildRes.available && !buildRes.impossible) {
             SCRITTIES_LOG.BUILD_LastGroupReached += goal.label + ", ";
           }
-          if (impossible || !available)
-            continue;
-          if (SCRITTIES_LOG.build)
+          if (SCRITTIES_LOG.build && buildRes.built)
             console.log(`Building a ${goal.label}`);
-          btn.click();
         }
       }
-      if (!impossible) {
+      if (!grpImpossible) {
         break;
       }
     }
@@ -424,18 +440,12 @@
     game.bldTab.update();
     let goldBuildings = [tradepost, temple];
     for (let goldBuilding of goldBuildings) {
-      if (!game.bld.get(goldBuilding.name).unlocked)
-        continue;
-      let goldBuildingOpts = game.bldTab.children.find((node) => node.opts.building === goldBuilding.name);
-      let btn = goldBuildingOpts.buttonContent;
-      let impossible = goldBuildingOpts.model.resourceIsLimited;
-      let available = goldBuildingOpts.model.enabled;
-      if (impossible || !available)
-        continue;
-      if (SCRITTIES_LOG.gold.build)
-        console.log(`Building a ${goldBuilding.label} to use gold`);
-      btn.click();
-      return;
+      let buildRes = build(goldBuilding.name, true);
+      if (buildRes.built) {
+        if (SCRITTIES_LOG.gold.build)
+          console.log(`Building a ${goldBuilding.label} to use gold`);
+        return;
+      }
     }
     if (game.diplomacy.get("zebras").unlocked) {
       let zebras = game.diplomacy.get("zebras");
@@ -461,17 +471,12 @@
     game.bldTab.update();
     let mineralBuildings = [aqueduct];
     for (let mineralBuilding of mineralBuildings) {
-      if (!game.bld.get(mineralBuilding.name).unlocked)
-        continue;
-      let mineralBuildingOpts = game.bldTab.children.find((node) => node.opts.building === mineralBuilding.name);
-      let btn = mineralBuildingOpts.buttonContent;
-      let impossible = mineralBuildingOpts.model.resourceIsLimited;
-      let available = mineralBuildingOpts.model.enabled;
-      if (impossible || !available)
-        continue;
-      if (SCRITTIES_LOG.minerals)
-        console.log(`Building a ${mineralBuilding.label} to use minerals`);
-      btn.click();
+      let buildRes = build(mineralBuilding.name, true);
+      if (buildRes.built) {
+        if (SCRITTIES_LOG.minerals)
+          console.log(`Building a ${mineralBuilding.label} to use minerals`);
+        return;
+      }
     }
   };
 

@@ -10,31 +10,51 @@ export let kittenLimiter = () => {
     }
 };
 
+export let build = (buildingName, bldTabUpdated) => {
+    if (!bldTabUpdated) game.bldTab.update();
+
+    let result = {
+        unlocked: false,
+        impossible: true,
+        available: false,
+        built: false
+    }
+
+    let bld = game.bldTab.children.find((node) => node.opts.building === buildingName);
+    if (!bld) return result; // No cheating
+    result.unlocked = true;
+
+    result.impossible = bld.model.resourceIsLimited;
+    result.available = bld.model.enabled;
+    let btn = bld.buttonContent;
+
+    if (result.impossible || !result.available) return result;
+
+    btn.click();
+    result.built = true;
+    return result;
+}
+
 export let builder = () => {    
     game.bldTab.update();
     for (let goal_group of bldGoals) {
         // console.log('gg', goal_group.map(g => g.label).join(', '));
         SCRITTIES_LOG.BUILD_LastGroupReached = ""
-        let impossible = true;
+        let grpImpossible = true;
         for (let goal of goal_group) {
             if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
-                let bld = game.bldTab.children.find((node) => node.opts.building === goal.name);
-                if (!bld) continue; // No cheating
+                let buildRes = build(goal.name, true);
+                if (!buildRes.unlocked) continue; // No cheating
 
-                if (impossible) impossible = bld.model.resourceIsLimited;
-                let available = bld.model.enabled;
-                let btn = bld.buttonContent;
-
-                if (!available && !bld.model.resourceIsLimited) {
+                grpImpossible = grpImpossible && buildRes.impossible;
+                if (!buildRes.available && !buildRes.impossible) {
                     SCRITTIES_LOG.BUILD_LastGroupReached += goal.label + ", ";
                 }
-                if (impossible || !available) continue;
 
-                if (SCRITTIES_LOG.build) console.log(`Building a ${goal.label}`);
-                btn.click();
+                if (SCRITTIES_LOG.build && buildRes.built) console.log(`Building a ${goal.label}`);
             }
         }
-        if (!impossible) {
+        if (!grpImpossible) {
             // SCRITTIES_LOG.lastBldGroupReached = goal_group.map((goal) => goal.label).join(', ');
             break;
         }
