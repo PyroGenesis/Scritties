@@ -34,7 +34,7 @@ export let gold = (msBetweenExecutions) => {
         // at least 1 trade should be done
         let trades = 1;
         // trades according to gold earned betweebn checks
-        trades = Math.max(trades, Math.ceil((goldRes.perTickCached * msBetweenExecutions / 200) / (15 - game.getEffect("tradeGoldDiscount"))));
+        trades = Math.max(trades, Math.floor((goldRes.perTickCached * msBetweenExecutions / 200) / (15 - game.getEffect("tradeGoldDiscount"))));
         // limit trades if they are not possible
         trades = Math.min(trades, game.diplomacy.getMaxTradeAmt(zebras))
 
