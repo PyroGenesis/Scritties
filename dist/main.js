@@ -217,7 +217,7 @@
     },
     {
       result: "concrate",
-      ratio: 0.2,
+      ratio: 0.3,
       limit: -1,
       needs: [
         { resource: "slab", cost: 2500, limited: true },
