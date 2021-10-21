@@ -384,6 +384,12 @@
       otherResources: [
         { resource: "steel", cost: 75 }
       ]
+    },
+    {
+      source: "oil",
+      result: "kerosene",
+      cost: 7500,
+      otherResources: []
     }
   ];
 
