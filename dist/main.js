@@ -6,7 +6,10 @@
       hunt: false,
       parchment: false
     },
-    faith: true,
+    faith: {
+      praise: true,
+      upgrade: true
+    },
     culture: true,
     gold: {
       promoteLeader: true,
@@ -32,7 +35,10 @@
       hunt: true,
       parchment: true
     },
-    faith: true,
+    faith: {
+      praise: true,
+      upgrade: true
+    },
     culture: true,
     gold: {
       promoteLeader: true,
@@ -82,18 +88,6 @@
       if (SCRITTIES_LOG.observe)
         console.log("Observing the sky!");
       observeBtnQ[0].click();
-    }
-  };
-
-  // scripts/actions/praise.js
-  var praise = () => {
-    let faithRes = game.resPool.resourceMap.faith;
-    if (!faithRes.unlocked)
-      return;
-    if (faithRes.value >= faithRes.maxValue) {
-      if (SCRITTIES_LOG.faith)
-        console.log("Praise the sun!");
-      game.religion.praise();
     }
   };
 
@@ -480,9 +474,40 @@
     }
   };
 
+  // scripts/use-resources/faith.js
+  var faith = () => {
+    let faithRes = game.resPool.resourceMap.faith;
+    if (!faithRes.unlocked)
+      return;
+    if (faithRes.value < faithRes.maxValue)
+      return;
+    if (game.religion.getRU("transcendence").on >= 1) {
+      let religionUpgradeList = ["solarchant", "scholasticism", "goldenSpire"];
+      for (let religionUpgradeName of religionUpgradeList) {
+        let RU = game.religionTab.rUpgradeButtons.find((node) => node.id === religionUpgradeName);
+        if (!RU)
+          continue;
+        let impossible = RU.model.resourceIsLimited;
+        let available = RU.model.enabled;
+        let btn = RU.buttonContent;
+        if (!impossible) {
+          if (available) {
+            if (SCRITTIES_LOG.faith.upgrade)
+              console.log(`Building a ${religionUpgradeName} from faith`);
+            btn.click();
+          }
+          return;
+        }
+      }
+    }
+    if (SCRITTIES_LOG.faith.praise)
+      console.log("Praise the sun!");
+    game.religion.praise();
+  };
+
   // scritties.js
   var huntInterval = setInterval(hunt, 5e3);
-  var praiseInterval = setInterval(praise, 5e3);
+  var faithInterval = setInterval(faith, 5e3);
   var observeInterval = setInterval(observe, 2e3);
   var cultureInterval = setInterval(culture, 5e3);
   var goldInterval = setInterval(gold, 30 * 1e3, 30 * 1e3);

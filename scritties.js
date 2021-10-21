@@ -1,6 +1,5 @@
 import { hunt } from "./scripts/actions/hunt";
 import { observe } from "./scripts/actions/observe";
-import { praise } from "./scripts/actions/praise";
 import { builder, kittenLimiter } from "./scripts/actions/build";
 import { setupCloudSaving } from "./scripts/actions/cloud-save";
 import { upgrade } from "./scripts/actions/upgrade";
@@ -8,9 +7,10 @@ import { culture } from "./scripts/use-resources/culture";
 import { useUpResources } from "./scripts/use-resources/general";
 import { gold } from "./scripts/use-resources/gold";
 import { minerals } from "./scripts/use-resources/minerals";
+import { faith } from "./scripts/use-resources/faith";
 
 let huntInterval = setInterval(hunt, 5000);
-let praiseInterval = setInterval(praise, 5000);
+let faithInterval = setInterval(faith, 5000);
 let observeInterval = setInterval(observe, 2000);
 
 let cultureInterval = setInterval(culture, 5000);

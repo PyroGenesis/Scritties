@@ -4,7 +4,10 @@ export let SCRITTIES_LOG = {
         hunt: false,
         parchment: false
     },
-    faith: true,    // Praise the sun!
+    faith: {
+        praise: true,
+        upgrade: true
+    },
     culture: true,  // Embassy
     gold: {
         promoteLeader: true,

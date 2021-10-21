@@ -4,7 +4,10 @@ export let SCRITTIES_SETTINGS = {
         hunt: true,
         parchment: true
     },
-    faith: true,    // Praise the sun!
+    faith: {
+        praise: true,
+        upgrade: true
+    },
     culture: true,  // Embassy
     gold: {
         promoteLeader: true,
