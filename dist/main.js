@@ -95,6 +95,7 @@
   var aqueduct = { name: "aqueduct", label: "Aqueduct" };
   var library = { name: "library", label: "Library" };
   var academy = { name: "academy", label: "Academy" };
+  var observatory = { name: "observatory", label: "Observatory" };
   var barn = { name: "barn", label: "Barn" };
   var warehouse = { name: "warehouse", label: "Warehouse" };
   var harbor = { name: "harbor", label: "Harbour" };
@@ -135,7 +136,8 @@
     [
       { ...barn, limit: -1 },
       { ...warehouse, limit: -1 },
-      { ...harbor, limit: -1 }
+      { ...harbor, limit: -1 },
+      { ...observatory, limit: -1 }
     ],
     [
       { ...unicornPasture, limit: -1 }

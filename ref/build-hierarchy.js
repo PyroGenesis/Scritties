@@ -21,7 +21,6 @@ export let bldGoals = [
         { ...amphitheatre, limit: -1 },
     ],
     [
-        // { ...observatory, limit: -1 },
         // { ...temple, limit: -1 },
         { ...aqueduct, limit: -1 },
     ],
@@ -29,6 +28,7 @@ export let bldGoals = [
         { ...barn, limit: -1 },
         { ...warehouse, limit: -1 },
         { ...harbor, limit: -1 },
+        { ...observatory, limit: -1 },
     ],
     [
         { ...unicornPasture, limit: -1 },
