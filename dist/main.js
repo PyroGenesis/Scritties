@@ -516,7 +516,10 @@
   // scritties.js
   var huntInterval = setInterval(hunt, 5e3);
   var faithInterval = setInterval(faith, 5e3);
-  var observeInterval = setInterval(observe, 2e3);
+  var observeInterval = null;
+  if (!game.workshop.get("seti").researched) {
+    observeInterval = setInterval(observe, 2e3);
+  }
   var cultureInterval = setInterval(culture, 5e3);
   var goldInterval = setInterval(gold, 30 * 1e3, 30 * 1e3);
   var useResourcesInterval = setInterval(() => {

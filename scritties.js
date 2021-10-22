@@ -11,7 +11,11 @@ import { faith } from "./scripts/use-resources/faith";
 
 let huntInterval = setInterval(hunt, 5000);
 let faithInterval = setInterval(faith, 5000);
-let observeInterval = setInterval(observe, 2000);
+
+let observeInterval = null;
+if (!game.workshop.get('seti').researched) {
+    observeInterval = setInterval(observe, 2000);
+}
 
 let cultureInterval = setInterval(culture, 5000);
 let goldInterval = setInterval(gold, 30*1000, 30*1000);
