@@ -257,8 +257,8 @@
     },
     {
       result: "ship",
-      ratio: 1,
-      limit: 250,
+      ratio: game.resPool.get("ship").value < 250 ? 1 : 0.5,
+      limit: game.resPool.get("ship").value < 250 ? 250 : -1,
       needs: [
         { resource: "starchart", cost: 25, limited: true },
         { resource: "plate", cost: 150, limited: true },
@@ -276,13 +276,6 @@
       ]
     }
   ];
-  if (game.resPool.get("ship").value >= 250) {
-    let shipUpgradeIdx = constructionAutoUpgrades.findIndex((upgrade2) => upgrade2.result === "ship");
-    if (shipUpgradeIdx > -1) {
-      constructionAutoUpgrades[shipUpgradeIdx].ratio = 0.5;
-      constructionAutoUpgrades[shipUpgradeIdx].limit = -1;
-    }
-  }
 
   // scripts/actions/upgrade.js
   var upgrade = () => {
