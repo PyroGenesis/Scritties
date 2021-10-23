@@ -23,6 +23,7 @@
     },
     farm: false,
     build: true,
+    sacrifice: true,
     cloudSave: true,
     BUILD_LastGroupReached: "",
     UPGRADE_status: []
@@ -52,6 +53,7 @@
     },
     farm: false,
     build: true,
+    sacrifice: true,
     cloudSave: true,
     kittenLimit: 170
   };
@@ -516,9 +518,41 @@
     game.religion.praise();
   };
 
+  // scripts/actions/sacrifice.js
+  var unicornBldQueue = [];
+  var sacrifice = () => {
+    if (!game.religionTab.zgUpgradeButtons || game.religionTab.zgUpgradeButtons.length === 0)
+      $(`a.Religion`)[0].click();
+    if (unicornBldQueue.length === 0)
+      return;
+    let ziggBld = game.bld.get("ziggurat");
+    if (!ziggBld.on)
+      return;
+    let ziggUpgrade = game.religionTab.zgUpgradeButtons[unicornBldQueue[0]];
+    if (!ziggUpgrade.model.metadata.unlocked)
+      return;
+    let tearsRequired = ziggUpgrade.model.prices.find((price) => price.name === "tears").val - game.resPool.resourceMap.tears.value;
+    let sacrificesRequired = Math.ceil(tearsRequired / ziggBld.val);
+    if (sacrificesRequired > 0) {
+      let unicornsRequired = 2500 * sacrificesRequired;
+      if (game.resPool.resourceMap.unicorns.value < unicornsRequired)
+        return;
+      if (SCRITTIES_LOG.sacrifice)
+        console.log(`Sacrificing ${unicornsRequired} unicorns for ${sacrificesRequired * ziggBld.val} tears`);
+      game.religionTab.sacrificeBtn.controller._transform(game.religionTab.sacrificeBtn.model, sacrificesRequired);
+    }
+    unicornBldQueue.shift();
+    setTimeout(() => {
+      if (SCRITTIES_LOG.sacrifice)
+        console.log(`Building a ${ziggUpgrade.opts.name}`);
+      ziggUpgrade.buttonContent.click();
+    }, 5 * 1e3);
+  };
+
   // scritties.js
   var huntInterval = setInterval(hunt, 5e3);
   var faithInterval = setInterval(faith, 5e3);
+  var sacrificeInterval = setInterval(sacrifice, 30 * 1e3);
   var observeInterval = null;
   if (!game.workshop.get("seti").researched) {
     observeInterval = setInterval(observe, 2e3);

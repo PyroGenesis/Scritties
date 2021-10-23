@@ -8,9 +8,11 @@ import { useUpResources } from "./scripts/use-resources/general";
 import { gold } from "./scripts/use-resources/gold";
 import { minerals } from "./scripts/use-resources/minerals";
 import { faith } from "./scripts/use-resources/faith";
+import { sacrifice } from "./scripts/actions/sacrifice";
 
 let huntInterval = setInterval(hunt, 5000);
 let faithInterval = setInterval(faith, 5000);
+let sacrificeInterval = setInterval(sacrifice, 30*1000);
 
 let observeInterval = null;
 if (!game.workshop.get('seti').researched) {

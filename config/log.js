@@ -21,6 +21,7 @@ export let SCRITTIES_LOG = {
     },
     farm: false,
     build: true,
+    sacrifice: true,
     cloudSave: true,
 
     BUILD_LastGroupReached: '',

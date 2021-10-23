@@ -21,6 +21,7 @@ export let SCRITTIES_SETTINGS = {
     },
     farm: false,
     build: true,
+    sacrifice: true,
     cloudSave: true,
 
     kittenLimit: 170
