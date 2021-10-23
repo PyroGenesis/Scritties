@@ -518,6 +518,16 @@
     game.religion.praise();
   };
 
+  // scripts/utility/utility.js
+  var logicalBtnClick = (logicalBtn) => {
+    logicalBtn.animate();
+    logicalBtn.controller.buyItem(logicalBtn.model, 1, function(result) {
+      if (result) {
+        logicalBtn.update();
+      }
+    });
+  };
+
   // scripts/actions/sacrifice.js
   var unicornBldQueue = [];
   var sacrifice = () => {
@@ -545,7 +555,7 @@
     setTimeout(() => {
       if (SCRITTIES_LOG.sacrifice)
         console.log(`Building a ${ziggUpgrade.opts.name}`);
-      ziggUpgrade.buttonContent.click();
+      logicalBtnClick(ziggUpgrade);
     }, 5 * 1e3);
   };
 

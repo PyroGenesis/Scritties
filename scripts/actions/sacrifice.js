@@ -1,4 +1,5 @@
 import { SCRITTIES_LOG } from "../../config/log"
+import { logicalBtnClick } from "../utility/utility"
 
 let unicornBldQueue = []
 
@@ -42,6 +43,6 @@ export let sacrifice = () => {
     // Build the upgrade
     setTimeout(() => {
         if(SCRITTIES_LOG.sacrifice) console.log(`Building a ${ziggUpgrade.opts.name}`)
-        ziggUpgrade.buttonContent.click();
+        logicalBtnClick(ziggUpgrade);
     }, 5*1000)
 }
