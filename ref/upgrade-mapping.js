@@ -62,6 +62,16 @@ export let constructionAutoUpgrades = [
         ]
     },
     {
+        result: 'tanker',
+        ratio: 0.4, // This will leave atleast 250 ships on first tanker build
+        limit: game.resPool.get('ship').value < 250 ? 250 : -1,
+        needs: [
+            { resource: 'alloy', cost: 1250, limited: true },
+            { resource: 'ship', cost: 200, limited: true },
+            { resource: 'blueprint', cost: 5, limited: true }
+        ]
+    },
+    {
         result: 'megalith',
         ratio: 0.1,
         limit: -1,
