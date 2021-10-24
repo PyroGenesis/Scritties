@@ -492,13 +492,36 @@
     let faithRes = game.resPool.resourceMap.faith;
     if (!faithRes.unlocked)
       return;
-    if (faithRes.value < faithRes.maxValue)
-      return;
     if (game.religion.getRU("transcendence").on >= 1) {
-      let religionUpgradeList = ["solarchant", "scholasticism", "goldenSpire"];
-      for (let religionUpgradeName of religionUpgradeList) {
-        let RU = game.religionTab.rUpgradeButtons.find((node) => node.id === religionUpgradeName);
+      if (!game.religionTab.zgUpgradeButtons || game.religionTab.zgUpgradeButtons.length === 0)
+        $(`a.Religion`)[0].click();
+      let religionUpgradeList = [
+        {
+          name: "solarchant",
+          conditions: []
+        },
+        {
+          name: "scholasticism",
+          conditions: []
+        },
+        {
+          name: "goldenSpire",
+          conditions: [game.resPool.resourceMap.titanium.value / game.resPool.resourceMap.titanium.maxValue > 0.95]
+        },
+        {
+          name: "basilica",
+          conditions: [game.resPool.resourceMap.titanium.value / game.resPool.resourceMap.titanium.maxValue > 0.95]
+        },
+        {
+          name: "templars",
+          conditions: [game.resPool.resourceMap.titanium.value / game.resPool.resourceMap.titanium.maxValue > 0.95]
+        }
+      ];
+      for (let religionUpgrade of religionUpgradeList) {
+        let RU = game.religionTab.rUpgradeButtons.find((node) => node.id === religionUpgrade.name);
         if (!RU)
+          continue;
+        if (!religionUpgrade.conditions.every((cond) => cond))
           continue;
         let impossible = RU.model.resourceIsLimited;
         let available = RU.model.enabled;
@@ -506,13 +529,15 @@
         if (!impossible) {
           if (available) {
             if (SCRITTIES_LOG.faith.upgrade)
-              console.log(`Building a ${religionUpgradeName} from faith`);
+              console.log(`Building a ${religionUpgrade.name} from faith`);
             btn.click();
           }
           return;
         }
       }
     }
+    if (faithRes.value < faithRes.maxValue)
+      return;
     if (SCRITTIES_LOG.faith.praise)
       console.log("Praise the sun!");
     game.religion.praise();
