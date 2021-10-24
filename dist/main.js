@@ -566,6 +566,8 @@
     let ziggUpgrade = game.religionTab.zgUpgradeButtons[unicornBldQueue[0]];
     if (!ziggUpgrade.model.metadata.unlocked)
       return;
+    if (!ziggUpgrade.model.prices.filter((price) => price.name !== "tears").every((price) => game.resPool.get(price.name).value >= price.val))
+      return;
     let tearsRequired = ziggUpgrade.model.prices.find((price) => price.name === "tears").val - game.resPool.resourceMap.tears.value;
     let sacrificesRequired = Math.ceil(tearsRequired / ziggBld.val);
     if (sacrificesRequired > 0) {
@@ -575,13 +577,13 @@
       if (SCRITTIES_LOG.sacrifice)
         console.log(`Sacrificing ${unicornsRequired} unicorns for ${sacrificesRequired * ziggBld.val} tears`);
       game.religionTab.sacrificeBtn.controller._transform(game.religionTab.sacrificeBtn.model, sacrificesRequired);
+      game.religionTab.update();
+      ziggUpgrade = game.religionTab.zgUpgradeButtons[unicornBldQueue[0]];
     }
     unicornBldQueue.shift();
-    setTimeout(() => {
-      if (SCRITTIES_LOG.sacrifice)
-        console.log(`Building a ${ziggUpgrade.opts.name}`);
-      logicalBtnClick(ziggUpgrade);
-    }, 5 * 1e3);
+    if (SCRITTIES_LOG.sacrifice)
+      console.log(`Building a ${ziggUpgrade.opts.name}`);
+    logicalBtnClick(ziggUpgrade);
   };
 
   // scritties.js
