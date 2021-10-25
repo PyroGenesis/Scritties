@@ -10,7 +10,7 @@ export let kittenLimiter = () => {
     }
 };
 
-export let build = (buildingName, bldTabUpdated) => {
+export let build = (bld, bldTabUpdated) => {
     if (!bldTabUpdated) game.bldTab.update();
 
     let result = {
@@ -20,7 +20,6 @@ export let build = (buildingName, bldTabUpdated) => {
         built: false
     }
 
-    let bld = game.bldTab.children.find((node) => node.opts.building === buildingName);
     if (!bld) return result; // No cheating
     result.unlocked = true;
 
@@ -42,16 +41,20 @@ export let builder = () => {
         SCRITTIES_LOG.BUILD_LastGroupReached = ""
         let grpImpossible = true;
         for (let goal of goal_group) {
+            if (!goal.conditions.every(cond => cond())) continue;
+
             if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
-                let buildRes = build(goal.name, true);
+                let buildRes = build(goal.bldObj, true);
                 if (!buildRes.unlocked) continue; // No cheating
 
                 grpImpossible = grpImpossible && buildRes.impossible;
                 if (!buildRes.available && !buildRes.impossible) {
-                    SCRITTIES_LOG.BUILD_LastGroupReached += goal.label + ", ";
+                    SCRITTIES_LOG.BUILD_LastGroupReached += goal.name + ", ";
                 }
 
-                if (SCRITTIES_LOG.build && buildRes.built) console.log(`Building a ${goal.label}`);
+                if (buildRes.built) goal.after.forEach(afterFn => { afterFn(); });
+
+                if (SCRITTIES_LOG.build && buildRes.built) console.log(`Building a ${goal.bldObj.opts.name}`);
             }
         }
         if (!grpImpossible) {

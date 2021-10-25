@@ -55,7 +55,7 @@
     build: true,
     sacrifice: true,
     cloudSave: true,
-    kittenLimit: 170
+    kittenLimit: 175
   };
 
   // scripts/actions/hunt.js
@@ -93,56 +93,129 @@
     }
   };
 
+  // scripts/utility/conditions.js
+  function resourceCondition(resource, condType, value) {
+    let currVal = game.resPool.get(resource).value;
+    let maxVal = game.resPool.get(resource).maxValue;
+    switch (condType) {
+      case "fixed":
+        return currVal >= value;
+      case "fraction":
+        return currVal / maxVal >= value;
+    }
+  }
+
   // ref/buildings.js
-  var aqueduct = { name: "aqueduct", label: "Aqueduct" };
-  var library = { name: "library", label: "Library" };
-  var academy = { name: "academy", label: "Academy" };
-  var observatory = { name: "observatory", label: "Observatory" };
-  var barn = { name: "barn", label: "Barn" };
-  var warehouse = { name: "warehouse", label: "Warehouse" };
-  var harbor = { name: "harbor", label: "Harbour" };
-  var mine = { name: "mine", label: "Mine" };
-  var quarry = { name: "quarry", label: "Quarry" };
-  var lumberMill = { name: "lumberMill", label: "Lumber Mill" };
-  var smelter = { name: "smelter", label: "Smelter" };
-  var amphitheatre = { name: "amphitheatre", label: "Amphitheatre" };
-  var temple = { name: "temple", label: "Temple" };
-  var workshop = { name: "workshop", label: "Workshop" };
-  var tradepost = { name: "tradepost", label: "Tradepost" };
-  var unicornPasture = { name: "unicornPasture", label: "Unic. Pasture" };
-  var hut = { name: "hut", label: "Hut" };
-  var logHouse = { name: "logHouse", label: "Log House" };
+  var getBldObj = (buildingName, limit, conditions = [], after = []) => {
+    return {
+      name: buildingName,
+      get bldObj() {
+        return game.bldTab.children.find((bld) => bld.opts.building === buildingName);
+      },
+      limit,
+      conditions,
+      after
+    };
+  };
+  var field = getBldObj("field", -1);
+  var pasture = getBldObj("pasture", -1);
+  var aqueduct = getBldObj("aqueduct", -1);
+  aqueduct.conditions.push(resourceCondition.bind(null, "minerals", "fraction", 1));
+  var hut = getBldObj("hut", -1);
+  var logHouse = getBldObj("logHouse", -1);
+  var mansion = getBldObj("mansion", -1);
+  hut.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
+  logHouse.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
+  mansion.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
+  mansion.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
+  var library = getBldObj("library", -1);
+  var academy = getBldObj("academy", -1);
+  var observatory = getBldObj("observatory", -1);
+  var biolab = getBldObj("biolab", -1);
+  academy.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
+  observatory.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
+  observatory.conditions.push(resourceCondition.bind(null, "iron", "fraction", 1));
+  observatory.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
+  var barn = getBldObj("barn", -1);
+  var warehouse = getBldObj("warehouse", -1);
+  var harbor = getBldObj("harbor", -1);
+  var mine = getBldObj("mine", -1);
+  var quarry = getBldObj("quarry", -1);
+  var lumberMill = getBldObj("lumberMill", -1);
+  var oilWell = getBldObj("oilWell", -1);
+  var accelerator = getBldObj("accelerator", -1);
+  quarry.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
+  game.bld.getPrices("quarry").forEach((price) => {
+    quarry.conditions.push(resourceCondition.bind(null, price.name, "fixed", price.val * 2));
+  });
+  oilWell.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
+  accelerator.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
+  accelerator.after.push(() => {
+    if (game.bld.get("accelerator").on > 0) {
+      game.bld.get("accelerator").on -= 1;
+    }
+  });
+  var steamworks = getBldObj("steamworks", -1);
+  var magneto = getBldObj("magneto", -1);
+  var smelter = getBldObj("smelter", -1);
+  var calciner = getBldObj("calciner", -1);
+  var factory = getBldObj("factory", -1);
+  var reactor = getBldObj("reactor", -1);
+  steamworks.conditions.push(resourceCondition.bind(null, "blueprint", "fixed", 1e3));
+  steamworks.conditions.push(() => game.bld.get("magneto").unlocked);
+  steamworks.conditions.push(() => game.bld.get("magneto").val > game.bld.get("steamworks").val + 7);
+  magneto.conditions.push(resourceCondition.bind(null, "blueprint", "fixed", 1e3));
+  magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
+  magneto.conditions.push(resourceCondition.bind(null, "alloy", "fixed", game.bld.getPrices("magneto").find((price) => price.name === "alloy").val * 2));
+  var amphitheatre = getBldObj("amphitheatre", -1);
+  var chapel = getBldObj("chapel", -1);
+  var temple = getBldObj("temple", -1);
+  temple.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
+  chapel.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
+  var workshop = getBldObj("workshop", -1);
+  var tradepost = getBldObj("tradepost", -1);
+  tradepost.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
+  var mint = getBldObj("mint", -1);
+  var unicornPasture = getBldObj("unicornPasture", -1);
+  var brewery = getBldObj("brewery", -1);
+  var ziggurat = getBldObj("ziggurat", -1);
+  mint.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
+  mint.after.push(() => {
+    game.bld.get("mint").on = 0;
+  });
 
   // ref/build-hierarchy.js
   var bldGoals = [
     [
-      { ...workshop, limit: -1 },
-      { ...lumberMill, limit: -1 },
-      { ...mine, limit: -1 },
-      { ...quarry, limit: 10 },
-      { ...smelter, limit: -1 }
+      workshop,
+      lumberMill,
+      mine,
+      smelter,
+      aqueduct,
+      tradepost,
+      temple,
+      mint
     ],
     [
-      { ...hut, limit: -1 },
-      { ...logHouse, limit: -1 }
+      hut,
+      logHouse,
+      mansion
     ],
     [
-      { ...tradepost, limit: -1 },
-      { ...academy, limit: -1 },
-      { ...library, limit: -1 },
-      { ...amphitheatre, limit: -1 }
+      library,
+      academy,
+      observatory,
+      amphitheatre
     ],
     [
-      { ...aqueduct, limit: -1 }
+      accelerator
     ],
     [
-      { ...barn, limit: -1 },
-      { ...warehouse, limit: -1 },
-      { ...harbor, limit: -1 },
-      { ...observatory, limit: -1 }
-    ],
-    [
-      { ...unicornPasture, limit: -1 }
+      barn,
+      warehouse,
+      harbor,
+      quarry,
+      oilWell
     ]
   ];
 
@@ -154,7 +227,7 @@
       clearInterval(kittenLimiter);
     }
   };
-  var build = (buildingName, bldTabUpdated) => {
+  var build = (bld, bldTabUpdated) => {
     if (!bldTabUpdated)
       game.bldTab.update();
     let result = {
@@ -163,7 +236,6 @@
       available: false,
       built: false
     };
-    let bld = game.bldTab.children.find((node) => node.opts.building === buildingName);
     if (!bld)
       return result;
     result.unlocked = true;
@@ -182,16 +254,22 @@
       SCRITTIES_LOG.BUILD_LastGroupReached = "";
       let grpImpossible = true;
       for (let goal of goal_group) {
+        if (!goal.conditions.every((cond) => cond()))
+          continue;
         if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
-          let buildRes = build(goal.name, true);
+          let buildRes = build(goal.bldObj, true);
           if (!buildRes.unlocked)
             continue;
           grpImpossible = grpImpossible && buildRes.impossible;
           if (!buildRes.available && !buildRes.impossible) {
-            SCRITTIES_LOG.BUILD_LastGroupReached += goal.label + ", ";
+            SCRITTIES_LOG.BUILD_LastGroupReached += goal.name + ", ";
           }
+          if (buildRes.built)
+            goal.after.forEach((afterFn) => {
+              afterFn();
+            });
           if (SCRITTIES_LOG.build && buildRes.built)
-            console.log(`Building a ${goal.label}`);
+            console.log(`Building a ${goal.bldObj.opts.name}`);
         }
       }
       if (!grpImpossible) {
@@ -444,16 +522,6 @@
         return;
       }
     }
-    game.bldTab.update();
-    let goldBuildings = [tradepost, temple];
-    for (let goldBuilding of goldBuildings) {
-      let buildRes = build(goldBuilding.name, true);
-      if (buildRes.built) {
-        if (SCRITTIES_LOG.gold.build)
-          console.log(`Building a ${goldBuilding.label} to use gold`);
-        return;
-      }
-    }
     if (game.diplomacy.get("zebras").unlocked) {
       let zebras = game.diplomacy.get("zebras");
       let trades = 1;
@@ -463,25 +531,6 @@
         if (SCRITTIES_LOG.gold.tradeZebras)
           console.log("Trading with zebras");
         game.diplomacy.tradeMultiple(game.diplomacy.get("zebras"), trades);
-        return;
-      }
-    }
-  };
-
-  // scripts/use-resources/minerals.js
-  var minerals = () => {
-    let mineralRes = game.resPool.resourceMap.minerals;
-    if (!mineralRes.unlocked)
-      return;
-    if (mineralRes.value < mineralRes.maxValue)
-      return;
-    game.bldTab.update();
-    let mineralBuildings = [aqueduct];
-    for (let mineralBuilding of mineralBuildings) {
-      let buildRes = build(mineralBuilding.name, true);
-      if (buildRes.built) {
-        if (SCRITTIES_LOG.minerals)
-          console.log(`Building a ${mineralBuilding.label} to use minerals`);
         return;
       }
     }
@@ -556,12 +605,12 @@
   // scripts/actions/sacrifice.js
   var unicornBldQueue = [];
   var sacrifice = () => {
+    let ziggBld = game.bld.get("ziggurat");
+    if (!ziggBld.on)
+      return;
     if (!game.religionTab.zgUpgradeButtons || game.religionTab.zgUpgradeButtons.length === 0)
       $(`a.Religion`)[0].click();
     if (unicornBldQueue.length === 0)
-      return;
-    let ziggBld = game.bld.get("ziggurat");
-    if (!ziggBld.on)
       return;
     let ziggUpgrade = game.religionTab.zgUpgradeButtons[unicornBldQueue[0]];
     if (!ziggUpgrade.model.metadata.unlocked)
@@ -595,11 +644,10 @@
     observeInterval = setInterval(observe, 2e3);
   }
   var cultureInterval = setInterval(culture, 5e3);
-  var goldInterval = setInterval(gold, 30 * 1e3, 30 * 1e3);
   var useResourcesInterval = setInterval(() => {
     builder();
-    minerals();
     useUpResources();
+    gold();
   }, 1 * 1e3);
   var kittenLimiterInterval = setInterval(kittenLimiter, 10 * 1e3);
   var upgradeInterval = setInterval(upgrade, 2 * 1e3);

@@ -24,5 +24,5 @@ export let SCRITTIES_SETTINGS = {
     sacrifice: true,
     cloudSave: true,
 
-    kittenLimit: 170
+    kittenLimit: 175
 };

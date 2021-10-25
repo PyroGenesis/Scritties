@@ -6,7 +6,6 @@ import { upgrade } from "./scripts/actions/upgrade";
 import { culture } from "./scripts/use-resources/culture";
 import { useUpResources } from "./scripts/use-resources/general";
 import { gold } from "./scripts/use-resources/gold";
-import { minerals } from "./scripts/use-resources/minerals";
 import { faith } from "./scripts/use-resources/faith";
 import { sacrifice } from "./scripts/actions/sacrifice";
 
@@ -20,7 +19,6 @@ if (!game.workshop.get('seti').researched) {
 }
 
 let cultureInterval = setInterval(culture, 5000);
-let goldInterval = setInterval(gold, 30*1000, 30*1000);
 
 // jQuery.expr[':'].icontains = function(a, i, m) {
 //     return jQuery(a).text().toUpperCase()
@@ -29,8 +27,8 @@ let goldInterval = setInterval(gold, 30*1000, 30*1000);
 
 let useResourcesInterval = setInterval(() => {
     builder();
-    minerals();
     useUpResources();
+    gold();
 }, 1 * 1000);
 let kittenLimiterInterval = setInterval(kittenLimiter, 10 * 1000);
 

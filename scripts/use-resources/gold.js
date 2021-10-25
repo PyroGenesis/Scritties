@@ -18,16 +18,16 @@ export let gold = (msBetweenExecutions) => {
     }
 
     // build a gold building
-    game.bldTab.update();
-    let goldBuildings = [tradepost, temple];
+    // game.bldTab.update();
+    // let goldBuildings = [tradepost, temple];
 
-    for (let goldBuilding of goldBuildings) {
-        let buildRes = build(goldBuilding.name, true);
-        if (buildRes.built) {
-            if (SCRITTIES_LOG.gold.build) console.log(`Building a ${goldBuilding.label} to use gold`);
-            return;
-        }
-    }
+    // for (let goldBuilding of goldBuildings) {
+    //     let buildRes = build(goldBuilding.name, true);
+    //     if (buildRes.built) {
+    //         if (SCRITTIES_LOG.gold.build) console.log(`Building a ${goldBuilding.label} to use gold`);
+    //         return;
+    //     }
+    // }
 
     if(game.diplomacy.get('zebras').unlocked) {
         let zebras = game.diplomacy.get("zebras");

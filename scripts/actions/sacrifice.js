@@ -9,14 +9,14 @@ let ivoryCitadelBtnIdx = 2 //{ name: 'ivoryCitadel', label: 'Unicorn Tomb' }
 let skyPalaceBtnIdx = 3 //{ name: 'ivoryCitadel', label: 'Unicorn Tomb' }
 
 export let sacrifice = () => {
+    // Check if a ziggurat was ever bought
+    let ziggBld = game.bld.get('ziggurat');
+    if(!ziggBld.on) return;
     // load the religion tab if not loaded
     if (!game.religionTab.zgUpgradeButtons || game.religionTab.zgUpgradeButtons.length === 0) $(`a.Religion`)[0].click();
 
     // Queue is empty
     if (unicornBldQueue.length === 0) return;
-    // Check if a ziggurat was ever bought
-    let ziggBld = game.bld.get('ziggurat');
-    if(!ziggBld.on) return;
 
     // Get upgrade object from religion tab
     let ziggUpgrade = game.religionTab.zgUpgradeButtons[unicornBldQueue[0]]
