@@ -104,6 +104,18 @@
         return currVal / maxVal >= value;
     }
   }
+  function priceCondition(bld, resource, multiplier) {
+    if (resource !== "all") {
+      let price = game.bld.getPrices(bld).find((price2) => price2.name === resource).val * multiplier;
+      return resourceCondition.bind(null, resource, "fixed", price);
+    } else {
+      return () => {
+        return game.bld.getPrices(bld).every((price) => {
+          resourceCondition(price.name, "fixed", price.val * multiplier);
+        });
+      };
+    }
+  }
 
   // ref/buildings.js
   var getBldObj = (buildingName, limit, conditions = [], after = []) => {
@@ -145,9 +157,7 @@
   var oilWell = getBldObj("oilWell", -1);
   var accelerator = getBldObj("accelerator", -1);
   quarry.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
-  game.bld.getPrices("quarry").forEach((price) => {
-    quarry.conditions.push(resourceCondition.bind(null, price.name, "fixed", price.val * 2));
-  });
+  quarry.conditions.push(priceCondition("quarry", "all", 2));
   oilWell.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
   accelerator.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
   accelerator.after.push(() => {
@@ -166,12 +176,13 @@
   steamworks.conditions.push(() => game.bld.get("magneto").val > game.bld.get("steamworks").val + 7);
   magneto.conditions.push(resourceCondition.bind(null, "blueprint", "fixed", 1e3));
   magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
-  magneto.conditions.push(resourceCondition.bind(null, "alloy", "fixed", game.bld.getPrices("magneto").find((price) => price.name === "alloy").val * 2));
+  magneto.conditions.push(priceCondition("magneto", "alloy", 2));
   var amphitheatre = getBldObj("amphitheatre", -1);
   var chapel = getBldObj("chapel", -1);
   var temple = getBldObj("temple", -1);
-  temple.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
   chapel.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
+  temple.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
+  temple.conditions.push(priceCondition("temple", "manuscript", 2));
   var workshop = getBldObj("workshop", -1);
   var tradepost = getBldObj("tradepost", -1);
   tradepost.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));

@@ -1,5 +1,5 @@
 import { SCRITTIES_SETTINGS } from '../config/settings';
-import { resourceCondition } from '../scripts/utility/conditions';
+import { priceCondition, resourceCondition } from '../scripts/utility/conditions';
 
 let getBldObj = (buildingName, limit, /*extraPropsFn,*/ conditions = [], after = []) => {
     // extraPropsFn = extraPropsFn || function() { return {} };
@@ -45,9 +45,7 @@ export let lumberMill = getBldObj('lumberMill', -1);        // Always
 export let oilWell = getBldObj('oilWell', -1);              // If ships = 250
 export let accelerator = getBldObj('accelerator', -1);      // If titanium full, turn on/off upto current
 quarry.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
-game.bld.getPrices('quarry').forEach(price => {
-    quarry.conditions.push(resourceCondition.bind(null, price.name, 'fixed', price.val * 2));
-});
+quarry.conditions.push(priceCondition('quarry', 'all', 2));
 oilWell.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 accelerator.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 1));
 accelerator.after.push(() => {
@@ -67,13 +65,14 @@ steamworks.conditions.push(() => game.bld.get('magneto').unlocked);
 steamworks.conditions.push(() => game.bld.get('magneto').val > (game.bld.get('steamworks').val + 7));
 magneto.conditions.push(resourceCondition.bind(null, 'blueprint', 'fixed', 1000));
 magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
-magneto.conditions.push(resourceCondition.bind(null, 'alloy', 'fixed', game.bld.getPrices('magneto').find(price => price.name === 'alloy').val * 2));
+magneto.conditions.push(priceCondition('magneto', 'alloy', 2));
 
 export let amphitheatre = getBldObj('amphitheatre', -1);    // Always?
 export let chapel = getBldObj('chapel', -1);                // Manual
-export let temple = getBldObj('temple', -1);                // If gold is full
-temple.conditions.push(resourceCondition.bind(null, 'gold', 'fraction', 1));
+export let temple = getBldObj('temple', -1);                // If gold is full, manuscripts are double
 chapel.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
+temple.conditions.push(resourceCondition.bind(null, 'gold', 'fraction', 1));
+temple.conditions.push(priceCondition('temple', 'manuscript', 2));
 
 export let workshop = getBldObj('workshop', -1);            // Always, priority 1
 export let tradepost = getBldObj('tradepost', -1);          // If gold is full
