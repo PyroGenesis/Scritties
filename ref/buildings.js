@@ -33,11 +33,12 @@ export let biolab = getBldObj('biolab', -1);                // No, reserve alloy
 academy.conditions.push(resourceCondition.bind(null, 'science', 'fraction', 1));
 observatory.conditions.push(resourceCondition.bind(null, 'science', 'fraction', 1));
 observatory.conditions.push(resourceCondition.bind(null, 'iron', 'fraction', 1));
-observatory.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
+// observatory.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 
 export let barn = getBldObj('barn', -1);                    // Always at end
 export let warehouse = getBldObj('warehouse', -1);          // Always at end
-export let harbor = getBldObj('harbor', -1);                // Always at end
+export let harbor = getBldObj('harbor', -1);                // Always at end, not until 250 ships
+harbor.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 
 export let mine = getBldObj('mine', -1);                    // Always
 export let quarry = getBldObj('quarry', -1);                // If ships = 250, double resources available

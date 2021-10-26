@@ -147,10 +147,10 @@
   academy.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
   observatory.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
   observatory.conditions.push(resourceCondition.bind(null, "iron", "fraction", 1));
-  observatory.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
   var barn = getBldObj("barn", -1);
   var warehouse = getBldObj("warehouse", -1);
   var harbor = getBldObj("harbor", -1);
+  harbor.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
   var mine = getBldObj("mine", -1);
   var quarry = getBldObj("quarry", -1);
   var lumberMill = getBldObj("lumberMill", -1);
