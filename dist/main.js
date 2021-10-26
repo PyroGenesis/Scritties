@@ -231,13 +231,6 @@
   ];
 
   // scripts/actions/build.js
-  var kittenLimiter = () => {
-    if (game.village.maxKittens >= SCRITTIES_SETTINGS.kittenLimit) {
-      console.log("No more kittens!");
-      bldGoals.splice(1, 1);
-      clearInterval(kittenLimiter);
-    }
-  };
   var build = (bld, bldTabUpdated) => {
     if (!bldTabUpdated)
       game.bldTab.update();
@@ -660,6 +653,5 @@
     useUpResources();
     gold(1 * 1e3);
   }, 1 * 1e3);
-  var kittenLimiterInterval = setInterval(kittenLimiter, 10 * 1e3);
   var upgradeInterval = setInterval(upgrade, 2 * 1e3);
 })();

@@ -1,6 +1,6 @@
 import { hunt } from "./scripts/actions/hunt";
 import { observe } from "./scripts/actions/observe";
-import { builder, kittenLimiter } from "./scripts/actions/build";
+import { builder } from "./scripts/actions/build";
 import { setupCloudSaving } from "./scripts/actions/cloud-save";
 import { upgrade } from "./scripts/actions/upgrade";
 import { culture } from "./scripts/use-resources/culture";
@@ -30,7 +30,6 @@ let useResourcesInterval = setInterval(() => {
     useUpResources();
     gold(1 * 1000);
 }, 1 * 1000);
-let kittenLimiterInterval = setInterval(kittenLimiter, 10 * 1000);
 
 let upgradeInterval = setInterval(upgrade, 2 * 1000);
 
