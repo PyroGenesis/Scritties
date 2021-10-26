@@ -658,7 +658,7 @@
   var useResourcesInterval = setInterval(() => {
     builder();
     useUpResources();
-    gold();
+    gold(1 * 1e3);
   }, 1 * 1e3);
   var kittenLimiterInterval = setInterval(kittenLimiter, 10 * 1e3);
   var upgradeInterval = setInterval(upgrade, 2 * 1e3);

@@ -28,7 +28,7 @@ let cultureInterval = setInterval(culture, 5000);
 let useResourcesInterval = setInterval(() => {
     builder();
     useUpResources();
-    gold();
+    gold(1 * 1000);
 }, 1 * 1000);
 let kittenLimiterInterval = setInterval(kittenLimiter, 10 * 1000);
 
