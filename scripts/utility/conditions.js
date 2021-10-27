@@ -16,7 +16,7 @@ export function priceCondition(bld, resource, multiplier) {
     } else {
         return () => {
             return game.bld.getPrices(bld).every(price => {
-                resourceCondition(price.name, 'fixed', price.val * multiplier);
+                return resourceCondition(price.name, 'fixed', price.val * multiplier);
             });
         }
     }
