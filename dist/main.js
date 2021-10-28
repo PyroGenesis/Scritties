@@ -157,8 +157,9 @@
   var oilWell = getBldObj("oilWell", -1);
   var accelerator = getBldObj("accelerator", -1);
   quarry.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
-  quarry.conditions.push(priceCondition("quarry", "all", 2));
+  quarry.conditions.push(priceCondition("quarry", "all", 3));
   oilWell.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
+  oilWell.conditions.push(priceCondition("oilWell", "all", 3));
   accelerator.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
   accelerator.after.push(() => {
     if (game.bld.get("accelerator").on > 0) {
@@ -176,13 +177,15 @@
   steamworks.conditions.push(() => game.bld.get("magneto").val > game.bld.get("steamworks").val + 7);
   magneto.conditions.push(resourceCondition.bind(null, "blueprint", "fixed", 1e3));
   magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
-  magneto.conditions.push(priceCondition("magneto", "alloy", 2));
+  magneto.conditions.push(priceCondition("magneto", "alloy", 3));
   var amphitheatre = getBldObj("amphitheatre", -1);
   var chapel = getBldObj("chapel", -1);
   var temple = getBldObj("temple", -1);
   chapel.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
+  chapel.conditions.push(priceCondition("chapel", "parchment", 10));
   temple.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
   temple.conditions.push(priceCondition("temple", "manuscript", 2));
+  temple.conditions.push(priceCondition("temple", "plate", 3));
   var workshop = getBldObj("workshop", -1);
   var tradepost = getBldObj("tradepost", -1);
   tradepost.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
@@ -191,6 +194,7 @@
   var brewery = getBldObj("brewery", -1);
   var ziggurat = getBldObj("ziggurat", -1);
   mint.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
+  mint.conditions.push(priceCondition("mint", "plate", 3));
   mint.after.push(() => {
     game.bld.get("mint").on = 0;
   });
@@ -204,7 +208,6 @@
       smelter,
       aqueduct,
       tradepost,
-      temple,
       mint
     ],
     [
@@ -219,7 +222,9 @@
       amphitheatre
     ],
     [
-      accelerator
+      accelerator,
+      temple,
+      chapel
     ],
     [
       barn,

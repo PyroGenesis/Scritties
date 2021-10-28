@@ -28,7 +28,7 @@ mansion.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 1))
 
 export let library = getBldObj('library', -1);          
 export let academy = getBldObj('academy', -1);              // If science is full
-export let observatory = getBldObj('observatory', -1);      // If science, iron is full, if ships = 250
+export let observatory = getBldObj('observatory', -1);      // If science, iron is full
 export let biolab = getBldObj('biolab', -1);                // No, reserve alloy
 academy.conditions.push(resourceCondition.bind(null, 'science', 'fraction', 1));
 observatory.conditions.push(resourceCondition.bind(null, 'science', 'fraction', 1));
@@ -41,13 +41,14 @@ export let harbor = getBldObj('harbor', -1);                // Always at end, no
 harbor.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 
 export let mine = getBldObj('mine', -1);                    // Always
-export let quarry = getBldObj('quarry', -1);                // If ships = 250, double resources available
+export let quarry = getBldObj('quarry', -1);                // If ships = 250, triple resources available
 export let lumberMill = getBldObj('lumberMill', -1);        // Always
-export let oilWell = getBldObj('oilWell', -1);              // If ships = 250
+export let oilWell = getBldObj('oilWell', -1);              // If ships = 250, triple resources available
 export let accelerator = getBldObj('accelerator', -1);      // If titanium full, turn on/off upto current
 quarry.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
-quarry.conditions.push(priceCondition('quarry', 'all', 2));
+quarry.conditions.push(priceCondition('quarry', 'all', 3));
 oilWell.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
+oilWell.conditions.push(priceCondition('oilWell', 'all', 3));
 accelerator.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 1));
 accelerator.after.push(() => {
     if (game.bld.get('accelerator').on > 0) {
@@ -56,7 +57,7 @@ accelerator.after.push(() => {
 });
 
 export let steamworks = getBldObj('steamworks', -1);        // If blueprint > 1000, magneto researched and > steamworks + 7
-export let magneto = getBldObj('magneto', -1);              // If blueprint > 1000, oil > 0.25/sec, alloy doubled
+export let magneto = getBldObj('magneto', -1);              // If blueprint > 1000, oil > 0.25/sec, alloy triple
 export let smelter = getBldObj('smelter', -1);              // Always
 export let calciner = getBldObj('calciner', -1);            // Manual
 export let factory = getBldObj('factory', -1);              // Manual
@@ -66,22 +67,25 @@ steamworks.conditions.push(() => game.bld.get('magneto').unlocked);
 steamworks.conditions.push(() => game.bld.get('magneto').val > (game.bld.get('steamworks').val + 7));
 magneto.conditions.push(resourceCondition.bind(null, 'blueprint', 'fixed', 1000));
 magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
-magneto.conditions.push(priceCondition('magneto', 'alloy', 2));
+magneto.conditions.push(priceCondition('magneto', 'alloy', 3));
 
 export let amphitheatre = getBldObj('amphitheatre', -1);    // Always?
-export let chapel = getBldObj('chapel', -1);                // Manual
-export let temple = getBldObj('temple', -1);                // If gold is full, manuscripts are double
+export let chapel = getBldObj('chapel', -1);                // If ship > 250, manuscripts is 10x
+export let temple = getBldObj('temple', -1);                // If gold is full, manuscripts are double, plate is triple
 chapel.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
+chapel.conditions.push(priceCondition('chapel', 'parchment', 10));
 temple.conditions.push(resourceCondition.bind(null, 'gold', 'fraction', 1));
 temple.conditions.push(priceCondition('temple', 'manuscript', 2));
+temple.conditions.push(priceCondition('temple', 'plate', 3));
 
 export let workshop = getBldObj('workshop', -1);            // Always, priority 1
 export let tradepost = getBldObj('tradepost', -1);          // If gold is full
 tradepost.conditions.push(resourceCondition.bind(null, 'gold', 'fraction', 1));
 
-export let mint = getBldObj('mint', -1);                    // If gold is full
+export let mint = getBldObj('mint', -1);                    // If gold is full, plate is triple
 export let unicornPasture = getBldObj('unicornPasture', -1);
 export let brewery = getBldObj('brewery', -1);              
 export let ziggurat = getBldObj('ziggurat', -1);            // Manual
 mint.conditions.push(resourceCondition.bind(null, 'gold', 'fraction', 1));
+mint.conditions.push(priceCondition('mint', 'plate', 3));
 mint.after.push(() => { game.bld.get('mint').on = 0; });
