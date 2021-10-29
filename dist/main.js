@@ -150,6 +150,8 @@
   var barn = getBldObj("barn", -1);
   var warehouse = getBldObj("warehouse", -1);
   var harbor = getBldObj("harbor", -1);
+  warehouse.conditions.push(priceCondition("warehouse", "all", 2));
+  harbor.conditions.push(priceCondition("harbor", "all", 2));
   harbor.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
   var mine = getBldObj("mine", -1);
   var quarry = getBldObj("quarry", -1);

@@ -36,8 +36,10 @@ observatory.conditions.push(resourceCondition.bind(null, 'iron', 'fraction', 1))
 // observatory.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 
 export let barn = getBldObj('barn', -1);                    // Always at end
-export let warehouse = getBldObj('warehouse', -1);          // Always at end
-export let harbor = getBldObj('harbor', -1);                // Always at end, not until 250 ships
+export let warehouse = getBldObj('warehouse', -1);          // Always at end, double resources available
+export let harbor = getBldObj('harbor', -1);                // Always at end, not until 250 ships, double resources available
+warehouse.conditions.push(priceCondition('warehouse', 'all', 2));
+harbor.conditions.push(priceCondition('harbor', 'all', 2));
 harbor.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 
 export let mine = getBldObj('mine', -1);                    // Always
