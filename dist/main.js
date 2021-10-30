@@ -180,6 +180,9 @@
   magneto.conditions.push(resourceCondition.bind(null, "blueprint", "fixed", 1e3));
   magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
   magneto.conditions.push(priceCondition("magneto", "alloy", 3));
+  factory.conditions.push(() => game.workshop.get("carbonSequestration").researched);
+  factory.conditions.push(() => game.resPool.energyProd - game.resPool.energyCons >= 4);
+  factory.conditions.push(priceCondition("factory", "plate", 2));
   var amphitheatre = getBldObj("amphitheatre", -1);
   var chapel = getBldObj("chapel", -1);
   var temple = getBldObj("temple", -1);
@@ -233,7 +236,8 @@
       warehouse,
       harbor,
       quarry,
-      oilWell
+      oilWell,
+      factory
     ]
   ];
 

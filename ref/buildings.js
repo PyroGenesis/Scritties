@@ -62,7 +62,7 @@ export let steamworks = getBldObj('steamworks', -1);        // If blueprint > 10
 export let magneto = getBldObj('magneto', -1);              // If blueprint > 1000, oil > 0.25/sec, alloy triple
 export let smelter = getBldObj('smelter', -1);              // Always
 export let calciner = getBldObj('calciner', -1);            // Manual
-export let factory = getBldObj('factory', -1);              // Manual
+export let factory = getBldObj('factory', -1);              // If carbon sequestration researched, 4 power available, double plate
 export let reactor = getBldObj('reactor', -1);              // Manual
 steamworks.conditions.push(resourceCondition.bind(null, 'blueprint', 'fixed', 1000));
 steamworks.conditions.push(() => game.bld.get('magneto').unlocked);
@@ -70,6 +70,9 @@ steamworks.conditions.push(() => game.bld.get('magneto').val > (game.bld.get('st
 magneto.conditions.push(resourceCondition.bind(null, 'blueprint', 'fixed', 1000));
 magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
 magneto.conditions.push(priceCondition('magneto', 'alloy', 3));
+factory.conditions.push(() => game.workshop.get('carbonSequestration').researched);
+factory.conditions.push(() => (game.resPool.energyProd - game.resPool.energyCons) >= 4);
+factory.conditions.push(priceCondition('factory', 'plate', 2));
 
 export let amphitheatre = getBldObj('amphitheatre', -1);    // Always?
 export let chapel = getBldObj('chapel', -1);                // If ship > 250, manuscripts is 10x
