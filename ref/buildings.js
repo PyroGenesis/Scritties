@@ -76,7 +76,7 @@ magneto.conditions.push(resourceCondition.bind(null, 'blueprint', 'fixed', 1000)
 magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
 magneto.conditions.push(priceCondition('magneto', 'alloy', 3));
 factory.conditions.push(() => game.workshop.get('carbonSequestration').researched);
-factory.conditions.push(() => (game.resPool.energyProd - game.resPool.energyCons) >= 4);
+factory.conditions.push(() => (game.resPool.energyWinterProd - game.resPool.energyCons) >= 4);
 factory.conditions.push(() => game.bld.get('factory').on === game.bld.get('factory').val);
 factory.conditions.push(priceCondition('factory', 'plate', 2));
 
