@@ -495,6 +495,12 @@
       result: "kerosene",
       cost: 7500,
       otherResources: []
+    },
+    {
+      source: "uranium",
+      result: "thorium",
+      cost: 250,
+      otherResources: []
     }
   ];
 
