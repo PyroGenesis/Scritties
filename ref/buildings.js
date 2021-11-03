@@ -15,8 +15,11 @@ let getBldObj = (buildingName, limit, /*extraPropsFn,*/ conditions = [], after =
 
 export let field = getBldObj('field', -1); 
 export let pasture = getBldObj('pasture', -1);              // No, chance of death
+export let solarFarm = getBldObj('pasture', -1);            // Always, if unlocked and full titanium
 export let aqueduct = getBldObj('aqueduct', -1);            // If mineral full
 aqueduct.conditions.push(resourceCondition.bind(null, 'minerals', 'fraction', 1));
+solarFarm.conditions.push(() => game.bld.get('pasture').stage === 1)
+solarFarm.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 1));
 
 export let hut = getBldObj('hut', -1);                      // Upto kitten limit
 export let logHouse = getBldObj('logHouse', -1);            // Upto kitten limit
@@ -53,7 +56,9 @@ oilWell.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 oilWell.conditions.push(priceCondition('oilWell', 'all', 3));
 accelerator.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 1));
 accelerator.after.push(() => {
-    if (game.bld.get('accelerator').on > 0) {
+    if (game.bld.get('accelerator').val === 1) {
+        game.bld.get('accelerator').on = 0;
+    } else if (game.bld.get('accelerator').on > 0) {
         game.bld.get('accelerator').on -= 1;
     }
 });
@@ -72,6 +77,7 @@ magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05)
 magneto.conditions.push(priceCondition('magneto', 'alloy', 3));
 factory.conditions.push(() => game.workshop.get('carbonSequestration').researched);
 factory.conditions.push(() => (game.resPool.energyProd - game.resPool.energyCons) >= 4);
+factory.conditions.push(() => game.bld.get('factory').on === game.bld.get('factory').val);
 factory.conditions.push(priceCondition('factory', 'plate', 2));
 
 export let amphitheatre = getBldObj('amphitheatre', -1);    // Always?

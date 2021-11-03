@@ -131,8 +131,11 @@
   };
   var field = getBldObj("field", -1);
   var pasture = getBldObj("pasture", -1);
+  var solarFarm = getBldObj("pasture", -1);
   var aqueduct = getBldObj("aqueduct", -1);
   aqueduct.conditions.push(resourceCondition.bind(null, "minerals", "fraction", 1));
+  solarFarm.conditions.push(() => game.bld.get("pasture").stage === 1);
+  solarFarm.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
   var hut = getBldObj("hut", -1);
   var logHouse = getBldObj("logHouse", -1);
   var mansion = getBldObj("mansion", -1);
@@ -164,7 +167,9 @@
   oilWell.conditions.push(priceCondition("oilWell", "all", 3));
   accelerator.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
   accelerator.after.push(() => {
-    if (game.bld.get("accelerator").on > 0) {
+    if (game.bld.get("accelerator").val === 1) {
+      game.bld.get("accelerator").on = 0;
+    } else if (game.bld.get("accelerator").on > 0) {
       game.bld.get("accelerator").on -= 1;
     }
   });
@@ -182,6 +187,7 @@
   magneto.conditions.push(priceCondition("magneto", "alloy", 3));
   factory.conditions.push(() => game.workshop.get("carbonSequestration").researched);
   factory.conditions.push(() => game.resPool.energyProd - game.resPool.energyCons >= 4);
+  factory.conditions.push(() => game.bld.get("factory").on === game.bld.get("factory").val);
   factory.conditions.push(priceCondition("factory", "plate", 2));
   var amphitheatre = getBldObj("amphitheatre", -1);
   var chapel = getBldObj("chapel", -1);
@@ -213,7 +219,8 @@
       smelter,
       aqueduct,
       tradepost,
-      mint
+      mint,
+      solarFarm
     ],
     [
       hut,
