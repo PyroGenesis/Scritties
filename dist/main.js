@@ -13,7 +13,7 @@
     culture: true,
     gold: {
       promoteLeader: true,
-      tradeZebras: true,
+      trade: true,
       build: true
     },
     minerals: true,
@@ -43,7 +43,7 @@
     culture: true,
     gold: {
       promoteLeader: true,
-      tradeZebras: true,
+      trade: true,
       build: true
     },
     minerals: true,
@@ -55,7 +55,7 @@
     build: true,
     sacrifice: true,
     cloudSave: true,
-    kittenLimit: 175
+    kittenLimit: 280
   };
 
   // scripts/actions/hunt.js
@@ -528,6 +528,23 @@
     }
   };
 
+  // scripts/actions/trade.js
+  var trade = (raceName, msBetweenExecutions) => {
+    if (game.diplomacy.get(raceName).unlocked) {
+      let goldRes = game.resPool.resourceMap.gold;
+      let race = game.diplomacy.get(raceName);
+      let trades = 1;
+      trades = Math.max(trades, Math.floor(goldRes.perTickCached * msBetweenExecutions / 200 / (15 - game.getEffect("tradeGoldDiscount"))));
+      trades = Math.min(trades, game.diplomacy.getMaxTradeAmt(race));
+      if (trades > 0) {
+        if (SCRITTIES_LOG.gold.trade)
+          console.log(`Trading with ${raceName}`);
+        game.diplomacy.tradeMultiple(game.diplomacy.get(raceName), trades);
+        return;
+      }
+    }
+  };
+
   // scripts/use-resources/gold.js
   var gold = (msBetweenExecutions) => {
     let goldRes = game.resPool.resourceMap.gold;
@@ -544,17 +561,10 @@
         return;
       }
     }
-    if (game.diplomacy.get("zebras").unlocked) {
-      let zebras = game.diplomacy.get("zebras");
-      let trades = 1;
-      trades = Math.max(trades, Math.floor(goldRes.perTickCached * msBetweenExecutions / 200 / (15 - game.getEffect("tradeGoldDiscount"))));
-      trades = Math.min(trades, game.diplomacy.getMaxTradeAmt(zebras));
-      if (trades > 0) {
-        if (SCRITTIES_LOG.gold.tradeZebras)
-          console.log("Trading with zebras");
-        game.diplomacy.tradeMultiple(game.diplomacy.get("zebras"), trades);
-        return;
-      }
+    if (game.resPool.resourceMap.steel.value <= game.resPool.resourceMap.alloy.value) {
+      trade("griffins", msBetweenExecutions);
+    } else {
+      trade("zebras", msBetweenExecutions);
     }
   };
 

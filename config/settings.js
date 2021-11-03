@@ -11,7 +11,7 @@ export let SCRITTIES_SETTINGS = {
     culture: true,  // Embassy
     gold: {
         promoteLeader: true,
-        tradeZebras: true,
+        trade: true,
         build: true
     },
     minerals: true,
@@ -24,5 +24,5 @@ export let SCRITTIES_SETTINGS = {
     sacrifice: true,
     cloudSave: true,
 
-    kittenLimit: 175
+    kittenLimit: 280
 };

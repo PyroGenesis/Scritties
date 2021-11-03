@@ -11,7 +11,7 @@ export let SCRITTIES_LOG = {
     culture: true,  // Embassy
     gold: {
         promoteLeader: true,
-        tradeZebras: true,
+        trade: true,
         build: true
     },
     minerals: true,
