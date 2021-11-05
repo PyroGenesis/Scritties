@@ -25,7 +25,8 @@
     build: true,
     sacrifice: true,
     cloudSave: true,
-    BUILD_LastGroupReached: "",
+    CATH_BUILD_LastGroupReached: "",
+    SPACE_BUILD_LastGroupReached: "",
     UPGRADE_status: []
   };
 
@@ -117,7 +118,7 @@
     }
   }
 
-  // ref/buildings.js
+  // ref/cath-buildings.js
   var getBldObj = (buildingName, limit, conditions = [], after = []) => {
     return {
       name: buildingName,
@@ -213,8 +214,8 @@
     game.bld.get("mint").on = 0;
   });
 
-  // ref/build-hierarchy.js
-  var bldGoals = [
+  // ref/cath-build-hierarchy.js
+  var cathBuildHierarchy = [
     [
       workshop,
       lumberMill,
@@ -252,50 +253,57 @@
     ]
   ];
 
+  // scripts/utility/utility.js
+  var logicalBtnClick = (logicalBtn) => {
+    logicalBtn.animate();
+    logicalBtn.controller.buyItem(logicalBtn.model, 1, function(result) {
+      if (result) {
+        logicalBtn.update();
+      }
+    });
+  };
+
   // scripts/actions/build.js
-  var build = (bld, bldTabUpdated) => {
-    if (!bldTabUpdated)
-      game.bldTab.update();
+  var build = (bld) => {
     let result = {
       unlocked: false,
       impossible: true,
       available: false,
       built: false
     };
-    if (!bld)
+    if (!bld.model.metadata.unlocked)
       return result;
     result.unlocked = true;
     result.impossible = bld.model.resourceIsLimited;
     result.available = bld.model.enabled;
-    let btn = bld.buttonContent;
     if (result.impossible || !result.available)
       return result;
-    btn.click();
+    logicalBtnClick(bld);
     result.built = true;
     return result;
   };
-  var builder = () => {
-    game.bldTab.update();
-    for (let goal_group of bldGoals) {
-      SCRITTIES_LOG.BUILD_LastGroupReached = "";
+  var builder = (tab, buildHierarchy, buildGrpLogVar) => {
+    tab.update();
+    for (let goalGroup of buildHierarchy) {
+      buildGrpLogVar = "";
       let grpImpossible = true;
-      for (let goal of goal_group) {
+      for (let goal of goalGroup) {
         if (!goal.conditions.every((cond) => cond()))
           continue;
         if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
-          let buildRes = build(goal.bldObj, true);
+          let buildRes = build(goal.bldObj);
           if (!buildRes.unlocked)
             continue;
           grpImpossible = grpImpossible && buildRes.impossible;
           if (!buildRes.available && !buildRes.impossible) {
-            SCRITTIES_LOG.BUILD_LastGroupReached += goal.name + ", ";
+            buildGrpLogVar += goal.name + ", ";
           }
           if (buildRes.built)
             goal.after.forEach((afterFn) => {
               afterFn();
             });
           if (SCRITTIES_LOG.build && buildRes.built)
-            console.log(`Building a ${goal.bldObj.opts.name}`);
+            console.log(`Building a ${goal.bldObj.model.metadata.label}`);
         }
       }
       if (!grpImpossible) {
@@ -634,16 +642,6 @@
     game.religion.praise();
   };
 
-  // scripts/utility/utility.js
-  var logicalBtnClick = (logicalBtn) => {
-    logicalBtn.animate();
-    logicalBtn.controller.buyItem(logicalBtn.model, 1, function(result) {
-      if (result) {
-        logicalBtn.update();
-      }
-    });
-  };
-
   // scripts/actions/sacrifice.js
   var unicornBldQueue = [];
   var sacrifice = () => {
@@ -677,6 +675,32 @@
     logicalBtnClick(ziggUpgrade);
   };
 
+  // ref/space-buildings.js
+  var getSpaceBldObj = (planetName, buildingName, limit, conditions = [], after = []) => {
+    return {
+      name: buildingName,
+      get bldObj() {
+        return game.spaceTab.planetPanels.find((pp) => pp.name === planetName).children.find((up) => up.id === buildingName);
+      },
+      limit,
+      conditions,
+      after
+    };
+  };
+  var spaceElevator = getSpaceBldObj("Cath", "spaceElevator", -1);
+  var sattelite = getSpaceBldObj("Cath", "sattelite", -1);
+  sattelite.conditions.push(() => game.workshop.get("solarSatellites").researched);
+
+  // ref/space-build-hierarchy.js
+  var spaceBuildHierarchy = [
+    [
+      spaceElevator
+    ],
+    [
+      sattelite
+    ]
+  ];
+
   // scritties.js
   var huntInterval = setInterval(hunt, 5e3);
   var faithInterval = setInterval(faith, 5e3);
@@ -687,7 +711,8 @@
   }
   var cultureInterval = setInterval(culture, 5e3);
   var useResourcesInterval = setInterval(() => {
-    builder();
+    builder(game.bldTab, cathBuildHierarchy, SCRITTIES_LOG.CATH_BUILD_LastGroupReached);
+    builder(game.spaceTab, spaceBuildHierarchy, SCRITTIES_LOG.SPACE_BUILD_LastGroupReached);
     useUpResources();
     gold(1 * 1e3);
   }, 1 * 1e3);

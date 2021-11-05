@@ -7,6 +7,7 @@ export let farm = () => {
     if (!SCRITTIES_SETTINGS.farm) return;   // Run according to setting
     if (game.calendar.season > 1 || game.challenges.isActive("winterIsComing")) return; // only run for spring and summer
 
-    let buildRes = build(field.bldObj, false);
+    game.bldTab.update();
+    let buildRes = build(field.bldObj);
     if (SCRITTIES_LOG.farm && buildRes.built) console.log(`Building a Catnip Field`);
 }

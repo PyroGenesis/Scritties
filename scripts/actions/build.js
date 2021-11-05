@@ -1,8 +1,8 @@
 import { SCRITTIES_LOG } from "../../config/log";
-import { bldGoals } from "../../ref/build-hierarchy";
+import { cathBuildHierarchy } from "../../ref/cath-build-hierarchy";
+import { logicalBtnClick } from "../utility/utility";
 
-export let build = (bld, bldTabUpdated) => {
-    if (!bldTabUpdated) game.bldTab.update();
+export let build = (bld) => {
 
     let result = {
         unlocked: false,
@@ -11,45 +11,44 @@ export let build = (bld, bldTabUpdated) => {
         built: false
     }
 
-    if (!bld) return result; // No cheating
+    if (!bld.model.metadata.unlocked) return result; // No cheating
     result.unlocked = true;
 
     result.impossible = bld.model.resourceIsLimited;
     result.available = bld.model.enabled;
-    let btn = bld.buttonContent;
 
     if (result.impossible || !result.available) return result;
 
-    btn.click();
+    logicalBtnClick(bld);
     result.built = true;
     return result;
 }
 
-export let builder = () => {    
-    game.bldTab.update();
-    for (let goal_group of bldGoals) {
+export let builder = (tab, buildHierarchy, buildGrpLogVar) => {    
+    tab.update();
+    for (let goalGroup of buildHierarchy) {
         // console.log('gg', goal_group.map(g => g.label).join(', '));
-        SCRITTIES_LOG.BUILD_LastGroupReached = ""
+        buildGrpLogVar = ""
         let grpImpossible = true;
-        for (let goal of goal_group) {
+        for (let goal of goalGroup) {
             if (!goal.conditions.every(cond => cond())) continue;
 
             if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
-                let buildRes = build(goal.bldObj, true);
+                let buildRes = build(goal.bldObj);
                 if (!buildRes.unlocked) continue; // No cheating
 
                 grpImpossible = grpImpossible && buildRes.impossible;
                 if (!buildRes.available && !buildRes.impossible) {
-                    SCRITTIES_LOG.BUILD_LastGroupReached += goal.name + ", ";
+                    buildGrpLogVar += goal.name + ", ";
                 }
 
                 if (buildRes.built) goal.after.forEach(afterFn => { afterFn(); });
 
-                if (SCRITTIES_LOG.build && buildRes.built) console.log(`Building a ${goal.bldObj.opts.name}`);
+                if (SCRITTIES_LOG.build && buildRes.built) console.log(`Building a ${goal.bldObj.model.metadata.label}`);
             }
         }
         if (!grpImpossible) {
-            // SCRITTIES_LOG.lastBldGroupReached = goal_group.map((goal) => goal.label).join(', ');
+            // buildGrpLogVar = goal_group.map((goal) => goal.label).join(', ');
             break;
         }
     }

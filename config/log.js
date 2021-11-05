@@ -24,6 +24,7 @@ export let SCRITTIES_LOG = {
     sacrifice: true,
     cloudSave: true,
 
-    BUILD_LastGroupReached: '',
+    CATH_BUILD_LastGroupReached: '',
+    SPACE_BUILD_LastGroupReached: '',
     UPGRADE_status: []
 };

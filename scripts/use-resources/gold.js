@@ -1,5 +1,4 @@
 import { SCRITTIES_LOG } from "../../config/log";
-import { temple, tradepost } from "../../ref/buildings";
 import { build } from "../actions/build";
 import { trade } from "../actions/trade";
 

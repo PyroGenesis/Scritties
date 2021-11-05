@@ -8,6 +8,9 @@ import { useUpResources } from "./scripts/use-resources/general";
 import { gold } from "./scripts/use-resources/gold";
 import { faith } from "./scripts/use-resources/faith";
 import { sacrifice } from "./scripts/actions/sacrifice";
+import { cathBuildHierarchy } from "./ref/cath-build-hierarchy";
+import { SCRITTIES_LOG } from "./config/log";
+import { spaceBuildHierarchy } from "./ref/space-build-hierarchy";
 
 let huntInterval = setInterval(hunt, 5000);
 let faithInterval = setInterval(faith, 5000);
@@ -26,7 +29,8 @@ let cultureInterval = setInterval(culture, 5000);
 // };
 
 let useResourcesInterval = setInterval(() => {
-    builder();
+    builder(game.bldTab, cathBuildHierarchy, SCRITTIES_LOG.CATH_BUILD_LastGroupReached);
+    builder(game.spaceTab, spaceBuildHierarchy, SCRITTIES_LOG.SPACE_BUILD_LastGroupReached);
     useUpResources();
     gold(1 * 1000);
 }, 1 * 1000);
