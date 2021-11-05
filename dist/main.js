@@ -190,8 +190,11 @@
   factory.conditions.push(() => game.bld.get("factory").on === game.bld.get("factory").val);
   factory.conditions.push(priceCondition("factory", "plate", 2));
   var amphitheatre = getBldObj("amphitheatre", -1);
+  var broadcastTower = getBldObj("amphitheatre", -1);
   var chapel = getBldObj("chapel", -1);
   var temple = getBldObj("temple", -1);
+  amphitheatre.conditions.push(() => !game.science.get("electronics").researched);
+  broadcastTower.conditions.push(() => game.bld.get("amphitheatre").stage === 1);
   chapel.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
   chapel.conditions.push(priceCondition("chapel", "parchment", 10));
   temple.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
@@ -231,7 +234,8 @@
       library,
       academy,
       observatory,
-      amphitheatre
+      amphitheatre,
+      broadcastTower
     ],
     [
       accelerator,

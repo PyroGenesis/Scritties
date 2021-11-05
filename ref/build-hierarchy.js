@@ -1,5 +1,5 @@
 import {
-    pasture, aqueduct, library, academy, observatory, barn, warehouse, harbor, mine, quarry, lumberMill, smelter, amphitheatre, temple, workshop, tradepost, unicornPasture, ziggurat, hut, logHouse, mansion, oilWell, accelerator, steamworks, magneto, mint, chapel, factory, solarFarm
+    pasture, aqueduct, library, academy, observatory, barn, warehouse, harbor, mine, quarry, lumberMill, smelter, amphitheatre, temple, workshop, tradepost, unicornPasture, ziggurat, hut, logHouse, mansion, oilWell, accelerator, steamworks, magneto, mint, chapel, factory, solarFarm, broadcastTower
 } from "./buildings";
 
 export let bldGoals = [
@@ -25,6 +25,7 @@ export let bldGoals = [
         academy,
         observatory,
         amphitheatre,
+        broadcastTower,
     ],
     [
         accelerator,

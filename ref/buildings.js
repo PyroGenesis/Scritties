@@ -80,9 +80,12 @@ factory.conditions.push(() => (game.resPool.energyWinterProd - game.resPool.ener
 factory.conditions.push(() => game.bld.get('factory').on === game.bld.get('factory').val);
 factory.conditions.push(priceCondition('factory', 'plate', 2));
 
-export let amphitheatre = getBldObj('amphitheatre', -1);    // Always?
+export let amphitheatre = getBldObj('amphitheatre', -1);    // Always, except when upgrade available
+export let broadcastTower = getBldObj('amphitheatre', -1);  // Always, if unlocked
 export let chapel = getBldObj('chapel', -1);                // If ship > 250, manuscripts is 10x
 export let temple = getBldObj('temple', -1);                // If gold is full, manuscripts are double, plate is triple
+amphitheatre.conditions.push(() => !game.science.get('electronics').researched);
+broadcastTower.conditions.push(() => game.bld.get('amphitheatre').stage === 1)
 chapel.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 chapel.conditions.push(priceCondition('chapel', 'parchment', 10));
 temple.conditions.push(resourceCondition.bind(null, 'gold', 'fraction', 1));
