@@ -1,5 +1,5 @@
 import { SCRITTIES_SETTINGS } from '../config/settings';
-import { priceCondition, resourceCondition } from '../scripts/utility/conditions';
+import { priceCondition, researchCondition, resourceCondition } from '../scripts/utility/conditions';
 
 let getBldObj = (buildingName, limit, /*extraPropsFn,*/ conditions = [], after = []) => {
     // extraPropsFn = extraPropsFn || function() { return {} };
@@ -70,12 +70,12 @@ export let calciner = getBldObj('calciner', -1);            // Manual
 export let factory = getBldObj('factory', -1);              // If carbon sequestration researched, 4 power available, double plate
 export let reactor = getBldObj('reactor', -1);              // Manual
 steamworks.conditions.push(resourceCondition.bind(null, 'blueprint', 'fixed', 1000));
-steamworks.conditions.push(() => game.bld.get('magneto').unlocked);
+steamworks.conditions.push(researchCondition(game.science, 'electricity')); // magneto unlocked
 steamworks.conditions.push(() => game.bld.get('magneto').val > (game.bld.get('steamworks').val + 7));
 magneto.conditions.push(resourceCondition.bind(null, 'blueprint', 'fixed', 1000));
 magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
 magneto.conditions.push(priceCondition('magneto', 'alloy', 3));
-factory.conditions.push(() => game.workshop.get('carbonSequestration').researched);
+factory.conditions.push(researchCondition(game.workshop, 'carbonSequestration'));
 factory.conditions.push(() => (game.resPool.energyWinterProd - game.resPool.energyCons) >= 4);
 factory.conditions.push(() => game.bld.get('factory').on === game.bld.get('factory').val);
 factory.conditions.push(priceCondition('factory', 'plate', 2));
@@ -84,7 +84,7 @@ export let amphitheatre = getBldObj('amphitheatre', -1);    // Always, except wh
 export let broadcastTower = getBldObj('amphitheatre', -1);  // Always, if unlocked
 export let chapel = getBldObj('chapel', -1);                // If ship > 250, manuscripts is 10x
 export let temple = getBldObj('temple', -1);                // If gold is full, manuscripts are double, plate is triple
-amphitheatre.conditions.push(() => !game.science.get('electronics').researched);
+amphitheatre.conditions.push(researchCondition(game.science, 'electronics', true));
 broadcastTower.conditions.push(() => game.bld.get('amphitheatre').stage === 1)
 chapel.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 chapel.conditions.push(priceCondition('chapel', 'parchment', 10));

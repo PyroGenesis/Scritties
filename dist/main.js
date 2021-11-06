@@ -117,6 +117,9 @@
       };
     }
   }
+  function researchCondition(discipline, name, negate = false) {
+    return () => Boolean(discipline.get(name).researched ^ negate);
+  }
 
   // ref/cath-buildings.js
   var getBldObj = (buildingName, limit, conditions = [], after = []) => {
@@ -181,12 +184,12 @@
   var factory = getBldObj("factory", -1);
   var reactor = getBldObj("reactor", -1);
   steamworks.conditions.push(resourceCondition.bind(null, "blueprint", "fixed", 1e3));
-  steamworks.conditions.push(() => game.bld.get("magneto").unlocked);
+  steamworks.conditions.push(researchCondition(game.science, "electricity"));
   steamworks.conditions.push(() => game.bld.get("magneto").val > game.bld.get("steamworks").val + 7);
   magneto.conditions.push(resourceCondition.bind(null, "blueprint", "fixed", 1e3));
   magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
   magneto.conditions.push(priceCondition("magneto", "alloy", 3));
-  factory.conditions.push(() => game.workshop.get("carbonSequestration").researched);
+  factory.conditions.push(researchCondition(game.workshop, "carbonSequestration"));
   factory.conditions.push(() => game.resPool.energyWinterProd - game.resPool.energyCons >= 4);
   factory.conditions.push(() => game.bld.get("factory").on === game.bld.get("factory").val);
   factory.conditions.push(priceCondition("factory", "plate", 2));
@@ -194,7 +197,7 @@
   var broadcastTower = getBldObj("amphitheatre", -1);
   var chapel = getBldObj("chapel", -1);
   var temple = getBldObj("temple", -1);
-  amphitheatre.conditions.push(() => !game.science.get("electronics").researched);
+  amphitheatre.conditions.push(researchCondition(game.science, "electronics", true));
   broadcastTower.conditions.push(() => game.bld.get("amphitheatre").stage === 1);
   chapel.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
   chapel.conditions.push(priceCondition("chapel", "parchment", 10));
@@ -689,7 +692,9 @@
   };
   var spaceElevator = getSpaceBldObj("Cath", "spaceElevator", -1);
   var sattelite = getSpaceBldObj("Cath", "sattelite", -1);
-  sattelite.conditions.push(() => game.workshop.get("solarSatellites").researched);
+  sattelite.conditions.push(researchCondition(game.workshop, "solarSatellites"));
+  var planetCracker = getSpaceBldObj("Dune", "planetCracker", -1);
+  var hydrofracturer = getSpaceBldObj("Dune", "hydrofracturer", -1);
 
   // ref/space-build-hierarchy.js
   var spaceBuildHierarchy = [
@@ -698,6 +703,10 @@
     ],
     [
       sattelite
+    ],
+    [
+      planetCracker,
+      hydrofracturer
     ]
   ];
 
