@@ -94,168 +94,6 @@
     }
   };
 
-  // scripts/utility/conditions.js
-  function resourceCondition(resource, condType, value) {
-    let currVal = game.resPool.get(resource).value;
-    let maxVal = game.resPool.get(resource).maxValue;
-    switch (condType) {
-      case "fixed":
-        return currVal >= value;
-      case "fraction":
-        return currVal / maxVal >= value;
-    }
-  }
-  function priceCondition(bld, resource, multiplier) {
-    if (resource !== "all") {
-      let price = game.bld.getPrices(bld).find((price2) => price2.name === resource).val * multiplier;
-      return resourceCondition.bind(null, resource, "fixed", price);
-    } else {
-      return () => {
-        return game.bld.getPrices(bld).every((price) => {
-          return resourceCondition(price.name, "fixed", price.val * multiplier);
-        });
-      };
-    }
-  }
-  function researchCondition(discipline, name, negate = false) {
-    return () => Boolean(discipline.get(name).researched ^ negate);
-  }
-
-  // ref/cath-buildings.js
-  var getBldObj = (buildingName, limit, conditions = [], after = []) => {
-    return {
-      name: buildingName,
-      get bldObj() {
-        return game.bldTab.children.find((bld) => bld.opts.building === buildingName);
-      },
-      limit,
-      conditions,
-      after
-    };
-  };
-  var field = getBldObj("field", -1);
-  var pasture = getBldObj("pasture", -1);
-  var solarFarm = getBldObj("pasture", -1);
-  var aqueduct = getBldObj("aqueduct", -1);
-  aqueduct.conditions.push(resourceCondition.bind(null, "minerals", "fraction", 1));
-  solarFarm.conditions.push(() => game.bld.get("pasture").stage === 1);
-  solarFarm.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
-  var hut = getBldObj("hut", -1);
-  var logHouse = getBldObj("logHouse", -1);
-  var mansion = getBldObj("mansion", -1);
-  hut.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
-  logHouse.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
-  mansion.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
-  mansion.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
-  var library = getBldObj("library", -1);
-  var academy = getBldObj("academy", -1);
-  var observatory = getBldObj("observatory", -1);
-  var biolab = getBldObj("biolab", -1);
-  academy.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
-  observatory.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
-  observatory.conditions.push(resourceCondition.bind(null, "iron", "fraction", 1));
-  var barn = getBldObj("barn", -1);
-  var warehouse = getBldObj("warehouse", -1);
-  var harbor = getBldObj("harbor", -1);
-  warehouse.conditions.push(priceCondition("warehouse", "all", 2));
-  harbor.conditions.push(priceCondition("harbor", "all", 2));
-  harbor.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
-  var mine = getBldObj("mine", -1);
-  var quarry = getBldObj("quarry", -1);
-  var lumberMill = getBldObj("lumberMill", -1);
-  var oilWell = getBldObj("oilWell", -1);
-  var accelerator = getBldObj("accelerator", -1);
-  quarry.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
-  quarry.conditions.push(priceCondition("quarry", "all", 3));
-  oilWell.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
-  oilWell.conditions.push(priceCondition("oilWell", "all", 3));
-  accelerator.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
-  accelerator.after.push(() => {
-    if (game.bld.get("accelerator").val === 1) {
-      game.bld.get("accelerator").on = 0;
-    } else if (game.bld.get("accelerator").on > 0) {
-      game.bld.get("accelerator").on -= 1;
-    }
-  });
-  var steamworks = getBldObj("steamworks", -1);
-  var magneto = getBldObj("magneto", -1);
-  var smelter = getBldObj("smelter", -1);
-  var calciner = getBldObj("calciner", -1);
-  var factory = getBldObj("factory", -1);
-  var reactor = getBldObj("reactor", -1);
-  steamworks.conditions.push(resourceCondition.bind(null, "blueprint", "fixed", 1e3));
-  steamworks.conditions.push(researchCondition(game.science, "electricity"));
-  steamworks.conditions.push(() => game.bld.get("magneto").val > game.bld.get("steamworks").val + 7);
-  magneto.conditions.push(resourceCondition.bind(null, "blueprint", "fixed", 1e3));
-  magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
-  magneto.conditions.push(priceCondition("magneto", "alloy", 3));
-  factory.conditions.push(researchCondition(game.workshop, "carbonSequestration"));
-  factory.conditions.push(() => game.resPool.energyWinterProd - game.resPool.energyCons >= 4);
-  factory.conditions.push(() => game.bld.get("factory").on === game.bld.get("factory").val);
-  factory.conditions.push(priceCondition("factory", "plate", 2));
-  var amphitheatre = getBldObj("amphitheatre", -1);
-  var broadcastTower = getBldObj("amphitheatre", -1);
-  var chapel = getBldObj("chapel", -1);
-  var temple = getBldObj("temple", -1);
-  amphitheatre.conditions.push(researchCondition(game.science, "electronics", true));
-  broadcastTower.conditions.push(() => game.bld.get("amphitheatre").stage === 1);
-  chapel.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
-  chapel.conditions.push(priceCondition("chapel", "parchment", 10));
-  temple.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
-  temple.conditions.push(priceCondition("temple", "manuscript", 2));
-  temple.conditions.push(priceCondition("temple", "plate", 3));
-  var workshop = getBldObj("workshop", -1);
-  var tradepost = getBldObj("tradepost", -1);
-  tradepost.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
-  var mint = getBldObj("mint", -1);
-  var unicornPasture = getBldObj("unicornPasture", -1);
-  var brewery = getBldObj("brewery", -1);
-  var ziggurat = getBldObj("ziggurat", -1);
-  mint.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
-  mint.conditions.push(priceCondition("mint", "plate", 3));
-  mint.after.push(() => {
-    game.bld.get("mint").on = 0;
-  });
-
-  // ref/cath-build-hierarchy.js
-  var cathBuildHierarchy = [
-    [
-      workshop,
-      lumberMill,
-      mine,
-      smelter,
-      aqueduct,
-      tradepost,
-      mint,
-      solarFarm
-    ],
-    [
-      hut,
-      logHouse,
-      mansion
-    ],
-    [
-      library,
-      academy,
-      observatory,
-      amphitheatre,
-      broadcastTower
-    ],
-    [
-      accelerator,
-      temple,
-      chapel
-    ],
-    [
-      barn,
-      warehouse,
-      harbor,
-      quarry,
-      oilWell,
-      factory
-    ]
-  ];
-
   // scripts/utility/utility.js
   var logicalBtnClick = (logicalBtn) => {
     logicalBtn.animate();
@@ -285,10 +123,12 @@
     result.built = true;
     return result;
   };
-  var builder = (tab, buildHierarchy, buildGrpLogVar) => {
+  var builder = (tab, buildHierarchy, logVarName) => {
+    if (!tab.visible)
+      return;
     tab.update();
     for (let goalGroup of buildHierarchy) {
-      buildGrpLogVar = "";
+      SCRITTIES_LOG[logVarName] = "";
       let grpImpossible = true;
       for (let goal of goalGroup) {
         if (!goal.conditions.every((cond) => cond()))
@@ -299,7 +139,7 @@
             continue;
           grpImpossible = grpImpossible && buildRes.impossible;
           if (!buildRes.available && !buildRes.impossible) {
-            buildGrpLogVar += goal.name + ", ";
+            SCRITTIES_LOG[logVarName] += goal.name + ", ";
           }
           if (buildRes.built)
             goal.after.forEach((afterFn) => {
@@ -686,6 +526,168 @@
     logicalBtnClick(ziggUpgrade);
   };
 
+  // scripts/utility/conditions.js
+  function resourceCondition(resource, condType, value) {
+    let currVal = game.resPool.get(resource).value;
+    let maxVal = game.resPool.get(resource).maxValue;
+    switch (condType) {
+      case "fixed":
+        return currVal >= value;
+      case "fraction":
+        return currVal / maxVal >= value;
+    }
+  }
+  function priceCondition(bld, resource, multiplier) {
+    if (resource !== "all") {
+      let price = game.bld.getPrices(bld).find((price2) => price2.name === resource).val * multiplier;
+      return resourceCondition.bind(null, resource, "fixed", price);
+    } else {
+      return () => {
+        return game.bld.getPrices(bld).every((price) => {
+          return resourceCondition(price.name, "fixed", price.val * multiplier);
+        });
+      };
+    }
+  }
+  function researchCondition(discipline, name, negate = false) {
+    return () => Boolean(discipline.get(name).researched ^ negate);
+  }
+
+  // ref/cath-buildings.js
+  var getBldObj = (buildingName, limit, conditions = [], after = []) => {
+    return {
+      name: buildingName,
+      get bldObj() {
+        return game.bldTab.children.find((bld) => bld.opts.building === buildingName);
+      },
+      limit,
+      conditions,
+      after
+    };
+  };
+  var field = getBldObj("field", -1);
+  var pasture = getBldObj("pasture", -1);
+  var solarFarm = getBldObj("pasture", -1);
+  var aqueduct = getBldObj("aqueduct", -1);
+  aqueduct.conditions.push(resourceCondition.bind(null, "minerals", "fraction", 1));
+  solarFarm.conditions.push(() => game.bld.get("pasture").stage === 1);
+  solarFarm.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
+  var hut = getBldObj("hut", -1);
+  var logHouse = getBldObj("logHouse", -1);
+  var mansion = getBldObj("mansion", -1);
+  hut.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
+  logHouse.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
+  mansion.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
+  mansion.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
+  var library = getBldObj("library", -1);
+  var academy = getBldObj("academy", -1);
+  var observatory = getBldObj("observatory", -1);
+  var biolab = getBldObj("biolab", -1);
+  academy.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
+  observatory.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
+  observatory.conditions.push(resourceCondition.bind(null, "iron", "fraction", 1));
+  var barn = getBldObj("barn", -1);
+  var warehouse = getBldObj("warehouse", -1);
+  var harbor = getBldObj("harbor", -1);
+  warehouse.conditions.push(priceCondition("warehouse", "all", 2));
+  harbor.conditions.push(priceCondition("harbor", "all", 2));
+  harbor.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
+  var mine = getBldObj("mine", -1);
+  var quarry = getBldObj("quarry", -1);
+  var lumberMill = getBldObj("lumberMill", -1);
+  var oilWell = getBldObj("oilWell", -1);
+  var accelerator = getBldObj("accelerator", -1);
+  quarry.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
+  quarry.conditions.push(priceCondition("quarry", "all", 3));
+  oilWell.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
+  oilWell.conditions.push(priceCondition("oilWell", "all", 3));
+  accelerator.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
+  accelerator.after.push(() => {
+    if (game.bld.get("accelerator").val === 1) {
+      game.bld.get("accelerator").on = 0;
+    } else if (game.bld.get("accelerator").on > 0) {
+      game.bld.get("accelerator").on -= 1;
+    }
+  });
+  var steamworks = getBldObj("steamworks", -1);
+  var magneto = getBldObj("magneto", -1);
+  var smelter = getBldObj("smelter", -1);
+  var calciner = getBldObj("calciner", -1);
+  var factory = getBldObj("factory", -1);
+  var reactor = getBldObj("reactor", -1);
+  steamworks.conditions.push(resourceCondition.bind(null, "blueprint", "fixed", 1e3));
+  steamworks.conditions.push(researchCondition(game.science, "electricity"));
+  steamworks.conditions.push(() => game.bld.get("magneto").val > game.bld.get("steamworks").val + 7);
+  magneto.conditions.push(resourceCondition.bind(null, "blueprint", "fixed", 1e3));
+  magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
+  magneto.conditions.push(priceCondition("magneto", "alloy", 3));
+  factory.conditions.push(researchCondition(game.workshop, "carbonSequestration"));
+  factory.conditions.push(() => game.resPool.energyWinterProd - game.resPool.energyCons >= 4);
+  factory.conditions.push(() => game.bld.get("factory").on === game.bld.get("factory").val);
+  factory.conditions.push(priceCondition("factory", "plate", 2));
+  var amphitheatre = getBldObj("amphitheatre", -1);
+  var broadcastTower = getBldObj("amphitheatre", -1);
+  var chapel = getBldObj("chapel", -1);
+  var temple = getBldObj("temple", -1);
+  amphitheatre.conditions.push(researchCondition(game.science, "electronics", true));
+  broadcastTower.conditions.push(() => game.bld.get("amphitheatre").stage === 1);
+  chapel.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
+  chapel.conditions.push(priceCondition("chapel", "parchment", 10));
+  temple.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
+  temple.conditions.push(priceCondition("temple", "manuscript", 2));
+  temple.conditions.push(priceCondition("temple", "plate", 3));
+  var workshop = getBldObj("workshop", -1);
+  var tradepost = getBldObj("tradepost", -1);
+  tradepost.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
+  var mint = getBldObj("mint", -1);
+  var unicornPasture = getBldObj("unicornPasture", -1);
+  var brewery = getBldObj("brewery", -1);
+  var ziggurat = getBldObj("ziggurat", -1);
+  mint.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
+  mint.conditions.push(priceCondition("mint", "plate", 3));
+  mint.after.push(() => {
+    game.bld.get("mint").on = 0;
+  });
+
+  // ref/cath-build-hierarchy.js
+  var cathBuildHierarchy = [
+    [
+      workshop,
+      lumberMill,
+      mine,
+      smelter,
+      aqueduct,
+      tradepost,
+      mint,
+      solarFarm
+    ],
+    [
+      hut,
+      logHouse,
+      mansion
+    ],
+    [
+      library,
+      academy,
+      observatory,
+      amphitheatre,
+      broadcastTower
+    ],
+    [
+      accelerator,
+      temple,
+      chapel
+    ],
+    [
+      barn,
+      warehouse,
+      harbor,
+      quarry,
+      oilWell,
+      factory
+    ]
+  ];
+
   // ref/space-buildings.js
   var getSpaceBldObj = (planetName, buildingName, limit, conditions = [], after = []) => {
     return {
@@ -727,9 +729,13 @@
     observeInterval = setInterval(observe, 2e3);
   }
   var cultureInterval = setInterval(culture, 5e3);
+  if (game.spaceTab.visible) {
+    if (!game.spaceTab.planetPanels || game.spaceTab.planetPanels.length === 0)
+      $(`a.Space`)[0].click();
+  }
   var useResourcesInterval = setInterval(() => {
-    builder(game.bldTab, cathBuildHierarchy, SCRITTIES_LOG.CATH_BUILD_LastGroupReached);
-    builder(game.spaceTab, spaceBuildHierarchy, SCRITTIES_LOG.SPACE_BUILD_LastGroupReached);
+    builder(game.bldTab, cathBuildHierarchy, "CATH_BUILD_LastGroupReached");
+    builder(game.spaceTab, spaceBuildHierarchy, "SPACE_BUILD_LastGroupReached");
     useUpResources();
     gold(1 * 1e3);
   }, 1 * 1e3);

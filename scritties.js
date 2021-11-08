@@ -11,6 +11,7 @@ import { sacrifice } from "./scripts/actions/sacrifice";
 import { cathBuildHierarchy } from "./ref/cath-build-hierarchy";
 import { SCRITTIES_LOG } from "./config/log";
 import { spaceBuildHierarchy } from "./ref/space-build-hierarchy";
+import { researchCondition } from "./scripts/utility/conditions";
 
 let huntInterval = setInterval(hunt, 5000);
 let faithInterval = setInterval(faith, 5000);
@@ -28,9 +29,14 @@ let cultureInterval = setInterval(culture, 5000);
 //             .indexOf(m[3].toUpperCase()) >= 0;
 // };
 
+// If Space available    
+if (game.spaceTab.visible) {
+    // Load planets
+    if (!game.spaceTab.planetPanels || game.spaceTab.planetPanels.length === 0) $(`a.Space`)[0].click();
+}
 let useResourcesInterval = setInterval(() => {
-    builder(game.bldTab, cathBuildHierarchy, SCRITTIES_LOG.CATH_BUILD_LastGroupReached);
-    builder(game.spaceTab, spaceBuildHierarchy, SCRITTIES_LOG.SPACE_BUILD_LastGroupReached);
+    builder(game.bldTab, cathBuildHierarchy, 'CATH_BUILD_LastGroupReached');
+    builder(game.spaceTab, spaceBuildHierarchy, 'SPACE_BUILD_LastGroupReached');
     useUpResources();
     gold(1 * 1000);
 }, 1 * 1000);

@@ -1,5 +1,4 @@
 import { SCRITTIES_LOG } from "../../config/log";
-import { cathBuildHierarchy } from "../../ref/cath-build-hierarchy";
 import { logicalBtnClick } from "../utility/utility";
 
 export let build = (bld) => {
@@ -24,11 +23,14 @@ export let build = (bld) => {
     return result;
 }
 
-export let builder = (tab, buildHierarchy, buildGrpLogVar) => {    
+export let builder = (tab, buildHierarchy, logVarName) => {
+    // tab isn't visible yet
+    if (!tab.visible) return;
+
     tab.update();
     for (let goalGroup of buildHierarchy) {
         // console.log('gg', goal_group.map(g => g.label).join(', '));
-        buildGrpLogVar = ""
+        SCRITTIES_LOG[logVarName] = ""
         let grpImpossible = true;
         for (let goal of goalGroup) {
             if (!goal.conditions.every(cond => cond())) continue;
@@ -39,7 +41,7 @@ export let builder = (tab, buildHierarchy, buildGrpLogVar) => {
 
                 grpImpossible = grpImpossible && buildRes.impossible;
                 if (!buildRes.available && !buildRes.impossible) {
-                    buildGrpLogVar += goal.name + ", ";
+                    SCRITTIES_LOG[logVarName] += goal.name + ", ";
                 }
 
                 if (buildRes.built) goal.after.forEach(afterFn => { afterFn(); });
