@@ -516,6 +516,14 @@
       result: "thorium",
       cost: 250,
       otherResources: []
+    },
+    {
+      source: "unobtainium",
+      result: "eludium",
+      cost: 1e3,
+      otherResources: [
+        { resource: "alloy", cost: 2500 }
+      ]
     }
   ];
 

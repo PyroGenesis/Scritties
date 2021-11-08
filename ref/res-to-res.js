@@ -43,5 +43,12 @@ export let resourceToResourceMapping = [
         result: 'thorium',
         cost: 250,
         otherResources: []
+    }, {
+        source: 'unobtainium',
+        result: 'eludium',
+        cost: 1000,
+        otherResources: [
+            { resource: 'alloy', cost: 2500 }
+        ]
     }
 ];
