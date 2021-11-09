@@ -10,7 +10,7 @@ export let build = (bld) => {
         built: false
     }
 
-    if (!bld.model.metadata.unlocked) return result; // No cheating
+    if (!bld || !bld.model.metadata.unlocked) return result; // No cheating
     result.unlocked = true;
 
     result.impossible = bld.model.resourceIsLimited;

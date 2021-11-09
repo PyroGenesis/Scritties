@@ -112,7 +112,7 @@
       available: false,
       built: false
     };
-    if (!bld.model.metadata.unlocked)
+    if (!bld || !bld.model.metadata.unlocked)
       return result;
     result.unlocked = true;
     result.impossible = bld.model.resourceIsLimited;
