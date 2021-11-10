@@ -539,8 +539,10 @@
   }
   function priceCondition(bld, resource, multiplier) {
     if (resource !== "all") {
-      let price = game.bld.getPrices(bld).find((price2) => price2.name === resource).val * multiplier;
-      return resourceCondition.bind(null, resource, "fixed", price);
+      return () => {
+        let price = game.bld.getPrices(bld).find((price2) => price2.name === resource).val * multiplier;
+        return resourceCondition(resource, "fixed", price);
+      };
     } else {
       return () => {
         return game.bld.getPrices(bld).every((price) => {
