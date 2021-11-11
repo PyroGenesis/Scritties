@@ -599,6 +599,7 @@
   var lumberMill = getBldObj("lumberMill", -1);
   var oilWell = getBldObj("oilWell", -1);
   var accelerator = getBldObj("accelerator", -1);
+  lumberMill.conditions.push(resourceCondition.bind(null, "iron", "fraction", 1));
   quarry.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
   quarry.conditions.push(priceCondition("quarry", "all", 3));
   oilWell.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));

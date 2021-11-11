@@ -47,9 +47,10 @@ harbor.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 
 export let mine = getBldObj('mine', -1);                    // Always
 export let quarry = getBldObj('quarry', -1);                // If ships = 250, triple resources available
-export let lumberMill = getBldObj('lumberMill', -1);        // Always
+export let lumberMill = getBldObj('lumberMill', -1);        // LumberMill is a very annoying bottleneck, only do this if iron is full
 export let oilWell = getBldObj('oilWell', -1);              // If ships = 250, triple resources available
 export let accelerator = getBldObj('accelerator', -1);      // If titanium full, turn on/off upto current
+lumberMill.conditions.push(resourceCondition.bind(null, 'iron', 'fraction', 1));
 quarry.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 quarry.conditions.push(priceCondition('quarry', 'all', 3));
 oilWell.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
