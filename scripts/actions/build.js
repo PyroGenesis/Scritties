@@ -24,13 +24,16 @@ export let build = (bld) => {
 }
 
 export let builder = (tab, buildHierarchy, logVarName) => {
+    let hierarchyIter = 0;
+    SCRITTIES_LOG[logVarName] = "0";
     // tab isn't visible yet
     if (!tab.visible) return;
 
     tab.update();
     for (let goalGroup of buildHierarchy) {
-        // console.log('gg', goal_group.map(g => g.label).join(', '));
-        SCRITTIES_LOG[logVarName] = ""
+        hierarchyIter += 1;
+        SCRITTIES_LOG[logVarName] = `${hierarchyIter}: `;
+
         let grpImpossible = true;
         for (let goal of goalGroup) {
             if (!goal.conditions.every(cond => cond())) continue;
@@ -41,7 +44,7 @@ export let builder = (tab, buildHierarchy, logVarName) => {
 
                 grpImpossible = grpImpossible && buildRes.impossible;
                 if (!buildRes.available && !buildRes.impossible) {
-                    SCRITTIES_LOG[logVarName] += goal.name + ", ";
+                    SCRITTIES_LOG[logVarName] += goal.bldObj.model.metadata.label + ", ";
                 }
 
                 if (buildRes.built) goal.after.forEach(afterFn => { afterFn(); });

@@ -124,11 +124,14 @@
     return result;
   };
   var builder = (tab, buildHierarchy, logVarName) => {
+    let hierarchyIter = 0;
+    SCRITTIES_LOG[logVarName] = "0";
     if (!tab.visible)
       return;
     tab.update();
     for (let goalGroup of buildHierarchy) {
-      SCRITTIES_LOG[logVarName] = "";
+      hierarchyIter += 1;
+      SCRITTIES_LOG[logVarName] = `${hierarchyIter}: `;
       let grpImpossible = true;
       for (let goal of goalGroup) {
         if (!goal.conditions.every((cond) => cond()))
@@ -139,7 +142,7 @@
             continue;
           grpImpossible = grpImpossible && buildRes.impossible;
           if (!buildRes.available && !buildRes.impossible) {
-            SCRITTIES_LOG[logVarName] += goal.name + ", ";
+            SCRITTIES_LOG[logVarName] += goal.bldObj.model.metadata.label + ", ";
           }
           if (buildRes.built)
             goal.after.forEach((afterFn) => {
