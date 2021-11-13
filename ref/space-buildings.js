@@ -4,7 +4,14 @@ let getSpaceBldObj = (planetName, buildingName, limit, /*extraPropsFn,*/ conditi
     // extraPropsFn = extraPropsFn || function() { return {} };
     return {
         name: buildingName,
-        get bldObj() { return game.spaceTab.planetPanels.find(pp => pp.name === planetName).children.find(up => up.id === buildingName) },
+        get bldObj() { 
+            if (!game.spaceTab.planetPanels) return null;
+            
+            let planet = game.spaceTab.planetPanels.find(pp => pp.name === planetName);
+            if (!planet) return planet;
+
+            return planet.children.find(up => up.id === buildingName)
+        },
         limit: limit,
         conditions: conditions,
         after: after,
