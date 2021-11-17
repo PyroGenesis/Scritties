@@ -726,6 +726,7 @@
   sattelite.conditions.push(researchCondition(game.workshop, "solarSatellites"));
   var planetCracker = getSpaceBldObj("Dune", "planetCracker", -1);
   var hydrofracturer = getSpaceBldObj("Dune", "hydrofracturer", -1);
+  var researchVessel = getSpaceBldObj("Piscine", "researchVessel", -1);
 
   // ref/space-build-hierarchy.js
   var spaceBuildHierarchy = [
@@ -738,6 +739,9 @@
     [
       planetCracker,
       hydrofracturer
+    ],
+    [
+      researchVessel
     ]
   ];
 
