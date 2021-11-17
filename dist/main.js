@@ -159,7 +159,7 @@
   };
 
   // scripts/actions/cloud-save.js
-  var secondsBetweenSaves = 20 * 60;
+  var secondsBetweenSaves = 10 * 60;
 
   // ref/upgrade-mapping.js
   var constructionAutoUpgrades = [

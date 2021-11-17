@@ -1,5 +1,5 @@
 // time between two cloud saves (do NOT use a very small value)
-let secondsBetweenSaves = 20 * 60;    // 10 minutes
+let secondsBetweenSaves = 10 * 60;    // 10 minutes
 
 // Syncs the save data with the server
 // Similar to game.server.syncData(), except it also accepts a fn to execute after syncing
