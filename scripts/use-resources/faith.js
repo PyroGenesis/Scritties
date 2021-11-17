@@ -17,6 +17,8 @@ export let faith = () => {
         // basilica         -> + culture, + max culture
         // templars         -> + catpower limit
 
+        let res = game.resPool.resourceMap;
+        let titaniumIsNotConstrained = ((res.titanium.value / res.titanium.maxValue) > 0.95) || (res.steel.value <= res.alloy.value);
         let religionUpgradeList = [
             {
                 name: 'solarchant',
@@ -26,13 +28,19 @@ export let faith = () => {
                 conditions: []
             }, {
                 name: 'goldenSpire',
-                conditions: [ (game.resPool.resourceMap.titanium.value / game.resPool.resourceMap.titanium.maxValue) > 0.95 ]
+                conditions: []
             }, {
                 name: 'basilica',
-                conditions: [ (game.resPool.resourceMap.titanium.value / game.resPool.resourceMap.titanium.maxValue) > 0.95 ]
+                conditions: [ titaniumIsNotConstrained ]
             }, {
                 name: 'templars',
-                conditions: [ (game.resPool.resourceMap.titanium.value / game.resPool.resourceMap.titanium.maxValue) > 0.95 ]
+                conditions: [ titaniumIsNotConstrained ]
+            }, {
+                name: 'sunAltar',
+                conditions: [ titaniumIsNotConstrained ]
+            }, {
+                name: 'stainedGlass',
+                conditions: [ titaniumIsNotConstrained ]
             },
         ];
 
