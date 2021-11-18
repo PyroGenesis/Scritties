@@ -32,10 +32,12 @@ mansion.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 1))
 export let library = getBldObj('library', -1);          
 export let academy = getBldObj('academy', -1);              // If science is full
 export let observatory = getBldObj('observatory', -1);      // If science, iron is full
-export let biolab = getBldObj('biolab', -1);                // No, reserve alloy
+export let biolab = getBldObj('biolab', -1);                // If alloy and slab = 100x
 academy.conditions.push(resourceCondition.bind(null, 'science', 'fraction', 1));
 observatory.conditions.push(resourceCondition.bind(null, 'science', 'fraction', 1));
 observatory.conditions.push(resourceCondition.bind(null, 'iron', 'fraction', 1));
+biolab.conditions.push(priceCondition('biolab', 'alloy', 100));
+biolab.conditions.push(priceCondition('biolab', 'alloy', 100));
 // observatory.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 
 export let barn = getBldObj('barn', -1);                    // Always at end
