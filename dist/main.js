@@ -584,9 +584,13 @@
   var pasture = getBldObj("pasture", -1);
   var solarFarm = getBldObj("pasture", -1);
   var aqueduct = getBldObj("aqueduct", -1);
-  aqueduct.conditions.push(resourceCondition.bind(null, "minerals", "fraction", 1));
+  var hydroPlant = getBldObj("aqueduct", -1);
   solarFarm.conditions.push(() => game.bld.get("pasture").stage === 1);
   solarFarm.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
+  aqueduct.conditions.push(() => game.bld.get("aqueduct").stage === 0);
+  aqueduct.conditions.push(resourceCondition.bind(null, "minerals", "fraction", 1));
+  hydroPlant.conditions.push(() => game.bld.get("aqueduct").stage === 1);
+  hydroPlant.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
   var hut = getBldObj("hut", -1);
   var logHouse = getBldObj("logHouse", -1);
   var mansion = getBldObj("mansion", -1);
@@ -601,6 +605,8 @@
   academy.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
   observatory.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
   observatory.conditions.push(resourceCondition.bind(null, "iron", "fraction", 1));
+  biolab.conditions.push(priceCondition("biolab", "alloy", 100));
+  biolab.conditions.push(priceCondition("biolab", "alloy", 100));
   var barn = getBldObj("barn", -1);
   var warehouse = getBldObj("warehouse", -1);
   var harbor = getBldObj("harbor", -1);
@@ -675,7 +681,8 @@
       aqueduct,
       tradepost,
       mint,
-      solarFarm
+      solarFarm,
+      hydroPlant
     ],
     [
       hut,
@@ -695,12 +702,13 @@
       chapel
     ],
     [
+      factory,
       barn,
       warehouse,
       harbor,
-      quarry,
       oilWell,
-      factory
+      quarry,
+      biolab
     ]
   ];
 
