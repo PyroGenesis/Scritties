@@ -56,7 +56,7 @@
     build: true,
     sacrifice: true,
     cloudSave: true,
-    kittenLimit: 280
+    kittenLimit: 500
   };
 
   // scripts/actions/hunt.js
@@ -159,7 +159,7 @@
   };
 
   // scripts/actions/cloud-save.js
-  var secondsBetweenSaves = 20 * 60;
+  var secondsBetweenSaves = 10 * 60;
 
   // ref/upgrade-mapping.js
   var constructionAutoUpgrades = [
@@ -448,6 +448,8 @@
     if (game.religion.getRU("transcendence").on >= 1) {
       if (!game.religionTab.zgUpgradeButtons || game.religionTab.zgUpgradeButtons.length === 0)
         $(`a.Religion`)[0].click();
+      let res = game.resPool.resourceMap;
+      let titaniumIsNotConstrained = res.titanium.value / res.titanium.maxValue > 0.95 || res.steel.value <= res.alloy.value;
       let religionUpgradeList = [
         {
           name: "solarchant",
@@ -459,15 +461,23 @@
         },
         {
           name: "goldenSpire",
-          conditions: [game.resPool.resourceMap.titanium.value / game.resPool.resourceMap.titanium.maxValue > 0.95]
+          conditions: []
         },
         {
           name: "basilica",
-          conditions: [game.resPool.resourceMap.titanium.value / game.resPool.resourceMap.titanium.maxValue > 0.95]
+          conditions: [titaniumIsNotConstrained]
         },
         {
           name: "templars",
-          conditions: [game.resPool.resourceMap.titanium.value / game.resPool.resourceMap.titanium.maxValue > 0.95]
+          conditions: [titaniumIsNotConstrained]
+        },
+        {
+          name: "sunAltar",
+          conditions: [titaniumIsNotConstrained]
+        },
+        {
+          name: "stainedGlass",
+          conditions: [titaniumIsNotConstrained]
         }
       ];
       for (let religionUpgrade of religionUpgradeList) {
@@ -574,9 +584,13 @@
   var pasture = getBldObj("pasture", -1);
   var solarFarm = getBldObj("pasture", -1);
   var aqueduct = getBldObj("aqueduct", -1);
-  aqueduct.conditions.push(resourceCondition.bind(null, "minerals", "fraction", 1));
+  var hydroPlant = getBldObj("aqueduct", -1);
   solarFarm.conditions.push(() => game.bld.get("pasture").stage === 1);
   solarFarm.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
+  aqueduct.conditions.push(researchCondition(game.science, "robotics", true));
+  aqueduct.conditions.push(resourceCondition.bind(null, "minerals", "fraction", 1));
+  hydroPlant.conditions.push(() => game.bld.get("aqueduct").stage === 1);
+  hydroPlant.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
   var hut = getBldObj("hut", -1);
   var logHouse = getBldObj("logHouse", -1);
   var mansion = getBldObj("mansion", -1);
@@ -585,12 +599,20 @@
   mansion.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
   mansion.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
   var library = getBldObj("library", -1);
+  var dataCenter = getBldObj("library", -1);
   var academy = getBldObj("academy", -1);
   var observatory = getBldObj("observatory", -1);
   var biolab = getBldObj("biolab", -1);
+  library.conditions.push(researchCondition(game.science, "robotics", true));
+  dataCenter.conditions.push(() => game.bld.get("library").stage === 1);
+  dataCenter.conditions.push(researchCondition(game.workshop, "cryocomputing"));
+  dataCenter.conditions.push(() => game.resPool.energyWinterProd - game.resPool.energyCons >= 2);
+  dataCenter.conditions.push(priceCondition("library", "all", 10));
   academy.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
   observatory.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
   observatory.conditions.push(resourceCondition.bind(null, "iron", "fraction", 1));
+  biolab.conditions.push(priceCondition("biolab", "alloy", 100));
+  biolab.conditions.push(priceCondition("biolab", "alloy", 100));
   var barn = getBldObj("barn", -1);
   var warehouse = getBldObj("warehouse", -1);
   var harbor = getBldObj("harbor", -1);
@@ -665,7 +687,8 @@
       aqueduct,
       tradepost,
       mint,
-      solarFarm
+      solarFarm,
+      hydroPlant
     ],
     [
       hut,
@@ -677,7 +700,8 @@
       academy,
       observatory,
       amphitheatre,
-      broadcastTower
+      broadcastTower,
+      dataCenter
     ],
     [
       accelerator,
@@ -685,12 +709,13 @@
       chapel
     ],
     [
+      factory,
       barn,
       warehouse,
       harbor,
-      quarry,
       oilWell,
-      factory
+      quarry,
+      biolab
     ]
   ];
 
@@ -716,6 +741,7 @@
   sattelite.conditions.push(researchCondition(game.workshop, "solarSatellites"));
   var planetCracker = getSpaceBldObj("Dune", "planetCracker", -1);
   var hydrofracturer = getSpaceBldObj("Dune", "hydrofracturer", -1);
+  var researchVessel = getSpaceBldObj("Piscine", "researchVessel", -1);
 
   // ref/space-build-hierarchy.js
   var spaceBuildHierarchy = [
@@ -728,6 +754,9 @@
     [
       planetCracker,
       hydrofracturer
+    ],
+    [
+      researchVessel
     ]
   ];
 

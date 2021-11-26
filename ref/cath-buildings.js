@@ -16,10 +16,14 @@ let getBldObj = (buildingName, limit, /*extraPropsFn,*/ conditions = [], after =
 export let field = getBldObj('field', -1); 
 export let pasture = getBldObj('pasture', -1);              // No, chance of death
 export let solarFarm = getBldObj('pasture', -1);            // Always, if unlocked and full titanium
-export let aqueduct = getBldObj('aqueduct', -1);            // If mineral full
-aqueduct.conditions.push(resourceCondition.bind(null, 'minerals', 'fraction', 1));
-solarFarm.conditions.push(() => game.bld.get('pasture').stage === 1)
+export let aqueduct = getBldObj('aqueduct', -1);            // If mineral full, If hydro plant not unlocked
+export let hydroPlant = getBldObj('aqueduct', -1);          // Always, if unlocked and full titanium
+solarFarm.conditions.push(() => game.bld.get('pasture').stage === 1);
 solarFarm.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 1));
+aqueduct.conditions.push(researchCondition(game.science, 'robotics', true));
+aqueduct.conditions.push(resourceCondition.bind(null, 'minerals', 'fraction', 1));
+hydroPlant.conditions.push(() => game.bld.get('aqueduct').stage === 1);
+hydroPlant.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 1));
 
 export let hut = getBldObj('hut', -1);                      // Upto kitten limit
 export let logHouse = getBldObj('logHouse', -1);            // Upto kitten limit
@@ -29,13 +33,21 @@ logHouse.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kitt
 mansion.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
 mansion.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 1));
 
-export let library = getBldObj('library', -1);          
+export let library = getBldObj('library', -1);              // Always, unless Data Centers are unlocked
+export let dataCenter = getBldObj('library', -1);           // If upgraded, cryocomputing, enough power+1, resources x10
 export let academy = getBldObj('academy', -1);              // If science is full
 export let observatory = getBldObj('observatory', -1);      // If science, iron is full
-export let biolab = getBldObj('biolab', -1);                // No, reserve alloy
+export let biolab = getBldObj('biolab', -1);                // If alloy and slab = 100x
+library.conditions.push(researchCondition(game.science, 'robotics', true));
+dataCenter.conditions.push(() => game.bld.get('library').stage === 1);
+dataCenter.conditions.push(researchCondition(game.workshop, 'cryocomputing'));
+dataCenter.conditions.push(() => (game.resPool.energyWinterProd - game.resPool.energyCons) >= 2);
+dataCenter.conditions.push(priceCondition('library', 'all', 10));
 academy.conditions.push(resourceCondition.bind(null, 'science', 'fraction', 1));
 observatory.conditions.push(resourceCondition.bind(null, 'science', 'fraction', 1));
 observatory.conditions.push(resourceCondition.bind(null, 'iron', 'fraction', 1));
+biolab.conditions.push(priceCondition('biolab', 'alloy', 100));
+biolab.conditions.push(priceCondition('biolab', 'alloy', 100));
 // observatory.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 
 export let barn = getBldObj('barn', -1);                    // Always at end

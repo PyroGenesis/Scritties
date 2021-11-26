@@ -1,4 +1,4 @@
-import { hydrofracturer, planetCracker, sattelite, spaceElevator } from "./space-buildings";
+import { hydrofracturer, planetCracker, researchVessel, sattelite, spaceElevator } from "./space-buildings";
 
 export let spaceBuildHierarchy = [
     [
@@ -10,5 +10,8 @@ export let spaceBuildHierarchy = [
     [
         planetCracker,
         hydrofracturer,
+    ],
+    [
+        researchVessel
     ],
 ];
