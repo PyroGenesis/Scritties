@@ -1,7 +1,7 @@
 import { SCRITTIES_LOG } from "../../config/log";
 import { SCRITTIES_SETTINGS } from "../../config/settings";
-import { field } from "../../ref/buildings";
 import { build } from "./build";
+import { field } from './../../ref/cath-buildings';
 
 export let farm = () => {
     if (!SCRITTIES_SETTINGS.farm) return;   // Run according to setting
