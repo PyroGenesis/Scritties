@@ -29,11 +29,6 @@ let cultureInterval = setInterval(culture, 5000);
 //             .indexOf(m[3].toUpperCase()) >= 0;
 // };
 
-// If Space available    
-if (game.spaceTab.visible) {
-    // Load planets
-    if (!game.spaceTab.planetPanels || game.spaceTab.planetPanels.length === 0) $(`a.Space`)[0].click();
-}
 let useResourcesInterval = setInterval(() => {
     builder(game.bldTab, cathBuildHierarchy, 'CATH_BUILD_LastGroupReached');
     builder(game.spaceTab, spaceBuildHierarchy, 'SPACE_BUILD_LastGroupReached');

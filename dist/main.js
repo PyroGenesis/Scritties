@@ -73,13 +73,19 @@
       if (!SCRITTIES_SETTINGS.catpower.parchment)
         return;
       if (gamePage.workshop.getCraft("parchment").unlocked) {
-        let ticks_needed_to_fill_MP = manpowerRes.maxValue / manpowerRes.perTickCached;
-        let fur_used_while_filling_MP = game.resPool.resourceMap.furs.perTickCached * ticks_needed_to_fill_MP;
-        let fur_available_for_parchments = game.resPool.resourceMap.furs.value + fur_used_while_filling_MP;
-        let parchs_to_craft = Math.trunc(fur_available_for_parchments / 175);
-        if (SCRITTIES_LOG.catpower.parchment)
-          console.log(`Converting ${parchs_to_craft * 175} furs to ${parchs_to_craft} parchments`);
-        game.craft("parchment", parchs_to_craft);
+        if (game.resPool.resourceMap.furs.perTickCached > 0) {
+          if (SCRITTIES_LOG.catpower.parchment)
+            console.log(`Converting all furs to parchments`);
+          game.craftAll("parchment");
+        } else {
+          let ticks_needed_to_fill_MP = manpowerRes.maxValue / manpowerRes.perTickCached;
+          let fur_used_while_filling_MP = game.resPool.resourceMap.furs.perTickCached * ticks_needed_to_fill_MP;
+          let fur_available_for_parchments = game.resPool.resourceMap.furs.value + fur_used_while_filling_MP;
+          let parchs_to_craft = Math.trunc(fur_available_for_parchments / 175);
+          if (SCRITTIES_LOG.catpower.parchment)
+            console.log(`Converting ${parchs_to_craft * 175} furs to ${parchs_to_craft} parchments`);
+          game.craft("parchment", parchs_to_craft);
+        }
       }
     }
   };
@@ -128,6 +134,8 @@
     SCRITTIES_LOG[logVarName] = "0";
     if (!tab.visible)
       return;
+    if (!tab.content)
+      tab.domNode.click();
     tab.update();
     for (let goalGroup of buildHierarchy) {
       hierarchyIter += 1;
@@ -290,9 +298,8 @@
     if (!cultureRes.unlocked || !game.diplomacy.hasUnlockedRaces())
       return;
     if (cultureRes.value >= cultureRes.maxValue) {
-      if (game.diplomacyTab.racePanels.length === 0) {
-        $(`a.Trade`)[0].click();
-      }
+      if (!game.diplomacyTab.content)
+        game.diplomacyTab.domNode.click();
       for (let i = 0; i < game.diplomacyTab.racePanels.length; i++) {
         let racePanel = game.diplomacyTab.racePanels[i];
         racePanel.update();
@@ -446,8 +453,8 @@
     if (!faithRes.unlocked)
       return;
     if (game.religion.getRU("transcendence").on >= 1) {
-      if (!game.religionTab.zgUpgradeButtons || game.religionTab.zgUpgradeButtons.length === 0)
-        $(`a.Religion`)[0].click();
+      if (!game.religionTab.content)
+        game.religionTab.domNode.click();
       let res = game.resPool.resourceMap;
       let titaniumIsNotConstrained = res.titanium.value / res.titanium.maxValue > 0.95 || res.steel.value <= res.alloy.value;
       let religionUpgradeList = [
@@ -512,8 +519,8 @@
     let ziggBld = game.bld.get("ziggurat");
     if (!ziggBld.on)
       return;
-    if (!game.religionTab.zgUpgradeButtons || game.religionTab.zgUpgradeButtons.length === 0)
-      $(`a.Religion`)[0].click();
+    if (!game.religionTab.content)
+      game.religionTab.domNode.click();
     if (unicornBldQueue.length === 0)
       return;
     let ziggUpgrade = game.religionTab.zgUpgradeButtons[unicornBldQueue[0]];
@@ -769,10 +776,6 @@
     observeInterval = setInterval(observe, 2e3);
   }
   var cultureInterval = setInterval(culture, 5e3);
-  if (game.spaceTab.visible) {
-    if (!game.spaceTab.planetPanels || game.spaceTab.planetPanels.length === 0)
-      $(`a.Space`)[0].click();
-  }
   var useResourcesInterval = setInterval(() => {
     builder(game.bldTab, cathBuildHierarchy, "CATH_BUILD_LastGroupReached");
     builder(game.spaceTab, spaceBuildHierarchy, "SPACE_BUILD_LastGroupReached");

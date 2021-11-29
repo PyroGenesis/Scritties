@@ -7,7 +7,7 @@ export let faith = () => {
     // if transcendence is unlocked
     if (game.religion.getRU("transcendence").on >= 1) {
         // load the religion tab if not loaded
-        if (!game.religionTab.zgUpgradeButtons || game.religionTab.zgUpgradeButtons.length === 0) $(`a.Religion`)[0].click();
+        if (!game.religionTab.content) game.religionTab.domNode.click();
         
         // solarchant       -> + faith generation
         // scholasticism    -> + max science

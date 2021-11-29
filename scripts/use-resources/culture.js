@@ -5,9 +5,9 @@ export let culture = () => {
     if(!cultureRes.unlocked || !game.diplomacy.hasUnlockedRaces()) return;   // No cheating
 
     if(cultureRes.value >= cultureRes.maxValue) {
-        if (game.diplomacyTab.racePanels.length === 0) {
-            $(`a.Trade`)[0].click();
-        }
+        // load trade / diplomacy tab if not loaded
+        if (!game.diplomacyTab.content) game.diplomacyTab.domNode.click();
+
         for (let i = 0; i < game.diplomacyTab.racePanels.length; i++) {
             let racePanel = game.diplomacyTab.racePanels[i];
             racePanel.update();

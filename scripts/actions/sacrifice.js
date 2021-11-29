@@ -13,7 +13,7 @@ export let sacrifice = () => {
     let ziggBld = game.bld.get('ziggurat');
     if(!ziggBld.on) return;
     // load the religion tab if not loaded
-    if (!game.religionTab.zgUpgradeButtons || game.religionTab.zgUpgradeButtons.length === 0) $(`a.Religion`)[0].click();
+    if (!game.religionTab.content) game.religionTab.domNode.click();
 
     // Queue is empty
     if (unicornBldQueue.length === 0) return;

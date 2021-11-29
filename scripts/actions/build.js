@@ -29,6 +29,9 @@ export let builder = (tab, buildHierarchy, logVarName) => {
     // tab isn't visible yet
     if (!tab.visible) return;
 
+    // If tab isn't loaded in yet, click and load it in (only for tabs after science)
+    if (!tab.content) tab.domNode.click();
+
     tab.update();
     for (let goalGroup of buildHierarchy) {
         hierarchyIter += 1;
