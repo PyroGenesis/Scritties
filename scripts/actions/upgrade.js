@@ -24,12 +24,18 @@ export let upgrade = () => {
         }
 
         let makeResult = true;
+        let singleCraftResult = 1 + game.getResCraftRatio(upgrade.result);
+        let craftCount = upgrade.instant ? Infinity : 1;
+
         for (let i = 0; i < upgrade.needs.length && makeResult; i++) {
             // If resource is not limited, no need for ratio checking
             if (!upgrade.needs[i].limited) continue;
 
             let totalNeedValue = needObjs[i].value + resObj.value * upgrade.needs[i].cost
             let optimalResultCount = totalNeedValue * upgrade.ratio / upgrade.needs[i].cost
+            let normalizedResultCount = Math.ceil(optimalResultCount / singleCraftResult)
+
+            craftCount = Math.min(craftCount, normalizedResultCount);
             makeResult = resObj.value < Math.trunc(optimalResultCount);
             // makeResult = makeResult && needObjs[i].value >= upgrade.needs[i].cost
 
@@ -38,10 +44,10 @@ export let upgrade = () => {
 
         if (makeResult) {
             if (SCRITTIES_LOG.crafting.upgrade) {
-                let log_text = `Converting ${upgrade.needs.map(need => `${need.cost} ${need.resource}`).join(', ')} to ${upgrade.result}`
+                let log_text = `Converting ${upgrade.needs.map(need => `${need.cost*craftCount} ${need.resource}`).join(', ')} to ${upgrade.result}`
                 console.log(log_text);
             }
-            game.craft(upgrade.result, 1);
+            game.craft(upgrade.result, craftCount);
         }
     }
 };

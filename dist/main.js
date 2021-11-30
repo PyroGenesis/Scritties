@@ -175,6 +175,7 @@
       result: "gear",
       ratio: 0.2,
       limit: -1,
+      instant: false,
       needs: [
         { resource: "steel", cost: 15, limited: true }
       ]
@@ -183,6 +184,7 @@
       result: "concrate",
       ratio: 0.3,
       limit: -1,
+      instant: false,
       needs: [
         { resource: "slab", cost: 2500, limited: true },
         { resource: "steel", cost: 25, limited: true }
@@ -192,6 +194,7 @@
       result: "scaffold",
       ratio: 0.5,
       limit: -1,
+      instant: true,
       needs: [
         { resource: "beam", cost: 50, limited: true }
       ]
@@ -200,6 +203,7 @@
       result: "manuscript",
       ratio: 0.5,
       limit: -1,
+      instant: false,
       needs: [
         { resource: "parchment", cost: game.science.getPolicy("tradition").researched ? 20 : 25, limited: true },
         { resource: "culture", cost: game.science.getPolicy("tradition").researched ? 300 : 400, limited: false }
@@ -209,6 +213,7 @@
       result: "compedium",
       ratio: 0.5,
       limit: -1,
+      instant: false,
       needs: [
         { resource: "manuscript", cost: 50, limited: true },
         { resource: "science", cost: 1e4, limited: false }
@@ -218,6 +223,7 @@
       result: "blueprint",
       ratio: 0.5,
       limit: -1,
+      instant: false,
       needs: [
         { resource: "compedium", cost: 25, limited: true },
         { resource: "science", cost: 25e3, limited: false }
@@ -227,6 +233,7 @@
       result: "ship",
       ratio: game.resPool.get("ship").value < 250 ? 1 : 0.5,
       limit: game.resPool.get("ship").value < 250 ? 250 : -1,
+      instant: false,
       needs: [
         { resource: "starchart", cost: 25, limited: true },
         { resource: "plate", cost: 150, limited: true },
@@ -237,6 +244,7 @@
       result: "tanker",
       ratio: 0.4,
       limit: game.resPool.get("ship").value < 250 ? 250 : -1,
+      instant: false,
       needs: [
         { resource: "alloy", cost: 1250, limited: true },
         { resource: "ship", cost: 200, limited: true },
@@ -247,6 +255,7 @@
       result: "megalith",
       ratio: 0.1,
       limit: -1,
+      instant: false,
       needs: [
         { resource: "beam", cost: 25, limited: true },
         { resource: "slab", cost: 50, limited: true },
@@ -273,21 +282,25 @@
         continue;
       }
       let makeResult = true;
+      let singleCraftResult = 1 + game.getResCraftRatio(upgrade2.result);
+      let craftCount = upgrade2.instant ? Infinity : 1;
       for (let i = 0; i < upgrade2.needs.length && makeResult; i++) {
         if (!upgrade2.needs[i].limited)
           continue;
         let totalNeedValue = needObjs[i].value + resObj.value * upgrade2.needs[i].cost;
         let optimalResultCount = totalNeedValue * upgrade2.ratio / upgrade2.needs[i].cost;
+        let normalizedResultCount = Math.ceil(optimalResultCount / singleCraftResult);
+        craftCount = Math.min(craftCount, normalizedResultCount);
         makeResult = resObj.value < Math.trunc(optimalResultCount);
         if (!makeResult)
           SCRITTIES_LOG.UPGRADE_status.push(`${upgrade2.result} failed (${upgrade2.needs[i].resource})`);
       }
       if (makeResult) {
         if (SCRITTIES_LOG.crafting.upgrade) {
-          let log_text = `Converting ${upgrade2.needs.map((need) => `${need.cost} ${need.resource}`).join(", ")} to ${upgrade2.result}`;
+          let log_text = `Converting ${upgrade2.needs.map((need) => `${need.cost * craftCount} ${need.resource}`).join(", ")} to ${upgrade2.result}`;
           console.log(log_text);
         }
-        game.craft(upgrade2.result, 1);
+        game.craft(upgrade2.result, craftCount);
       }
     }
   };
