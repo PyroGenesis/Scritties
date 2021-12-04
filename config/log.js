@@ -19,7 +19,7 @@ export let SCRITTIES_LOG = {
         capPrevention: false,
         upgrade: false
     },
-    farm: false,
+    farm: true,
     build: true,
     sacrifice: true,
     cloudSave: true,

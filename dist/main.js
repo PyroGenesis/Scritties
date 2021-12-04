@@ -21,7 +21,7 @@
       capPrevention: false,
       upgrade: false
     },
-    farm: false,
+    farm: true,
     build: true,
     sacrifice: true,
     cloudSave: true,
@@ -52,7 +52,7 @@
       capPrevention: true,
       upgrade: true
     },
-    farm: false,
+    farm: true,
     build: true,
     sacrifice: true,
     cloudSave: true,
@@ -780,6 +780,18 @@
     ]
   ];
 
+  // scripts/actions/farm.js
+  var farm = () => {
+    if (!SCRITTIES_SETTINGS.farm)
+      return;
+    if (game.calendar.season > 0 || game.challenges.isActive("winterIsComing"))
+      return;
+    game.bldTab.update();
+    let buildRes = build(field.bldObj);
+    if (SCRITTIES_LOG.farm && buildRes.built)
+      console.log(`Building a Catnip Field`);
+  };
+
   // scritties.js
   var huntInterval = setInterval(hunt, 5e3);
   var faithInterval = setInterval(faith, 5e3);
@@ -789,6 +801,7 @@
     observeInterval = setInterval(observe, 2e3);
   }
   var cultureInterval = setInterval(culture, 5e3);
+  var farmInterval = setInterval(farm, 1e4);
   var useResourcesInterval = setInterval(() => {
     builder(game.bldTab, cathBuildHierarchy, "CATH_BUILD_LastGroupReached");
     builder(game.spaceTab, spaceBuildHierarchy, "SPACE_BUILD_LastGroupReached");

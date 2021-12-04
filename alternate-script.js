@@ -14,7 +14,7 @@ let huntInterval = setInterval(hunt, 5000);
 
 // SCRITTIES_LOG.farm = true;
 SCRITTIES_SETTINGS.farm = true;
-let farmInterval = setInterval(farm, 2000);
+let farmInterval = setInterval(farm, 10000);
 
 // SCRITTIES_LOG.observe = true;
 let observeInterval = null;

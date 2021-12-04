@@ -5,7 +5,7 @@ import { field } from './../../ref/cath-buildings';
 
 export let farm = () => {
     if (!SCRITTIES_SETTINGS.farm) return;   // Run according to setting
-    if (game.calendar.season > 1 || game.challenges.isActive("winterIsComing")) return; // only run for spring and summer
+    if (game.calendar.season > 0 || game.challenges.isActive("winterIsComing")) return; // only run for spring
 
     game.bldTab.update();
     let buildRes = build(field.bldObj);

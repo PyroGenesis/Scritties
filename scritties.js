@@ -12,6 +12,7 @@ import { cathBuildHierarchy } from "./ref/cath-build-hierarchy";
 import { SCRITTIES_LOG } from "./config/log";
 import { spaceBuildHierarchy } from "./ref/space-build-hierarchy";
 import { researchCondition } from "./scripts/utility/conditions";
+import { farm } from "./scripts/actions/farm";
 
 let huntInterval = setInterval(hunt, 5000);
 let faithInterval = setInterval(faith, 5000);
@@ -28,6 +29,8 @@ let cultureInterval = setInterval(culture, 5000);
 //     return jQuery(a).text().toUpperCase()
 //             .indexOf(m[3].toUpperCase()) >= 0;
 // };
+
+let farmInterval = setInterval(farm, 10000);
 
 let useResourcesInterval = setInterval(() => {
     builder(game.bldTab, cathBuildHierarchy, 'CATH_BUILD_LastGroupReached');
