@@ -10,9 +10,9 @@ export let cathBuildHierarchy = [
         smelter,
 
         // Conditions restrict
+        factory,
         aqueduct,
         tradepost,
-        mint,
         solarFarm,
         hydroPlant,
     ],
@@ -37,7 +37,7 @@ export let cathBuildHierarchy = [
         // magneto
     ],
     [
-        factory,
+        mint,
 
         barn,
         warehouse,

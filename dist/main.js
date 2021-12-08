@@ -704,9 +704,9 @@
       lumberMill,
       mine,
       smelter,
+      factory,
       aqueduct,
       tradepost,
-      mint,
       solarFarm,
       hydroPlant
     ],
@@ -729,7 +729,7 @@
       chapel
     ],
     [
-      factory,
+      mint,
       barn,
       warehouse,
       harbor,
