@@ -613,11 +613,12 @@
   hydroPlant.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
   var hut = getBldObj("hut", -1);
   var logHouse = getBldObj("logHouse", -1);
-  var mansion = getBldObj("mansion", -1);
+  var mansion = getBldObj("mansion", 0);
   hut.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
   logHouse.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
   mansion.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
   mansion.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
+  mansion.conditions.push(priceCondition("mansion", "steel", 2));
   var library = getBldObj("library", -1);
   var dataCenter = getBldObj("library", -1);
   var academy = getBldObj("academy", -1);

@@ -27,11 +27,12 @@ hydroPlant.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 
 
 export let hut = getBldObj('hut', -1);                      // Upto kitten limit
 export let logHouse = getBldObj('logHouse', -1);            // Upto kitten limit
-export let mansion = getBldObj('mansion', -1);              // Upto kitten limit, if titanium is full
+export let mansion = getBldObj('mansion', 0);               // Upto kitten limit, if titanium is full, if steel is 2x 
 hut.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
 logHouse.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
 mansion.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
 mansion.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 1));
+mansion.conditions.push(priceCondition('mansion', 'steel', 2));
 
 export let library = getBldObj('library', -1);              // Always, unless Data Centers are unlocked
 export let dataCenter = getBldObj('library', -1);           // If upgraded, cryocomputing, enough power+1, resources x10
