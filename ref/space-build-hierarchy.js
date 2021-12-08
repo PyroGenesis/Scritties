@@ -2,14 +2,14 @@ import { hydrofracturer, planetCracker, researchVessel, sattelite, spaceElevator
 
 export let spaceBuildHierarchy = [
     [
-        spaceElevator,
+        planetCracker,
+        hydrofracturer,
     ],
     [
         sattelite,
     ],
     [
-        planetCracker,
-        hydrofracturer,
+        spaceElevator,
     ],
     [
         researchVessel

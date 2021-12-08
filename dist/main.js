@@ -767,14 +767,14 @@
   // ref/space-build-hierarchy.js
   var spaceBuildHierarchy = [
     [
-      spaceElevator
+      planetCracker,
+      hydrofracturer
     ],
     [
       sattelite
     ],
     [
-      planetCracker,
-      hydrofracturer
+      spaceElevator
     ],
     [
       researchVessel
