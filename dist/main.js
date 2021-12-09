@@ -587,6 +587,9 @@
   function researchCondition(discipline, name, negate = false) {
     return () => Boolean(discipline.get(name).researched ^ negate);
   }
+  function powerCondition(limit) {
+    return () => game.resPool.energyWinterProd - game.resPool.energyCons >= limit;
+  }
 
   // ref/cath-buildings.js
   var getBldObj = (buildingName, limit, conditions = [], after = []) => {
@@ -627,7 +630,7 @@
   library.conditions.push(researchCondition(game.science, "robotics", true));
   dataCenter.conditions.push(() => game.bld.get("library").stage === 1);
   dataCenter.conditions.push(researchCondition(game.workshop, "cryocomputing"));
-  dataCenter.conditions.push(() => game.resPool.energyWinterProd - game.resPool.energyCons >= 2);
+  dataCenter.conditions.push(powerCondition(2));
   dataCenter.conditions.push(priceCondition("library", "all", 10));
   academy.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
   observatory.conditions.push(resourceCondition.bind(null, "science", "fraction", 1));
@@ -671,7 +674,7 @@
   magneto.conditions.push(() => game.resPool.resourceMap.oil.perTickCached > 0.05);
   magneto.conditions.push(priceCondition("magneto", "alloy", 3));
   factory.conditions.push(researchCondition(game.workshop, "carbonSequestration"));
-  factory.conditions.push(() => game.resPool.energyWinterProd - game.resPool.energyCons >= 4);
+  factory.conditions.push(powerCondition(4));
   factory.conditions.push(() => game.bld.get("factory").on === game.bld.get("factory").val);
   factory.conditions.push(priceCondition("factory", "plate", 2));
   var amphitheatre = getBldObj("amphitheatre", -1);

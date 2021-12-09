@@ -27,3 +27,7 @@ export function priceCondition(bld, resource, multiplier) {
 export function researchCondition(discipline, name, negate=false) {
     return () => Boolean(discipline.get(name).researched ^ negate);
 }
+
+export function powerCondition(limit) {
+    return () => (game.resPool.energyWinterProd - game.resPool.energyCons) >= limit
+}
