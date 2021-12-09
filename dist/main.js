@@ -763,23 +763,26 @@
   var spaceElevator = getSpaceBldObj("Cath", "spaceElevator", -1);
   var sattelite = getSpaceBldObj("Cath", "sattelite", -1);
   sattelite.conditions.push(researchCondition(game.workshop, "solarSatellites"));
+  var moonOutpost = getSpaceBldObj("Redmoon", "moonOutpost", 0);
+  moonOutpost.conditions.push(powerCondition(6));
   var planetCracker = getSpaceBldObj("Dune", "planetCracker", -1);
   var hydrofracturer = getSpaceBldObj("Dune", "hydrofracturer", -1);
   var researchVessel = getSpaceBldObj("Piscine", "researchVessel", -1);
+  var sunlifter = getSpaceBldObj("Helios", "sunlifter", -1);
 
   // ref/space-build-hierarchy.js
   var spaceBuildHierarchy = [
     [
       planetCracker,
-      hydrofracturer
+      hydrofracturer,
+      moonOutpost
     ],
     [
       sattelite
     ],
     [
-      spaceElevator
-    ],
-    [
+      spaceElevator,
+      sunlifter,
       researchVessel
     ]
   ];
