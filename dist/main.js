@@ -7,7 +7,7 @@
       parchment: false
     },
     faith: {
-      praise: true,
+      praise: false,
       upgrade: true
     },
     culture: true,

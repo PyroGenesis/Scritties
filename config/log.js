@@ -5,7 +5,7 @@ export let SCRITTIES_LOG = {
         parchment: false
     },
     faith: {
-        praise: true,
+        praise: false,
         upgrade: true
     },
     culture: true,  // Embassy
