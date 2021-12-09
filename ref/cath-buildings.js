@@ -14,9 +14,9 @@ let getBldObj = (buildingName, limit, /*extraPropsFn,*/ conditions = [], after =
 }
 
 export let field = getBldObj('field', -1); 
-export let pasture = getBldObj('pasture', -1);              // No, chance of death
+export let pasture = getBldObj('pasture', 50);              // No, chance of death
 export let solarFarm = getBldObj('pasture', -1);            // Always, if unlocked and full titanium
-export let aqueduct = getBldObj('aqueduct', -1);            // If mineral full, If hydro plant not unlocked
+export let aqueduct = getBldObj('aqueduct', 100);           // If mineral full, If hydro plant not unlocked, limited to 100
 export let hydroPlant = getBldObj('aqueduct', -1);          // Always, if unlocked and full titanium
 solarFarm.conditions.push(() => game.bld.get('pasture').stage === 1);
 solarFarm.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 1));

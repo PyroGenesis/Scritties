@@ -601,9 +601,9 @@
     };
   };
   var field = getBldObj("field", -1);
-  var pasture = getBldObj("pasture", -1);
+  var pasture = getBldObj("pasture", 50);
   var solarFarm = getBldObj("pasture", -1);
-  var aqueduct = getBldObj("aqueduct", -1);
+  var aqueduct = getBldObj("aqueduct", 100);
   var hydroPlant = getBldObj("aqueduct", -1);
   solarFarm.conditions.push(() => game.bld.get("pasture").stage === 1);
   solarFarm.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
