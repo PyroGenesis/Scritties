@@ -144,7 +144,7 @@
       for (let goal of goalGroup) {
         if (!goal.conditions.every((cond) => cond()))
           continue;
-        if (goal.limit == -1 || game.bld.get(goal.name).val < goal.limit) {
+        if (goal.limit == -1 || goal.bldObj.model.metadata.val < goal.limit) {
           let buildRes = build(goal.bldObj);
           if (!buildRes.unlocked)
             continue;
