@@ -764,7 +764,15 @@
   };
   var spaceElevator = getSpaceBldObj("Cath", "spaceElevator", -1);
   var sattelite = getSpaceBldObj("Cath", "sattelite", -1);
+  var spaceStation = getSpaceBldObj("Cath", "spaceStation", -1);
   sattelite.conditions.push(researchCondition(game.workshop, "solarSatellites"));
+  spaceStation.after.push(() => {
+    if (game.space.getBuilding("spaceStation").val === 1) {
+      game.space.getBuilding("spaceStation").on = 0;
+    } else if (game.space.getBuilding("spaceStation").on > 0) {
+      game.space.getBuilding("spaceStation").on -= 1;
+    }
+  });
   var moonOutpost = getSpaceBldObj("Redmoon", "moonOutpost", 0);
   moonOutpost.conditions.push(powerCondition(6));
   var planetCracker = getSpaceBldObj("Dune", "planetCracker", -1);
@@ -785,7 +793,8 @@
     [
       spaceElevator,
       sunlifter,
-      researchVessel
+      researchVessel,
+      spaceStation
     ]
   ];
 
