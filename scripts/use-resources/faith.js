@@ -1,4 +1,5 @@
 import { SCRITTIES_LOG } from "../../config/log";
+import { SCRITTIES_SETTINGS } from "../../config/settings";
 
 export let faith = () => {
     let faithRes = game.resPool.resourceMap.faith;
@@ -68,6 +69,8 @@ export let faith = () => {
     }
 
     if (faithRes.value < faithRes.maxValue) return; // Only run if full faith
-    if (SCRITTIES_LOG.faith.praise) console.log("Praise the sun!");
-    game.religion.praise();
+    if (SCRITTIES_SETTINGS.faith.praise) {
+        if (SCRITTIES_LOG.faith.praise) console.log("Praise the sun!");
+        game.religion.praise();
+    }
 };

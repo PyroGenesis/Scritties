@@ -521,9 +521,11 @@
     }
     if (faithRes.value < faithRes.maxValue)
       return;
-    if (SCRITTIES_LOG.faith.praise)
-      console.log("Praise the sun!");
-    game.religion.praise();
+    if (SCRITTIES_SETTINGS.faith.praise) {
+      if (SCRITTIES_LOG.faith.praise)
+        console.log("Praise the sun!");
+      game.religion.praise();
+    }
   };
 
   // scripts/actions/sacrifice.js
