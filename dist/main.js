@@ -779,6 +779,10 @@
   var hydrofracturer = getSpaceBldObj("Dune", "hydrofracturer", -1);
   var researchVessel = getSpaceBldObj("Piscine", "researchVessel", -1);
   var sunlifter = getSpaceBldObj("Helios", "sunlifter", -1);
+  var cryostation = getSpaceBldObj("T-Minus", "cryostation", -1);
+  var spaceBeacon = getSpaceBldObj("Kairo", "spaceBeacon", -1);
+  var terraformingStation = getSpaceBldObj("Yarn", "terraformingStation", -1);
+  var tectonic = getSpaceBldObj("Centaurus System", "tectonic", -1);
 
   // ref/space-build-hierarchy.js
   var spaceBuildHierarchy = [
@@ -795,6 +799,9 @@
       sunlifter,
       researchVessel,
       spaceStation
+    ],
+    [
+      cryostation
     ]
   ];
 
