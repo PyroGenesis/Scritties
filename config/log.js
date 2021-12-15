@@ -26,5 +26,6 @@ export let SCRITTIES_LOG = {
 
     CATH_BUILD_LastGroupReached: '',
     SPACE_BUILD_LastGroupReached: '',
+    ANTIMATTER_BUILD_LastGroupReached: '',
     UPGRADE_status: []
 };

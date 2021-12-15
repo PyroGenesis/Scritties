@@ -27,6 +27,7 @@
     cloudSave: true,
     CATH_BUILD_LastGroupReached: "",
     SPACE_BUILD_LastGroupReached: "",
+    ANTIMATTER_BUILD_LastGroupReached: "",
     UPGRADE_status: []
   };
 
@@ -817,6 +818,21 @@
       console.log(`Building a Catnip Field`);
   };
 
+  // scripts/use-resources/antimatter.js
+  var antimatterBuildHierarchy = [
+    [tectonic],
+    [spaceBeacon],
+    [terraformingStation]
+  ];
+  var antimatter = () => {
+    let antimatterRes = game.resPool.resourceMap.antimatter;
+    if (!antimatterRes.unlocked)
+      return;
+    if (antimatterRes.value < antimatterRes.maxValue)
+      return;
+    builder(game.spaceTab, antimatterBuildHierarchy, "ANTIMATTER_BUILD_LastGroupReached");
+  };
+
   // scritties.js
   var huntInterval = setInterval(hunt, 5e3);
   var faithInterval = setInterval(faith, 5e3);
@@ -826,6 +842,7 @@
     observeInterval = setInterval(observe, 2e3);
   }
   var cultureInterval = setInterval(culture, 5e3);
+  var antimatterInterval = setInterval(antimatter, 30 * 1e3);
   var farmInterval = setInterval(farm, 1e4);
   var useResourcesInterval = setInterval(() => {
     builder(game.bldTab, cathBuildHierarchy, "CATH_BUILD_LastGroupReached");

@@ -13,6 +13,7 @@ import { SCRITTIES_LOG } from "./config/log";
 import { spaceBuildHierarchy } from "./ref/space-build-hierarchy";
 import { researchCondition } from "./scripts/utility/conditions";
 import { farm } from "./scripts/actions/farm";
+import { antimatter } from './scripts/use-resources/antimatter';
 
 let huntInterval = setInterval(hunt, 5000);
 let faithInterval = setInterval(faith, 5000);
@@ -24,6 +25,7 @@ if (!game.workshop.get('seti').researched) {
 }
 
 let cultureInterval = setInterval(culture, 5000);
+let antimatterInterval = setInterval(antimatter, 30*1000);
 
 // jQuery.expr[':'].icontains = function(a, i, m) {
 //     return jQuery(a).text().toUpperCase()
