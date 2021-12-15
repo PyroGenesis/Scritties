@@ -33,8 +33,8 @@ spaceStation.after.push(() => {
 });
 
 // Redmoon
-export let moonOutpost = getSpaceBldObj('Redmoon', 'moonOutpost', 0)        // Disabled by default, if enough power+1
-moonOutpost.conditions.push(powerCondition(6))
+export let moonOutpost = getSpaceBldObj('Redmoon', 'moonOutpost', -1);               // Disabled by default, if enough power+1
+moonOutpost.conditions.push(powerCondition(6));
 
 // Dune
 export let planetCracker = getSpaceBldObj('Dune', 'planetCracker', -1)      // Always

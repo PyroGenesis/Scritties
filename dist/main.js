@@ -773,7 +773,7 @@
       game.space.getBuilding("spaceStation").on -= 1;
     }
   });
-  var moonOutpost = getSpaceBldObj("Redmoon", "moonOutpost", 0);
+  var moonOutpost = getSpaceBldObj("Redmoon", "moonOutpost", -1);
   moonOutpost.conditions.push(powerCondition(6));
   var planetCracker = getSpaceBldObj("Dune", "planetCracker", -1);
   var hydrofracturer = getSpaceBldObj("Dune", "hydrofracturer", -1);
