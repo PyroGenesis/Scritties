@@ -26,14 +26,31 @@ let getAlicornReq = (res, count) => {
         let tcToCraft = count - currentTc;
 
         if (tcToCraft <= 0) return 0;
-        let effectiveTcRatio = 1 + game.globalEffectsCached.tcRefineRatio
+        let effectiveTcRatio = 1 + game.globalEffectsCached.tcRefineRatio;
         let sacrifices = Math.ceil(tcToCraft / effectiveTcRatio);
         return sacrifices * 25;
     }
 }
 
+let getAlicornRes = () => {
+    let effectiveTcRatio = 1 + game.globalEffectsCached.tcRefineRatio;
+    let effectiveRelicRatio = 1 + game.globalEffectsCached.relicRefineRatio;
 
-function secondsToString(seconds) {
+    let currentTc = game.resPool.resourceMap.timeCrystal.value;
+    let sacrifices = Math.floor(game.resPool.resourceMap.alicorn.value / 25);
+    let createdTc = sacrifices * effectiveTcRatio;
+    let totalTc = currentTc + createdTc;
+
+    let currentRelics = game.resPool.resourceMap.relic.value;
+    let refines = Math.floor(totalTc / 25);
+    let createdRelics = refines * effectiveRelicRatio;
+    let totalRelics = currentRelics + createdRelics;
+
+    return `Sacrifices: ${sacrifices}, TC: ${totalTc.toFixed(2)}, Relics: ${totalRelics}`
+}
+
+
+let secondsToString = (seconds) => {
     let result = [];
     let numyears = Math.floor(seconds / 31536000);
     if (numyears > 0) result.push(numyears + 'yr')
