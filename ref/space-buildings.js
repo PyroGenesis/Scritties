@@ -1,4 +1,4 @@
-import { powerCondition, priceCondition, researchCondition, resourceCondition } from '../scripts/utility/conditions';
+import { powerCondition, priceCondition, researchCondition, resourceCondition, turnOffNewTrigger } from '../scripts/utility/conditions';
 
 let getSpaceBldObj = (planetName, buildingName, limit, /*extraPropsFn,*/ conditions = [], after = []) => {
     // extraPropsFn = extraPropsFn || function() { return {} };
@@ -24,17 +24,13 @@ export let spaceElevator = getSpaceBldObj('Cath', 'spaceElevator', -1)          
 export let sattelite = getSpaceBldObj('Cath', 'sattelite', -1)                      // Always, if Solar Satellites is researched
 export let spaceStation = getSpaceBldObj('Cath', 'spaceStation', -1)                // Always, but low priority and disable automtic ones immediately
 sattelite.conditions.push(researchCondition(game.workshop, 'solarSatellites'));
-spaceStation.after.push(() => {
-    if (game.space.getBuilding('spaceStation').val === 1) {
-        game.space.getBuilding('spaceStation').on = 0;
-    } else if (game.space.getBuilding('spaceStation').on > 0) {
-        game.space.getBuilding('spaceStation').on -= 1;
-    }
-});
+spaceStation.after.push(turnOffNewTrigger(game.space.getBuilding('spaceStation')));
 
 // Redmoon
-export let moonOutpost = getSpaceBldObj('Redmoon', 'moonOutpost', -1);               // Disabled by default, if enough power+1
+export let moonOutpost = getSpaceBldObj('Redmoon', 'moonOutpost', -1);              // If enough power+1
+export let moonBase = getSpaceBldObj('Redmoon', 'moonBase', -1)                     // Always, but low priority and disable automtic ones immediately 
 moonOutpost.conditions.push(powerCondition(6));
+moonBase.after.push(turnOffNewTrigger(game.space.getBuilding('moonBase')));
 
 // Dune
 export let planetCracker = getSpaceBldObj('Dune', 'planetCracker', -1);             // Always
@@ -54,6 +50,7 @@ export let spaceBeacon = getSpaceBldObj('Kairo', 'spaceBeacon', -1);            
 
 // Yarn
 export let terraformingStation = getSpaceBldObj('Yarn', 'terraformingStation', -1); // Antimatter hierarchy
+export let hydroponics = getSpaceBldObj('Yarn', 'hydroponics', -1);                 // Always
 
 // Centaurus System
 export let tectonic = getSpaceBldObj('Centaurus System', 'tectonic', -1);           // Antimatter hierarchy

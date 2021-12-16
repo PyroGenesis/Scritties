@@ -666,13 +666,7 @@
   oilWell.conditions.push(resourceCondition.bind(null, "ship", "fixed", 250));
   oilWell.conditions.push(priceCondition("oilWell", "all", 3));
   accelerator.conditions.push(resourceCondition.bind(null, "titanium", "fraction", 1));
-  accelerator.after.push(() => {
-    if (game.bld.get("accelerator").val === 1) {
-      game.bld.get("accelerator").on = 0;
-    } else if (game.bld.get("accelerator").on > 0) {
-      game.bld.get("accelerator").on -= 1;
-    }
-  });
+  accelerator.after.push(turnOffNewTrigger(game.bld.get("accelerator")));
   var steamworks = getBldObj("steamworks", -1);
   var magneto = getBldObj("magneto", -1);
   var smelter = getBldObj("smelter", -1);
@@ -776,15 +770,11 @@
   var sattelite = getSpaceBldObj("Cath", "sattelite", -1);
   var spaceStation = getSpaceBldObj("Cath", "spaceStation", -1);
   sattelite.conditions.push(researchCondition(game.workshop, "solarSatellites"));
-  spaceStation.after.push(() => {
-    if (game.space.getBuilding("spaceStation").val === 1) {
-      game.space.getBuilding("spaceStation").on = 0;
-    } else if (game.space.getBuilding("spaceStation").on > 0) {
-      game.space.getBuilding("spaceStation").on -= 1;
-    }
-  });
+  spaceStation.after.push(turnOffNewTrigger(game.space.getBuilding("spaceStation")));
   var moonOutpost = getSpaceBldObj("Redmoon", "moonOutpost", -1);
+  var moonBase = getSpaceBldObj("Redmoon", "moonBase", -1);
   moonOutpost.conditions.push(powerCondition(6));
+  moonBase.after.push(turnOffNewTrigger(game.space.getBuilding("moonBase")));
   var planetCracker = getSpaceBldObj("Dune", "planetCracker", -1);
   var hydrofracturer = getSpaceBldObj("Dune", "hydrofracturer", -1);
   var researchVessel = getSpaceBldObj("Piscine", "researchVessel", -1);
@@ -792,6 +782,7 @@
   var cryostation = getSpaceBldObj("T-Minus", "cryostation", -1);
   var spaceBeacon = getSpaceBldObj("Kairo", "spaceBeacon", -1);
   var terraformingStation = getSpaceBldObj("Yarn", "terraformingStation", -1);
+  var hydroponics = getSpaceBldObj("Yarn", "hydroponics", -1);
   var tectonic = getSpaceBldObj("Centaurus System", "tectonic", -1);
 
   // ref/space-build-hierarchy.js
@@ -811,7 +802,9 @@
       spaceStation
     ],
     [
-      cryostation
+      cryostation,
+      moonBase,
+      hydroponics
     ]
   ];
 

@@ -1,5 +1,5 @@
 import { SCRITTIES_SETTINGS } from '../config/settings';
-import { powerCondition, priceCondition, researchCondition, resourceCondition } from '../scripts/utility/conditions';
+import { powerCondition, priceCondition, researchCondition, resourceCondition, turnOffNewTrigger } from '../scripts/utility/conditions';
 
 let getBldObj = (buildingName, limit, /*extraPropsFn,*/ conditions = [], after = []) => {
     // extraPropsFn = extraPropsFn || function() { return {} };
@@ -69,13 +69,7 @@ quarry.conditions.push(priceCondition('quarry', 'all', 3));
 oilWell.conditions.push(resourceCondition.bind(null, 'ship', 'fixed', 250));
 oilWell.conditions.push(priceCondition('oilWell', 'all', 3));
 accelerator.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 1));
-accelerator.after.push(() => {
-    if (game.bld.get('accelerator').val === 1) {
-        game.bld.get('accelerator').on = 0;
-    } else if (game.bld.get('accelerator').on > 0) {
-        game.bld.get('accelerator').on -= 1;
-    }
-});
+accelerator.after.push(turnOffNewTrigger(game.bld.get('accelerator')));
 
 export let steamworks = getBldObj('steamworks', -1);        // If blueprint > 1000, magneto researched and > steamworks + 7
 export let magneto = getBldObj('magneto', -1);              // If blueprint > 1000, oil > 0.25/sec, alloy triple

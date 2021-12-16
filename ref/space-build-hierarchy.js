@@ -1,4 +1,4 @@
-import { cryostation, hydrofracturer, moonOutpost, planetCracker, researchVessel, sattelite, spaceElevator, spaceStation, sunlifter } from "./space-buildings";
+import { cryostation, hydrofracturer, hydroponics, moonBase, moonOutpost, planetCracker, researchVessel, sattelite, spaceElevator, spaceStation, sunlifter } from "./space-buildings";
 
 export let spaceBuildHierarchy = [
     [
@@ -16,6 +16,8 @@ export let spaceBuildHierarchy = [
         spaceStation,
     ],
     [
-        cryostation
+        cryostation,
+        moonBase,
+        hydroponics
     ]
 ];
