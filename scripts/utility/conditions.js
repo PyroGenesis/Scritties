@@ -31,3 +31,13 @@ export function researchCondition(discipline, name, negate=false) {
 export function powerCondition(limit) {
     return () => (game.resPool.energyWinterProd - game.resPool.energyCons) >= limit
 }
+
+export function turnOffNewTrigger(bld) {
+    return () => {
+        if (bld.val === 1) {
+            bld.on = 0;
+        } else if (bld.on > 0) {
+            bld.on -= 1;
+        }
+    }
+}
