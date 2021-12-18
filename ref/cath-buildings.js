@@ -110,4 +110,4 @@ export let brewery = getBldObj('brewery', -1);
 export let ziggurat = getBldObj('ziggurat', -1);            // Manual
 mint.conditions.push(resourceCondition.bind(null, 'gold', 'fraction', 1));
 mint.conditions.push(priceCondition('mint', 'plate', 3));
-mint.after.push(() => { game.bld.get('mint').on = 0; });
+mint.after.push(turnOffNewTrigger(game.bld.get('mint')));

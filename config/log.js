@@ -22,6 +22,7 @@ export let SCRITTIES_LOG = {
     farm: true,
     build: true,
     sacrifice: true,
+    combust: true,
     cloudSave: true,
 
     CATH_BUILD_LastGroupReached: '',

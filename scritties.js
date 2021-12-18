@@ -14,6 +14,7 @@ import { spaceBuildHierarchy } from "./ref/space-build-hierarchy";
 import { researchCondition } from "./scripts/utility/conditions";
 import { farm } from "./scripts/actions/farm";
 import { antimatter } from './scripts/use-resources/antimatter';
+import { combust } from "./scripts/actions/combust";
 
 let huntInterval = setInterval(hunt, 5000);
 let faithInterval = setInterval(faith, 5000);
@@ -42,5 +43,7 @@ let useResourcesInterval = setInterval(() => {
 }, 1 * 1000);
 
 let upgradeInterval = setInterval(upgrade, 2 * 1000);
+
+let combustInterval = setInterval(combust, 4 * 60 * 1000);
 
 // let cloudSaveInterval = setupCloudSaving();
