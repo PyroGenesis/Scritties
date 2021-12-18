@@ -24,6 +24,7 @@
     farm: true,
     build: true,
     sacrifice: true,
+    combust: true,
     cloudSave: true,
     CATH_BUILD_LastGroupReached: "",
     SPACE_BUILD_LastGroupReached: "",
@@ -56,6 +57,7 @@
     farm: true,
     build: true,
     sacrifice: true,
+    combust: true,
     cloudSave: true,
     kittenLimit: 500
   };
@@ -703,9 +705,7 @@
   var ziggurat = getBldObj("ziggurat", -1);
   mint.conditions.push(resourceCondition.bind(null, "gold", "fraction", 1));
   mint.conditions.push(priceCondition("mint", "plate", 3));
-  mint.after.push(() => {
-    game.bld.get("mint").on = 0;
-  });
+  mint.after.push(turnOffNewTrigger(game.bld.get("mint")));
 
   // ref/cath-build-hierarchy.js
   var cathBuildHierarchy = [
@@ -835,6 +835,27 @@
     builder(game.spaceTab, antimatterBuildHierarchy, "ANTIMATTER_BUILD_LastGroupReached");
   };
 
+  // scripts/actions/combust.js
+  var combust = () => {
+    if (!game.resPool.resourceMap.alicorn.unlocked)
+      return;
+    if (!game.workshop.get("chronoforge").researched)
+      return;
+    let alicornSacrificeBtn = game.religionTab.sacrificeAlicornsBtn;
+    let combustBtn = game.timeTab.children[2].children[0].children[0];
+    if (game.resPool.resourceMap.timeCrystal.value < 1) {
+      if (game.resPool.resourceMap.alicorn.value < 25)
+        return;
+      if (SCRITTIES_LOG.combust)
+        console.log(`Sacrificing 25 Alicorns for ${1 + game.globalEffectsCached.tcRefineRatio} time crystals`);
+      logicalBtnClick(alicornSacrificeBtn);
+      game.timeTab.update();
+    }
+    if (SCRITTIES_LOG.combust)
+      console.log("Combusting a time crystal");
+    logicalBtnClick(combustBtn);
+  };
+
   // scritties.js
   var huntInterval = setInterval(hunt, 5e3);
   var faithInterval = setInterval(faith, 5e3);
@@ -853,4 +874,5 @@
     gold(1 * 1e3);
   }, 1 * 1e3);
   var upgradeInterval = setInterval(upgrade, 2 * 1e3);
+  var combustInterval = setInterval(combust, 4 * 60 * 1e3);
 })();
