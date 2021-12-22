@@ -4,6 +4,8 @@ import { logicalBtnClick } from "../utility/utility";
 export let combust = () => {
     if (!game.resPool.resourceMap.alicorn.unlocked) return;
     if (!game.workshop.get('chronoforge').researched) return;
+    if (!game.timeTab.content) game.timeTab.domNode.click();
+    game.timeTab.update();
     
     let alicornSacrificeBtn = game.religionTab.sacrificeAlicornsBtn;
     let combustBtn = game.timeTab.children[2].children[0].children[0];
