@@ -786,6 +786,7 @@
   var hydrofracturer = getSpaceBldObj("Dune", "hydrofracturer", -1);
   var researchVessel = getSpaceBldObj("Piscine", "researchVessel", -1);
   var sunlifter = getSpaceBldObj("Helios", "sunlifter", -1);
+  var containmentChamber = getSpaceBldObj("Helios", "containmentChamber", -1);
   var cryostation = getSpaceBldObj("T-Minus", "cryostation", -1);
   var spaceBeacon = getSpaceBldObj("Kairo", "spaceBeacon", -1);
   var terraformingStation = getSpaceBldObj("Yarn", "terraformingStation", -1);
@@ -831,7 +832,8 @@
   var antimatterBuildHierarchy = [
     [tectonic],
     [spaceBeacon],
-    [terraformingStation]
+    [terraformingStation],
+    [containmentChamber]
   ];
   var antimatter = () => {
     let antimatterRes = game.resPool.resourceMap.antimatter;

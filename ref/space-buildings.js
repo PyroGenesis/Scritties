@@ -41,6 +41,7 @@ export let researchVessel = getSpaceBldObj('Piscine', 'researchVessel', -1);    
 
 // Helios
 export let sunlifter = getSpaceBldObj('Helios', 'sunlifter', -1);                   // Always
+export let containmentChamber = getSpaceBldObj('Helios', 'containmentChamber', -1); // Antimatter hierarchy
 
 // T-Minus
 export let cryostation = getSpaceBldObj('T-Minus', 'cryostation', -1);              // Always. final priority

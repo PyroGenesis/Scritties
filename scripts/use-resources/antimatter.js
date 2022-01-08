@@ -1,8 +1,8 @@
-import { tectonic, spaceBeacon, terraformingStation } from "../../ref/space-buildings";
+import { tectonic, spaceBeacon, terraformingStation, containmentChamber } from "../../ref/space-buildings";
 import { builder } from "../actions/build";
 
 let antimatterBuildHierarchy = [
-    [tectonic], [spaceBeacon], [terraformingStation], /* [Sunforge], [HR Harvester] */
+    [tectonic], [spaceBeacon], [terraformingStation], /* [Sunforge], [HR Harvester] */ [containmentChamber],
 ];
 
 export let antimatter = () => {

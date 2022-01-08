@@ -1,3 +1,11 @@
+export let toFixed = (num, decimalPlaces) => {
+    let re = new RegExp('^-?\\d+(?:\.\\d{0,' + (decimalPlaces || -1) + '})?');
+    return parseFloat(num.toString().match(re)[0]);
+}
+
+let resProdPercent = (res) => {
+    return ((res.perTickCached*5) / res.maxValue)*100
+}
 
 export let logicalBtnClick = (logicalBtn) => {
     logicalBtn.animate();
