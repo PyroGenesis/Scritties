@@ -1,14 +1,18 @@
 import { SCRITTIES_LOG } from "../../config/log";
 import { resourceToResourceMapping } from "../../ref/res-to-res";
+import { toFixed } from "../utility/utility";
 
 export let useUpResources = () => {
     for (let res_to_res of resourceToResourceMapping) {
         let src_obj = game.resPool.get(res_to_res.source)
         if (!src_obj.unlocked || !game.resPool.get(res_to_res.result).unlocked) continue;
 
-        // if (src_obj.value / src_obj.maxValue > 0.98) {
         if (src_obj.value >= src_obj.maxValue) {
-            let craft_num = Math.max(1, Math.trunc((src_obj.maxValue * 0.05) / res_to_res.cost))
+            let default_percent_consumption = 0.05;
+            let percent_res_per_sec = toFixed((src_obj.perTickCached*5) / game.resPool.resourceMap.wood.maxValue, 2);
+            let percent_consumption = Math.min(Math.max(default_percent_consumption, percent_res_per_sec), 1)   // bounded by 1 = 100%
+
+            let craft_num = Math.max(1, Math.trunc((src_obj.maxValue * percent_consumption) / res_to_res.cost))
             let craft_num_by_other_resources = Infinity;
             for (let other_resource of res_to_res.otherResources) {
                 craft_num_by_other_resources = Math.min(

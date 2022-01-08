@@ -104,6 +104,10 @@
   };
 
   // scripts/utility/utility.js
+  var toFixed = (num, decimalPlaces) => {
+    let re = new RegExp("^-?\\d+(?:.\\d{0," + (decimalPlaces || -1) + "})?");
+    return parseFloat(num.toString().match(re)[0]);
+  };
   var logicalBtnClick = (logicalBtn) => {
     logicalBtn.animate();
     logicalBtn.controller.buyItem(logicalBtn.model, 1, function(result) {
@@ -400,7 +404,10 @@
       if (!src_obj.unlocked || !game.resPool.get(res_to_res.result).unlocked)
         continue;
       if (src_obj.value >= src_obj.maxValue) {
-        let craft_num = Math.max(1, Math.trunc(src_obj.maxValue * 0.05 / res_to_res.cost));
+        let default_percent_consumption = 0.05;
+        let percent_res_per_sec = toFixed(src_obj.perTickCached * 5 / game.resPool.resourceMap.wood.maxValue, 2);
+        let percent_consumption = Math.min(Math.max(default_percent_consumption, percent_res_per_sec), 1);
+        let craft_num = Math.max(1, Math.trunc(src_obj.maxValue * percent_consumption / res_to_res.cost));
         let craft_num_by_other_resources = Infinity;
         for (let other_resource of res_to_res.otherResources) {
           craft_num_by_other_resources = Math.min(craft_num_by_other_resources, Math.trunc(game.resPool.get(other_resource.resource).value / other_resource.cost));
