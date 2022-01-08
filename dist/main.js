@@ -884,5 +884,5 @@
     gold(1 * 1e3);
   }, 1 * 1e3);
   var upgradeInterval = setInterval(upgrade, 2 * 1e3);
-  var combustInterval = setInterval(combust, 3 * 60 * 1e3);
+  var combustInterval = setInterval(combust, 4 * 60 * 1e3);
 })();
