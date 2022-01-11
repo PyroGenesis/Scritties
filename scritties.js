@@ -46,6 +46,6 @@ let useResourcesInterval = setInterval(() => {
 
 let upgradeInterval = setInterval(upgrade, 2 * 1000);
 
-let combustInterval = setInterval(combust, 4 * 60 * 1000);
+setTimeout(combust, 1 * 60 * 1000);
 
 // let cloudSaveInterval = setupCloudSaving();

@@ -59,7 +59,8 @@
     sacrifice: true,
     combust: true,
     cloudSave: true,
-    kittenLimit: 500
+    kittenLimit: 1e3,
+    saveAlicornTime: 30
   };
 
   // scripts/actions/hunt.js
@@ -846,26 +847,35 @@
 
   // scripts/actions/combust.js
   var combust = () => {
-    if (!game.resPool.resourceMap.alicorn.unlocked)
+    if (!game.resPool.resourceMap.alicorn.unlocked || !game.workshop.get("chronoforge").researched) {
+      setTimeout(combust, 5 * 60 * 1e3);
       return;
-    if (!game.workshop.get("chronoforge").researched)
-      return;
+    }
     if (!game.timeTab.content)
       game.timeTab.domNode.click();
     game.timeTab.update();
+    let effectiveAlicornPS = game.globalEffectsCached.alicornChance / 2 + game.resPool.resourceMap.alicorn.perTickCached * 5;
+    let timeToCraftTC = 25 / (game.globalEffectsCached.tcRefineRatio + 1) / effectiveAlicornPS;
+    timeToCraftTC += SCRITTIES_SETTINGS.saveAlicornTime;
+    let heatConsumedPS = game.globalEffectsCached.heatPerTick * 5;
+    let timeToCool1Combust = 10 / heatConsumedPS;
+    let nextCombustDelay = Math.ceil(Math.max(timeToCraftTC, timeToCool1Combust));
     let alicornSacrificeBtn = game.religionTab.sacrificeAlicornsBtn;
     let combustBtn = game.timeTab.children[2].children[0].children[0];
     if (game.resPool.resourceMap.timeCrystal.value < 1) {
-      if (game.resPool.resourceMap.alicorn.value < 25)
+      if (game.resPool.resourceMap.alicorn.value < 25) {
+        setTimeout(combust, nextCombustDelay * 1e3);
         return;
+      }
       if (SCRITTIES_LOG.combust)
         console.log(`Sacrificing 25 Alicorns for ${1 + game.globalEffectsCached.tcRefineRatio} time crystals`);
       logicalBtnClick(alicornSacrificeBtn);
       game.timeTab.update();
     }
     if (SCRITTIES_LOG.combust)
-      console.log("Combusting a time crystal");
+      console.log(`Combusting a time crystal. Next one in ${nextCombustDelay}s`);
     logicalBtnClick(combustBtn);
+    setTimeout(combust, nextCombustDelay * 1e3);
   };
 
   // scritties.js
@@ -887,5 +897,5 @@
     gold(1 * 1e3);
   }, 1 * 1e3);
   var upgradeInterval = setInterval(upgrade, 2 * 1e3);
-  var combustInterval = setInterval(combust, 4 * 60 * 1e3);
+  setTimeout(combust, 1 * 60 * 1e3);
 })();

@@ -25,5 +25,6 @@ export let SCRITTIES_SETTINGS = {
     combust: true,
     cloudSave: true,
 
-    kittenLimit: 500
+    kittenLimit: 1000,
+    saveAlicornTime: 30
 };
