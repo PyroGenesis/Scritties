@@ -869,6 +869,7 @@
   };
 
   // scritties.js
+  game.detailedPollutionInfo = true;
   var huntInterval = setInterval(hunt, 5e3);
   var faithInterval = setInterval(faith, 5e3);
   var sacrificeInterval = setInterval(sacrifice, 30 * 1e3);

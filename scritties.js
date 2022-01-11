@@ -16,6 +16,8 @@ import { farm } from "./scripts/actions/farm";
 import { antimatter } from './scripts/use-resources/antimatter';
 import { combust } from "./scripts/actions/combust";
 
+game.detailedPollutionInfo = true;
+
 let huntInterval = setInterval(hunt, 5000);
 let faithInterval = setInterval(faith, 5000);
 let sacrificeInterval = setInterval(sacrifice, 30*1000);
