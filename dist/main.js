@@ -13,7 +13,7 @@
     culture: true,
     gold: {
       promoteLeader: true,
-      trade: true,
+      trade: false,
       build: true
     },
     minerals: true,
