@@ -8,8 +8,8 @@ export let useUpResources = () => {
         if (!src_obj.unlocked || !game.resPool.get(res_to_res.result).unlocked) continue;
 
         if (src_obj.value >= src_obj.maxValue) {
-            let default_percent_consumption = 0.05;
-            let percent_res_per_sec = toFixed((src_obj.perTickCached*5) / game.resPool.resourceMap.wood.maxValue, 2);
+            let default_percent_consumption = 0.05;                                                             // the min default percent to consume
+            let percent_res_per_sec = (src_obj.perTickCached*5) / src_obj.maxValue;                             // the amount of res made in 1 sec in terms of % of max res
             let percent_consumption = Math.min(Math.max(default_percent_consumption, percent_res_per_sec), 1)   // bounded by 1 = 100%
 
             let craft_num = Math.max(1, Math.trunc((src_obj.maxValue * percent_consumption) / res_to_res.cost))
