@@ -11,6 +11,10 @@ export let culture = () => {
         for (let i = 0; i < game.diplomacyTab.racePanels.length; i++) {
             let racePanel = game.diplomacyTab.racePanels[i];
             racePanel.update();
+
+            // Skip embassies for the leviathans
+            if (racePanel.race.name === 'leviathans') continue;
+
             if (racePanel.embassyButton.model.enabled) {
                 if (SCRITTIES_LOG.culture) console.log("Building embassy for " + racePanel.race.title);
                 racePanel.embassyButton.buttonContent.click();
