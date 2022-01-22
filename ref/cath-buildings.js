@@ -27,7 +27,7 @@ hydroPlant.conditions.push(resourceCondition.bind(null, 'titanium', 'fraction', 
 
 export let hut = getBldObj('hut', -1);                      // Upto kitten limit
 export let logHouse = getBldObj('logHouse', -1);            // Upto kitten limit
-export let mansion = getBldObj('mansion', 0);               // Upto kitten limit, if titanium is full, if steel is 2x 
+export let mansion = getBldObj('mansion', -1);               // Upto kitten limit, if titanium is full, if steel is 2x 
 hut.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
 logHouse.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);
 mansion.conditions.push(() => game.village.maxKittens < SCRITTIES_SETTINGS.kittenLimit);

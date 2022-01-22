@@ -54,7 +54,7 @@ let getAlicornRes = () => {
     let createdRelics = refines * effectiveRelicRatio;
     let totalRelics = currentRelics + createdRelics;
 
-    return `Sacrifices: ${sacrifices}, TC: ${totalTc.toFixed(2)}, Relics: ${totalRelics}`
+    return `Sacrifices: ${sacrifices}, TC: ${totalTc.toFixed(2)}, Relics: ${totalRelics.toFixed(2)}`
 }
 
 
